@@ -15,10 +15,10 @@
     <description>
       A client application for home automatization.
     </description>
-    <language></language>
+    <language>en de</language>
     <license></license>
     <source></source>
     <forum></forum>
-    <website></website>
+    <website>http://www.rademacher.de</website>
   </extension>
 </addon>

@@ -1,7 +1,7 @@
 # XBMC Media Center language file
-# Addon Name: IrcChat
-# Addon id: script.ircchat
-# Addon version: 1.0.0
+# Addon Name: Rademacher HomePilot
+# Addon id: script.homepilot
+# Addon version: 0.6.0
 msgid ""
 msgstr ""
 "Project-Id-Version: XBMC Addons\n"
@@ -16,6 +16,82 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
+msgctxt "#32002"
+msgid "All"
+msgstr ""
+
 msgctxt "#32003"
 msgid "IP-Address HomePilot"
+msgstr ""
+
+msgctxt "#32004"
+msgid "Favourites"
+msgstr ""
+
+msgctxt "#32005"
+msgid "Scenes"
+msgstr ""
+
+msgctxt "#32006"
+msgid "Devices"
+msgstr ""
+
+msgctxt "#32007"
+msgid "Sensors"
+msgstr ""
+
+msgctxt "#32008"
+msgid "Settings"
+msgstr ""
+
+msgctxt "#32009"
+msgid "Device Types"
+msgstr ""
+
+msgctxt "#32010"
+msgid "Roller Shutters"
+msgstr ""
+
+msgctxt "#32011"
+msgid "Switches"
+msgstr ""
+
+msgctxt "#32012"
+msgid "Dimmer"
+msgstr ""
+
+msgctxt "#32013"
+msgid "Thermostats"
+msgstr ""
+
+msgctxt "#32014"
+msgid "Garage Doors"
+msgstr ""
+
+msgctxt "#32015"
+msgid "Groups"
+msgstr ""
+
+msgctxt "#32016"
+msgid "Scene Types"
+msgstr ""
+
+msgctxt "#32017"
+msgid "Can be run manually"
+msgstr ""
+
+msgctxt "#32018"
+msgid "Can not be run manually"
+msgstr ""
+
+msgctxt "#32019"
+msgid "Camera"
+msgstr ""
+
+msgctxt "#32020"
+msgid "All Scenes"
+msgstr ""
+
+msgctxt "#32021"
+msgid "Automations"
 msgstr ""

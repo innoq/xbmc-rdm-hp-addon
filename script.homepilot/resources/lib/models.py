@@ -2,46 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import homepilot_utils
-
-icons = {}
-icons["iconset1"] = "aquarium_72_"
-icons["iconset22"] = "bargraph_horizontal_72_"
-icons["iconset2"] = "bargraph_vertikal_72_"
-icons["iconset23"] = "bewegungsmelder_72_"
-icons["iconset4"] = "deckenlampe_72_"
-icons["iconset5"] = "ein_aus_schalter1_72_"
-icons["iconset24"] = "fenster_72_"
-icons["iconset18"] = "gartensprenkler_72_"
-icons["iconset21"] = "birne1_72_"
-icons["iconset6"] = "jalousie_72_"
-icons["iconset17"] = "kaffeemaschine_72_"
-icons["iconset32"] = "lichterkette_72"
-icons["iconset7"] = "markise_72_"
-icons["iconset16"] = "pumpe_72_"
-icons["iconset26"] = "rauchmelder_72_"
-icons["iconset8"] = "rollladen1_72_"
-icons["iconset15"] = "rollladen2_72_"
-icons["iconset9"] = "schiebetuer_72_"
-icons["iconset14"] = "schiebeladen_72_"
-icons["iconset27"] = "schliesskontakt_72_"
-icons["iconset30"] = "garage_72_"
-icons["iconset31"] = "sektionaltor_72_"
-icons["iconset25"] = "genericsensor_72_"
-#icons["iconset19"]      -> Standard
-icons["iconset10"] = "steckdose_72_"
-icons["iconset13"] = "stehlampe_72_"
-icons["iconset20"] = "sunscreen_72_"
-icons["iconset28"] = "thermostat_72_"
-icons["iconset11"] = "tischlampe_72_"
-icons["iconset12"] = "tuer_72_"
-icons["iconset33"] = "weihnachtsbaum_72_"
-icons["iconset34"] = "dachfenster_72_"
-icons["iconset35"] = "handsender_72_"
-icons["iconset36"] = "leinwand_72_"
-icons["iconset37"] = "radio_72_"
-icons["iconset38"] = "smartphone_72_"
-icons["iconset39"] = "ventilator_72_"
-
+import xbmc
 
 
 class HomePilotBaseObject:
@@ -67,7 +28,6 @@ class HomePilotBaseObject:
         self._sync = device["sync"]
         self._icon_set = device["iconsetKey"]
         self._icon_set_inverted = device.get("iconSetInverted")
-
 
     def get_name(self):
         """
@@ -108,74 +68,11 @@ class HomePilotBaseObject:
         return self._sync
 
     def get_iconset_inverted(self):
-        return self._icon_set_inverted is not None and self._icon_set_inverted != 0
+        return homepilot_utils.get_iconset_inverted(self._icon_set_inverted)
 
     def get_icon(self):
-        if self._icon_set in icons:
-            base_icon = icons[self._icon_set]
-            #An-/Aus-Icons
-            position = self._position
-            if self._deviceGroup == 5:
-                position = (float(position)/10 - 3) * 4
-            an_aus = set(
-                ["iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
-                 "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33", "iconset34",
-                 "iconset37", "iconset38", "iconset39"])
-            if self._icon_set in an_aus:
-                if self.get_iconset_inverted():
-                    return self.__get_icon_switch_inverted(position, base_icon)
-                else:
-                    return self.__get_icon_switch(position, base_icon)
 
-            elif self._icon_set == "iconset35":
-                return "handsender_72_0.png"
-            else:
-                if self.get_iconset_inverted():
-                    return self.__get_icon_percent_inverted(position, base_icon)
-                else:
-                    return self.__get_icon_percent(position, base_icon)
-        else:
-            return "logo-homepilot-klein.png"
-
-
-    def __get_icon_switch(self, position, base_icon):
-        if position == 0:
-            return base_icon + "0.png"
-        else:
-            return base_icon + "1.png"
-
-
-    def __get_icon_switch_inverted(self, position, base_icon):
-        if position != 0:
-            return base_icon + "1.png"
-        else:
-            return base_icon + "0.png"
-
-
-    def __get_icon_percent(self, position, base_icon):
-        if position < 12:
-            return base_icon + "0.png"
-        elif position < 37:
-            return base_icon + "25.png"
-        elif position < 62:
-            return base_icon + "50.png"
-        elif position < 87:
-            return base_icon + "75.png"
-        else:
-            return base_icon + "100.png"
-
-
-    def __get_icon_percent_inverted(self, position, base_icon):
-        if position < 12:
-            return base_icon + "100.png"
-        elif position < 37:
-            return base_icon + "75.png"
-        elif position < 62:
-            return base_icon + "50.png"
-        elif position < 87:
-            return base_icon + "25.png"
-        else:
-            return base_icon + "0.png"
+        return homepilot_utils.get_icon(self._icon_set, self._icon_set_inverted, self._position, self._deviceGroup)
 
     def get_display_value(self):
         position = self.get_position()
@@ -183,13 +80,75 @@ class HomePilotBaseObject:
         return homepilot_utils.get_display_value(position, group)
 
 
+class Automation():
+    def __init__(self, properties):
+        self.properties = properties
+
+    def get_dawn(self):
+        return self.properties["dawn"]
+
+    def get_dusk(self):
+        return self.properties["dusk"]
+
+    def get_time(self):
+        return self.properties["time"]
+
+    def get_wind(self):
+        return self.properties["wind"]
+
+    def get_temperature(self):
+        return self.properties["temperature"]
+
+    def get_generic(self):
+        return self.properties["generic"]
+
+    def get_trigger(self):
+        return self.properties["trigger"]
+
+    def get_closing_contact(self):
+        return self.properties["closingContact"]
+
+    def get_smoke(self):
+        return self.properties["smoke"]
+
+    def get_sun(self):
+        return self.properties["sun"]
+
+    def get_manual(self):
+        return self.properties["manual"]
+
+    def get_dust(self):
+        return self.properties["dust"]
+
+    def get_favored(self):
+        return self.properties["favored"]
+
+    def get_smartphone(self):
+        return self.properties["smartphone"]
+
+    def get_motion(self):
+        return self.properties["motion"]
+
+    def get_temperator(self):
+        return self.properties["temperator"]
+
+    def get_warning(self):
+        return self.properties["warning"]
+
+    def get_rain(self):
+        return self.properties["rain"]
+
+
 class Device(HomePilotBaseObject):
+
     def __init__(self, device):
         HomePilotBaseObject.__init__(self, device)
         self._available = device["avail"]
         self._hasErrors = device["hasErrors"] != 0
         self._groups = device["groups"]
         self._favoredId = device["favoredId"]
+        self._automated = device["automated"] != 0
+        self._properties = device["properties"]
 
     def has_errors(self):
         """
@@ -206,12 +165,20 @@ class Device(HomePilotBaseObject):
     def get_favoredId (self):
         return self._favoredId
 
-
     def get_icon(self):
         icon = HomePilotBaseObject.get_icon(self)
         if self.is_available() == False or self.has_errors():
             icon = "warnung_72.png"
         return icon
+
+    def is_automated(self):
+        return self._automated
+
+    def get_automationen(self):
+        return Automation(self._properties)
+
+    def is_favored(self):
+        return self._favoredId != -1
 
 class Meter(HomePilotBaseObject):
 
@@ -231,6 +198,7 @@ class Meter(HomePilotBaseObject):
 
 
 class Group:
+
     def __init__(self, group):
         self.group = group
         self._name = group["name"]
@@ -245,3 +213,62 @@ class Group:
 
     def get_description(self):
         return self._description
+
+
+class Action:
+
+    def __init__(self, action):
+        self._did = action["did"]
+        self._type = action["type"]
+        self._name = action["name"]
+        self._description = action["description"]
+        self._iconset = action ["iconset"]
+        self._iconsetInverted = action["iconsetInverted"]
+        self._cmdId = action["cmdId"]
+
+    def get_did(self):
+        return self._did
+
+    def get_name(self):
+        return self._name
+
+    def get_description(self):
+        return self._description
+
+    def get_icon(self):
+        return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, 0, type)
+
+    def get_cmdId(self):
+        return self._cmdId
+
+    def get_device_group(self):
+        return self._type
+
+
+class Scene:
+
+    def __init__(self, scene):
+        self._sid = scene["sid"]
+        self._name = scene["name"]
+        self._description = scene["description"]
+        self._is_executable = scene["isExecutable"]
+        self._sync = scene["sync"]
+        self._groups = scene["groups"]
+        if 'actions' in scene:
+            self._actions = scene["actions"]
+        self._properties = scene["properties"]
+
+    def get_id(self):
+        return self._sid
+
+    def get_name(self):
+        return self._name
+
+    def get_actions(self):
+        return map(lambda x: Action(x), self._actions)
+
+    def get_automationen(self):
+        return Automation(self._properties)
+
+    def is_executable(self):
+        return self._is_executable == 1

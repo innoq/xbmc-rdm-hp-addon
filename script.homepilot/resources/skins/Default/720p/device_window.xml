@@ -21,7 +21,7 @@
             <posx>250</posx>
             <posy>40</posy>
             <width>400</width>
-            <height>500</height>
+            <height>640</height>
             <texture border="15">ContentPanel2.png</texture>
         </control>
         <control type="button">
@@ -149,5 +149,155 @@
             </control>
         </control>
         <!--end switch buttons -->
+
+
+        <!--Automatik -->
+        <control type="group" id="130">
+            <visible>true</visible>
+            <posx>320</posx>
+            <posy>250</posy>
+            <height>50</height>
+            <width>150</width>
+            <control type="radiobutton" id="132">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>250</width>
+                <height>50</height>
+                <visible>true</visible>
+                <textureradioonfocus>radiobutton-focus.png</textureradioonfocus>
+                <textureradioonnofocus>radiobutton-focus.png</textureradioonnofocus>
+                <textureradioofffocus>radiobutton-nofocus.png</textureradioofffocus>
+                <textureradiooffnofocus>radiobutton-nofocus.png</textureradiooffnofocus>
+	            <texturefocus border="5">button-focus.png</texturefocus>
+		        <texturenofocus border="5">button-nofocus.png</texturenofocus>
+                <label>Automatik</label>
+                <align>left</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!--end Automatik -->
+
+
+        <!--Favorit -->
+        <control type="group" id="134">
+            <visible>true</visible>
+            <posx>320</posx>
+            <posy>300</posy>
+            <height>50</height>
+            <width>150</width>
+            <control type="radiobutton" id="136">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>250</width>
+                <height>50</height>
+                <visible>true</visible>
+                <textureradioonfocus>favorite_20.png</textureradioonfocus>
+                <textureradioonnofocus>favorite_20.png</textureradioonnofocus>
+                <textureradioofffocus>favorite_off_20.png</textureradioofffocus>
+                <textureradiooffnofocus>favorite_off_20.png</textureradiooffnofocus>
+	            <texturefocus border="5">button-focus.png</texturefocus>
+		        <texturenofocus border="5">button-nofocus.png</texturenofocus>
+                <label>Favorit</label>
+                <align>left</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!--end Favorit -->
+
+        <!--Automationen -->
+        <control type="group" id="138">
+            <visible>true</visible>
+            <posx>280</posx>
+            <posy>370</posy>
+            <height>50</height>
+            <width>328</width>
+            <control type="label" id="140">
+                <posx>40</posx>
+                <posy>0</posy>
+                <width>200</width>
+                <height>50</height>
+                <visible>true</visible>
+                <aligny>center</aligny>
+                <label>Automationen</label>
+                <font>font14</font>
+            </control>
+            <control type="list" id="142">
+                <posx>0</posx>
+                <posy>50</posy>
+                <width>328</width>
+                <height>260</height>
+                <onright>144</onright>
+                <pagecontrol>144</pagecontrol>
+                <itemlayout height="87" width="305">
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>280</width>
+                        <height>85</height>
+                        <wrapmultiline>true</wrapmultiline>
+                        <font>font12</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="87" width="305">
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>0</posy>
+                        <width>750</width>
+                        <height>75</height>
+                        <texture border="0,2,0,2">MenuItemFO.png</texture>
+                        <visible>Control.HasFocus(142)</visible>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>280</width>
+                        <height>85</height>
+                        <font>font12</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(142)</visible>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="144">
+                    <description>scroll bar indicator for lists</description>
+                    <posx>340</posx>
+                    <posy>50</posy>
+                    <width>12</width>
+                    <height>250</height>
+                    <onleft>142</onleft>
+                    <onright>noop</onright>
+                    <orientation>vertical</orientation>
+                    <visible>true</visible>
+                    <texturesliderbackground border="10,14,10,14">ScrollBarV.png</texturesliderbackground>
+                    <texturesliderbar border="10,14,10,14">ScrollBarV_bar.png</texturesliderbar>
+                    <texturesliderbarfocus border="10,14,10,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+                    <textureslidernib>ScrollBarNib.png</textureslidernib>
+                    <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+                </control>
+        </control>
+        <!--end Automationen -->
+
     </controls>
 </window>

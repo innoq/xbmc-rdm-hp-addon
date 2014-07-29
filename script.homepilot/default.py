@@ -32,23 +32,35 @@ import homepilot_client
 import homepilot_views
 import settings
 import time
-from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN, SENSOREN, ALLE, FAVORITEN
+from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN_MANUELL, SZENEN_NICHT_MANUELL, SZENEN_ALLE, SZENENTYPEN, SENSOREN, ALLE, FAVORITEN, GRUPPEN
 from device_windows import MeterWindow, PercentageWindow, SwitchWindow, DegreeWindow, ErrorWindow
 
 action_previous_menu = (9, 10, 92, 216, 247, 257, 275, 61467, 61448)
 
-GERAETETYP_VIEW = "geraetetyp_view"
-FAVORITEN_VIEW = FAVORITEN + "_view"
-ALLE_VIEW = ALLE + "_view"
-SENSOREN_VIEW = SENSOREN + "_view"
+GERAETETYP_VIEW     = "geraetetyp_view"
+FAVORITEN_VIEW      = str(FAVORITEN) + "_view"
+GRUPPEN_VIEW        = str(GRUPPEN) + "_view"
+ALLE_VIEW           = str(ALLE) + "_view"
+SENSOREN_VIEW       = str(SENSOREN) + "_view"
 
-ROLLADEN_VIEW = ROLLADEN + "_view"
-SCHALTER_VIEW = SCHALTER + "_view"
-DIMMER_VIEW = DIMMER + "_view"
-THERMOSTATE_VIEW = THERMOSTATE + "_view"
-TORE_VIEW = TORE + "_view"
-SZENEN_VIEW = SZENEN + "_view"
+ROLLADEN_VIEW       = str(ROLLADEN) + "_view"
+SCHALTER_VIEW       = str(SCHALTER) + "_view"
+DIMMER_VIEW         = str(DIMMER) + "_view"
+THERMOSTATE_VIEW    = str(THERMOSTATE) + "_view"
+TORE_VIEW           = str(TORE) + "_view"
+SZENEN_MANUELL_VIEW = str(SZENEN_MANUELL) + "_view"
+SZENEN_NICHT_MANUELL_VIEW = str(SZENEN_NICHT_MANUELL) + "_view"
+SZENEN_ALLE_VIEW    = str(SZENEN_ALLE) + "_view"
+SZENENTYP_VIEW      = str(SZENENTYPEN) + "_view"
 EMPTY_VIEW = "empty_view"
+
+BACKSPACE = 61448
+ARROW_LEFT = 61570
+MOVE_LEFT = 1
+ACTION_NAV_BACK = 92
+MOUSE_LEFT_CLICK = 100
+ENTER = 135
+MOVE_RIGHT = 2
 
 
 
@@ -78,10 +90,10 @@ class StatusUpdater (threading.Thread):
                 #this is a pretty sloppy implementation, as the window is updated even when it isn't display anymore
                 #I've choosen this way as I didn't find a method for getting the current state of a xbmcgui.WindowXMLDialog
                 #and the possible alternatives(e.g. passing references of this class around) looked more error prone
-                self.current_window.update()
+                self.current_window.update(__addon__)
             view_id = self.currentView.get_id()
             if view_id == FAVORITEN_VIEW or view_id == ROLLADEN_VIEW or view_id == SCHALTER_VIEW or view_id == DIMMER_VIEW or view_id ==THERMOSTATE_VIEW or view_id == TORE_VIEW:
-                self.currentView.update(self.window, self.menuControl)
+                self.currentView.update(self.window, __addon__, self.menuControl)
             time.sleep(1.5)
 
 
@@ -99,11 +111,8 @@ class GuiController(xbmcgui.WindowXMLDialog):
         ip_address = self.settings_dialog_manager.get_ip_address(__addon__)
         self.client = homepilot_client.HomepilotClient(ip_address)
 
-        self.szenenView = homepilot_views.SzenenView()
-
         self.favoritenView = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
         self._wait_for_visualization = False
-        
 
     def onInit(self):
         """
@@ -113,12 +122,11 @@ class GuiController(xbmcgui.WindowXMLDialog):
         self.window.setProperty('windowLabel', 'Rademacher HomePilot')
         geraete_view = self.favoritenView
         menu_control = self.window.getControl(95)
-        geraete_view.visualize (self)
+        geraete_view.visualize (self, __addon__)
         self.setFocus(menu_control)
         self.currentView = geraete_view
         self.status_updater = StatusUpdater (self.currentView, menu_control, self)
         self.status_updater.start()
-
 
     def shutdown(self):
         """
@@ -131,62 +139,106 @@ class GuiController(xbmcgui.WindowXMLDialog):
         return view == ALLE_VIEW or view == ROLLADEN_VIEW or view == SCHALTER_VIEW or view == DIMMER_VIEW or \
                          view == THERMOSTATE_VIEW or view == TORE_VIEW
 
-
     def onAction(self, action):
         """
         handles window exits
         # ACTION_LAST_PAGE = 160
-        #ACTION_NAV_PREV = 92
         """
-        BACKSPACE = 61448
-        ARROW_LEFT = 61570
+        xbmc.log("onAction " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
+        xbmc.log("Fokus " + str(self.getFocusId()), level=xbmc.LOGNOTICE)
         view = self.currentView.get_id()
+        xbmc.log("View " + str(view), level=xbmc.LOGNOTICE)
         is_geraeteview = self.__is_geraeteview(view)
-        if self.getFocusId() == 3 and (action.getButtonCode() == 61453 or action == 100 or action == 135):#Gerätetyptabelle
-            #self._wait_for_visualization = True
-            geraetetyp_list = self.getControl(3)
-            position = geraetetyp_list.getSelectedPosition()
+        if action == 13 or action == 10 or action == 160 or action == 21:
+            self.shutdown()
+        elif view == GERAETETYP_VIEW:
+            self.__on_Action_Geraetetypview(action)
+        elif view == SZENENTYP_VIEW:
+            if action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT:
+                self.setFocusId(94)
+            elif self.getFocusId() == 257 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gerätetyptabelle
+                type_list = self.getControl(257)
+                position = type_list.getSelectedPosition()
+                next_view = self.currentView.handle_click(position)
+                self.currentView.remove_everything(self)
+                szenen_view = homepilot_views.SzenenView(self.client, next_view)
+                menu_control = self.window.getControl(94)
+                szenen_view.visualize(self, __addon__)
+                self.currentView = szenen_view
+                self.status_updater.set_current_view(szenen_view, menu_control)
+                self.setFocusId(258)
+            elif action == MOVE_RIGHT:
+                self.setFocusId(257)
+        elif self.getFocusId() == 999 and action == 31:
+            self.setFocusId(5)
+        elif action == ACTION_NAV_BACK and view == FAVORITEN_VIEW:
+            self.setFocusId(95)
+        elif action == ACTION_NAV_BACK and view == SENSOREN_VIEW:
+            self.setFocusId(97)
+        elif action == MOVE_RIGHT and view == SENSOREN_VIEW:
+            self.setFocusId(5)
+        elif action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT:
+            self.__handle_back_action_on_nested_sites(view, is_geraeteview)
+        if self.getFocusId() == 0:
+            if view == FAVORITEN_VIEW or view == SENSOREN_VIEW or is_geraeteview:
+                self.setFocusId(5)
+            elif view == GERAETETYP_VIEW:
+                self.setFocusId(257)
+            else:
+                self.setFocusId(95)
+
+
+    def __on_Action_Geraetetypview (self, action):
+
+        if self.getFocusId() == 257 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gerätetyptabelle
+            xbmc.log("select list item " + __addon__.getLocalizedString(32005), level=xbmc.LOGNOTICE)
+            gruppen_list = self.getControl(257)
+            position = gruppen_list.getSelectedPosition()
             next_view = self.currentView.handle_click(position)
             if next_view is not None:
                 self.currentView.remove_everything(self)
                 geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, next_view)
                 menu_control = self.window.getControl(96)
-                geraete_view.visualize(self)
+                geraete_view.visualize(self, __addon__)
                 self.currentView = geraete_view
                 self.status_updater.set_current_view(geraete_view, menu_control)
-        elif self.getFocusId() == 999 and action == 31:
-            self.setFocusId(5)
-        elif action == 13 or action == 10 or action == 160 or action == 21:
-            self.shutdown()
-        elif action == 92 and view == FAVORITEN_VIEW:
-            self.setFocusId(95)
-        elif action == 92 and view == GERAETETYP_VIEW:
+        elif self.getFocusId() == 4 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gruppentabelle
+            gruppen_list = self.getControl(4)
+            position = gruppen_list.getSelectedPosition()
+            list_item = gruppen_list.getListItem(position)
+            gruppen_id = list_item.getProperty("gid")
+            gruppen_name = list_item.getLabel()
+            self.currentView.remove_everything(self)
+            geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, GRUPPEN, gruppen_id)
+            menu_control = self.window.getControl(96)
+            geraete_view.visualize(self, gruppen_name, __addon__)
+            self.currentView = geraete_view
+            self.status_updater.set_current_view(geraete_view, menu_control)
+        elif action == ACTION_NAV_BACK or action == MOVE_LEFT:
             self.setFocusId(96)
-        elif action == 92 and view == SENSOREN_VIEW:
-            self.setFocusId(97)
-        elif is_geraeteview and self.getFocusId() != 999 and (action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT):
+
+
+    def __handle_back_action_on_nested_sites (self, view, is_geraeteview):
+        if is_geraeteview and self.getFocusId() != 999:
             self.__show_geraetetyp_view()
             self.__set_geraetetyp_list_focus(view)
-            self.setFocusId(3)
-        if self.getFocusId() == 0:
-            if view == FAVORITEN_VIEW or view == SENSOREN_VIEW or is_geraeteview:
-                self.setFocusId(5)
-                #pass
-            elif view == GERAETETYP_VIEW:
-                self.setFocusId(3)
-            else:
-                self.setFocusId(95)
+            self.setFocusId(257)
+        elif view == GRUPPEN_VIEW and self.getFocusId() != 999:
+            group_id = self.currentView.get_group()
+            self.__show_geraetetyp_view()
+            self.__set_gruppen_list_focus(group_id)
 
 
 
     def onFocus(self, control):
+        xbmc.log("onFocus " + str(control), level=xbmc.LOGNOTICE)
         if not self._wait_for_visualization:
             if control == 98: #menüpunkt Einstellungen
                 if self.currentView.get_id() != EMPTY_VIEW:
                     self.currentView.remove_everything (self)
                     empty_view = homepilot_views.EmptyView()
                     menu_control = self.window.getControl(98)
-                    empty_view.visualize(self)
+                    empty_view.visualize(self, __addon__)
                     self.currentView = empty_view
                     self.status_updater.set_current_view(empty_view, menu_control)
             elif control == 95: #Menüpunkt Favoriten
@@ -194,7 +246,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
                     self.currentView.remove_everything (self)
                     geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
                     menu_control = self.window.getControl(95)
-                    geraete_view.visualize (self)
+                    geraete_view.visualize (self, __addon__)
                     self.currentView = geraete_view
                     self.status_updater.set_current_view(geraete_view, menu_control)
             elif control == 96: #Menüpunkt Geräte
@@ -206,14 +258,16 @@ class GuiController(xbmcgui.WindowXMLDialog):
                     self.currentView.remove_everything (self)
                     geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, SENSOREN)
                     menu_control = self.window.getControl(97)
-                    geraete_view.visualize (self)
+                    geraete_view.visualize (self, __addon__)
                     self.currentView = geraete_view
                     self.status_updater.set_current_view(geraete_view, menu_control)
-            elif control == 94: # Menüpunkt Szenen
-                if self.currentView.get_id() != SZENEN_VIEW:
+            elif control == 94: # Menüpunkt Szenentypen
+                if self.currentView.get_id() != SZENENTYP_VIEW:
+                    menu_control = self.window.getControl(97)
                     self.currentView.remove_everything (self)
-                    self.currentView = self.szenenView
-                    self.currentView.visualize (self)
+                    self.currentView = homepilot_views.SzenentypView()
+                    menu_control.controlRight(self.window.getControl(257))
+                    self.currentView.visualize (self, __addon__)
 
 
     def onClick(self, control):
@@ -226,7 +280,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 did = list_item.getProperty("did")
                 device_window = MeterWindow('device_window.xml', home, client=self.client, did=did, parent=self)
                 device_window.doModal()
-            elif view_id == FAVORITEN + "_view" or view_id == ALLE_VIEW or view_id == ROLLADEN_VIEW \
+            elif view_id == FAVORITEN_VIEW or view_id == ALLE_VIEW or view_id == ROLLADEN_VIEW \
                 or view_id == SCHALTER_VIEW or view_id == DIMMER_VIEW or view_id == THERMOSTATE_VIEW or view_id == TORE_VIEW:
                 geraete_listcontrol = self.getControl(5)
                 list_item = geraete_listcontrol.getSelectedItem()
@@ -238,10 +292,18 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 ip_address = self.settings_dialog_manager.get_ip_address(__addon__)
                 self._wait_for_visualization = False
                 self.client.set_ip_address (ip_address)
+        elif control == 258:# show szenen detail view
+            scene_list_control = self.getControl(258)
+            list_item = scene_list_control.getSelectedItem()
+            sceneId = list_item.getProperty("sid")
+            xbmc.log("sid " + str(sceneId), level=xbmc.LOGNOTICE)
+            self.currentView.remove_everything(self)
+            self.currentView = homepilot_views.SzenenDetailView(self.client, sceneId)
+            self.currentView.visualize(self, __addon__)
 
 
     def __set_geraetetyp_list_focus (self, previeous_view):
-        list_control = self.window.getControl(3)
+        list_control = self.window.getControl(257)
         if previeous_view == ALLE_VIEW:
             list_control.selectItem(5)
         elif previeous_view == ROLLADEN_VIEW:
@@ -256,13 +318,30 @@ class GuiController(xbmcgui.WindowXMLDialog):
             list_control.selectItem(4)
 
 
+    def __set_gruppen_list_focus (self, gruppen_id):
+        xbmc.log("Set gruppenlist focus " + str(gruppen_id), level=xbmc.LOGWARNING)
+        list_control = self.window.getControl(4)
+        xbmc.log("gruppenlist size  " + str(list_control.size()), level=xbmc.LOGWARNING)
+
+        i = 0
+        while True:
+            try:
+                item = list_control.getListItem(i)
+                gid = item.getProperty("gid")
+                xbmc.log("gruppenlist  " + str(gid), level=xbmc.LOGWARNING)
+                if gid == str(gruppen_id):
+                    list_control.selectItem(i)
+                    return
+            except RuntimeError:
+                self.setFocusId(4)
+                return
 
     def __show_geraetetyp_view(self):
         self.currentView.remove_everything (self)
         geraetetyp_view = homepilot_views.GeraetetypView(self.client)
         menu_control = self.window.getControl(96)
-        menu_control.controlRight(self.window.getControl(3))
-        geraetetyp_view.visualize (self)
+        menu_control.controlRight(self.window.getControl(257))
+        geraetetyp_view.visualize (self, __addon__)
         self.currentView = geraetetyp_view
         self.status_updater.set_current_view(geraetetyp_view, menu_control)
 

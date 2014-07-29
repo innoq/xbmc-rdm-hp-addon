@@ -43,7 +43,6 @@ class ErrorWindow(BaseWindow):
         BaseWindow.onAction(self, action)
 
 
-
 class MeterWindow(BaseWindow):
 
     def __init__( self, *args, **kwargs ):
@@ -59,6 +58,8 @@ class MeterWindow(BaseWindow):
 
     def onInit(self):
         controls = []
+        automation_control = self.getControl(130)
+        automation_control.setVisible(False)
         if self.meter is not None:
             icon = self.meter.get_icon()
             icon_img = os.path.join(_images, icon)
@@ -143,7 +144,13 @@ class SliderUpdater (threading.Thread):
                             count += 1
             time.sleep(0.3)
 
+
+
+
 class DeviceWindow(BaseWindow):
+    '''
+    Parent class for all types of devices (Thermostat, Schalter, Dimmer, Tor, ...)
+    '''
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self )
@@ -159,6 +166,12 @@ class DeviceWindow(BaseWindow):
         icon_img = os.path.join(_images, icon)
         image_control = xbmcgui.ControlImage ( self.x + 80, self.y + 60, 50, 50, icon_img)
         control_dict["icon"] = image_control
+        auto_control = self.getControl(132)
+        auto_control.setSelected(device.is_automated())
+        control_dict["auto"] = auto_control
+        fav_control = self.getControl(136)
+        fav_control.setSelected(device.is_favored())
+        control_dict["favoriten"] = fav_control
         return control_dict
 
     def get_slider (self):
@@ -171,6 +184,44 @@ class DeviceWindow(BaseWindow):
         else:
             statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 240, 20, textureback = sliderbarImg, texture = sliderNibImgNF, texturefocus = sliderNibImg)
             return statusSlider
+
+    def handle_automation(self, deviceId, is_selected, is_automated):
+        if is_selected and not is_automated:
+            self.client.set_device_automation_on(deviceId)
+        elif not is_selected and is_automated:
+            self.client.set_device_automation_off(deviceId)
+
+    def handle_favorit(self, deviceId, is_selected, is_favorited):
+        xbmc.log("-- handle favorit is_selected: " + str(is_selected) + "  is_favorited: " + str(is_favorited), xbmc.LOGNOTICE)
+        if is_selected and not is_favorited:
+            self.client.favorize_device(deviceId)
+        elif not is_selected and is_favorited:
+            self.client.unfavorize_device(deviceId)
+
+    def set_navigation_handling_for_automatik_and_favorit(self, previous_control):
+        autoButton = self.getControl(132)
+        favorit_button = self.getControl(136)
+        autoScrollbar = self.getControl(142)
+        previous_control.controlRight(autoButton)
+        previous_control.controlDown(autoButton)
+        autoButton.controlLeft(previous_control)
+        autoButton.controlUp(previous_control)
+        autoButton.controlRight(favorit_button)
+        autoButton.controlDown(favorit_button)
+        favorit_button.controlLeft(autoButton)
+        favorit_button.controlUp(autoButton)
+        favorit_button.controlDown(autoScrollbar)
+        favorit_button.controlRight(autoScrollbar)
+        autoScrollbar.controlLeft(favorit_button)
+        autoScrollbar.controlUp(favorit_button)
+
+    def visualize_automations(self, device):
+        automation_list = self.getControl(142)
+        automation_list.reset()
+        automations = device.get_automationen()
+        homepilot_utils.add_items_to_automation_list(automation_list, automations)
+
+
 
 class PercentageWindow(DeviceWindow):
 
@@ -199,6 +250,7 @@ class PercentageWindow(DeviceWindow):
         slider = self.controls["slider"]
         slider.setPercent(self.device.get_position())
         self.__set_focus_and_navigation_handling()
+        self.visualize_automations(self.device)
 
     def __get_percent_controls (self):
         controls = {}
@@ -294,6 +346,7 @@ class PercentageWindow(DeviceWindow):
             upButton.controlLeft(statusSlider)
             downButton.controlUp(upButton)
             downButton.controlLeft(upButton)
+            self.set_navigation_handling_for_automatik_and_favorit(downButton)
         else:
             statusSlider.controlDown(downButton)
             downButton.controlDown(upButton)
@@ -302,27 +355,29 @@ class PercentageWindow(DeviceWindow):
             downButton.controlLeft(statusSlider)
             upButton.controlUp(downButton)
             upButton.controlLeft(downButton)
+            self.set_navigation_handling_for_automatik_and_favorit(upButton)
 
 
     def onClick (self, controlId):
         statusSlider = self.controls["slider"]
-        downButton = self.controls["down"]
-        upButton = self.controls["up"]
-        #favoriten_radio_control = self.controls["favoriten"]
+        down_button = self.controls["down"]
+        up_button = self.controls["up"]
+        auto_button = self.controls["auto"]
+        favoriten_radio_control = self.controls["favoriten"]
         status = self.device.get_status()
         #handle up-down-buttons
         device_group = self.device.get_devicegroup()
         try:
             if device_group == 2 or device_group == 4 or device_group == 8:#rollo,dimmer,tore
-                if controlId == downButton.getId():
+                if controlId == down_button.getId():
                      self.client.move_down(self.device.get_device_id())
-                elif controlId == upButton.getId():
+                elif controlId == up_button.getId():
                      self.client.move_up(self.device.get_device_id())
             else:
-                if controlId == downButton.getId():
+                if controlId == down_button.getId():
                     if status <= 95:
                         self.client.move_to_position(self.device.get_device_id(), status + 5)
-                elif controlId == upButton.getId():
+                elif controlId == up_button.getId():
                     if status >= 5:
                         self.client.move_to_position(self.device.get_device_id(), status - 5)
         except Exception, e:
@@ -343,9 +398,14 @@ class PercentageWindow(DeviceWindow):
                 new_position = current_slider_value
                 self.updater.update_slider(new_position)
 
+        if controlId == auto_button.getId():
+            self.handle_automation(self.device.get_device_id(), auto_button.isSelected(), self.device.is_automated())
+
+        if controlId == favoriten_radio_control.getId():
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
+
 
     def onAction(self, action):
-        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
         if action == 92 or action == 10:
             self.updater.set_is_running(False)
         BaseWindow.onAction(self, action)
@@ -368,9 +428,8 @@ class SwitchWindow(DeviceWindow):
         self.addControls(base_device_controls.values())
         self.controls = base_device_controls
         self.controls.update(switch_controls)
-
         self.__set_focus_and_navigation_handling()
-
+        self.visualize_automations(self.device)
 
     def __get_switch_controls(self):
         controls = {}
@@ -418,7 +477,6 @@ class SwitchWindow(DeviceWindow):
         if self.has_error and self.errorcontrol is None:
             self.add_error_control()
 
-
     def __set_state(self, new_device):
         radio = self.getControl(116)
         on = self.getControl(115)
@@ -436,16 +494,17 @@ class SwitchWindow(DeviceWindow):
         icon_img = os.path.join(_images, image)
         icon.setImage(icon_img)
 
-
     def __set_focus_and_navigation_handling(self):
         button = self.controls["radio"]
+        self.set_navigation_handling_for_automatik_and_favorit(button)
         self.setFocus(button)
 
     def onClick (self, controlId):
         button = self.controls["radio"]
+        autoButton = self.controls["auto"]
+        favoriten_radio_control = self.controls["favoriten"]
         on = self.getControl(115)
         off = self.getControl(117)
-        xbmc.log("click -on: " + str(button.isSelected()), level=xbmc.LOGNOTICE)
         if controlId == button.getId():
             if button.isSelected():
                 on.setEnabled(True)
@@ -455,7 +514,11 @@ class SwitchWindow(DeviceWindow):
                 on.setEnabled(False)
                 off.setEnabled(True)
                 self.client.switch_off(self.device.get_device_id())
+        if controlId == autoButton.getId():
+            self.handle_automation(self.device.get_device_id(), autoButton.isSelected(), self.device.is_automated())
 
+        if controlId == favoriten_radio_control.getId():
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
 
     def onAction(self, action):
         BaseWindow.onAction(self, action)
@@ -484,6 +547,7 @@ class DegreeWindow(DeviceWindow):
         slider_position = self.__get_slider_percent_from_position(self.device)
         slider.setPercent(slider_position)
         self.__set_focus_and_navigation_handling()
+        self.visualize_automations(self.device)
 
     def __get_degree_controls (self):
         controls = {}
@@ -506,7 +570,6 @@ class DegreeWindow(DeviceWindow):
         statusSlider = self.controls["slider"]
         downButton = self.controls["down"]
         upButton = self.controls["up"]
-
         self.setFocus(statusSlider)
         statusSlider.controlDown(downButton)
         downButton.controlDown(upButton)
@@ -515,6 +578,7 @@ class DegreeWindow(DeviceWindow):
         downButton.controlLeft(statusSlider)
         upButton.controlUp(downButton)
         upButton.controlLeft(downButton)
+        self.set_navigation_handling_for_automatik_and_favorit(upButton)
 
     def update(self):
         if self.getFocusId() == 0:
@@ -542,13 +606,11 @@ class DegreeWindow(DeviceWindow):
         if self.has_error and self.errorcontrol is None:
             self.add_error_control()
 
-
     def __update_icon(self, new_device):
         icon = self.controls["icon"]
         image = new_device.get_icon()
         icon_img = os.path.join(_images, image)
         icon.setImage(icon_img)
-
 
     def __update_position(self, new_device):
         if new_device.get_position() != self.device.get_position():
@@ -566,10 +628,12 @@ class DegreeWindow(DeviceWindow):
             title_label.setLabel(new_device.get_name())
 
     def onClick (self, controlId):
+        xbmc.log("window click " + str(controlId), level=xbmc.LOGNOTICE)
         statusSlider = self.controls["slider"]
         downButton = self.controls["down"]
         upButton = self.controls["up"]
-        #favoriten_radio_control = self.controls["favoriten"]
+        autoButton = self.controls["auto"]
+        favoriten_radio_control = self.controls["favoriten"]
         current_device_position = self.device.get_position()
         current_device_position_in_percent = self.__get_slider_percent_from_position(self.device)
         current_slider_position = statusSlider.getPercent()
@@ -605,10 +669,13 @@ class DegreeWindow(DeviceWindow):
                 if new_position % 5 == 0:
                     display_value = homepilot_utils.get_display_value(int(new_position), device_group)
                     statusLabel.setLabel(display_value)
+        if controlId == autoButton.getId():
+            self.handle_automation(self.device.get_device_id(), autoButton.isSelected(), self.device.is_automated())
 
+        if controlId == favoriten_radio_control.getId():
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
 
     def onAction(self, action):
-        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
         if action == 92 or action == 10:
             self.updater.set_is_running = False
         BaseWindow.onAction(self, action)

@@ -1,0 +1,865 @@
+<window>
+    <backgroundcolor>backgroundcolor</backgroundcolor>
+    <allowoverlay>yes</allowoverlay>
+    <coordinates>
+        <system>1</system>
+        <posx>0</posx>
+        <posy>0</posy>
+    </coordinates>
+    <controls>
+		<include>CommonBackground</include>
+        <control type="group" id="250">
+            <control type="image">
+                <posx>310</posx>
+                <posy>667</posy>
+                <width>900</width>
+                <height>700</height>
+                <texture border="40">panel_reflect.png</texture>
+            </control>
+            <control type="image">
+                <posx>310</posx>
+                <posy>0</posy>
+                <width>900</width>
+                <height>700</height>
+                <texture border="40">listpanel_back.png</texture>
+            </control>
+            <control type="image">
+                <posx>55</posx>
+                <posy>667</posy>
+                <width>280</width>
+                <height>700</height>
+                <texture border="40">panel_reflect.png</texture>
+            </control>
+            <control type="image">
+                <posx>55</posx>
+                <posy>0</posy>
+                <width>280</width>
+                <height>700</height>
+                <texture border="40">listpanel_back.png</texture>
+            </control>
+            <control type="image" id="111">
+                <posx>110</posx>
+                <posy>45</posy>
+                <width>170</width>
+                <height>100</height>
+                <aspectratio>keep</aspectratio>
+                <texture>logo-homepilot.png</texture>
+            </control>
+            <control type="grouplist" id="9000">
+                <posx>98</posx>
+                <posy>160</posy>
+                <width>260</width>
+                <height>481</height>
+                <itemgap>-1</itemgap>
+                <onup>9000</onup>
+                <ondown>9000</ondown>
+                <control type="button" id="95">
+                    <description>Button Favoriten</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <onright>5</onright>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32004]</label>
+                </control>
+                <control type="button" id="94">
+                    <description>Button Szenen</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32005]</label>
+                </control>
+                <control type="button" id="96">
+                    <description>Button Geräte</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32006]</label>
+                </control>
+                <control type="button" id="97">
+                    <description>Button Sensoren</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <onright>5</onright>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32007]</label>
+                </control>
+                <control type="button" id="98">
+                    <description>Button Einstellungen</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32008]</label>
+                </control>
+            </control>
+
+            <!-- Gerätetypenliste für Gerätetypenseite -->
+            <control type="list" id="257">
+                <posx>350</posx>
+                <posy>100</posy>
+                <width>760</width>
+                <height>320</height>
+                <onup>251</onup>
+                <ondown>251</ondown>
+                <onright>Action(enter)</onright>
+                <pagecontrol>61</pagecontrol>
+                <!--scrolltime>0</scrolltime-->
+                <itemlayout height="42" width="600">
+                    <control type="image">
+                        <posx>20</posx>
+                        <posy>5</posy>
+                        <width>32</width>
+                        <height>32</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>510</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="42" width="600">
+                    <control type="image">
+                        <posx>20</posx>
+                        <posy>5</posy>
+                        <width>32</width>
+                        <height>32</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>0</posy>
+                        <width>750</width>
+                        <height>41</height>
+                        <texture border="8">listselect_fo.png</texture>
+                        <visible>Control.HasFocus(257)</visible>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>310</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(257)</visible>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>510</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(257)</visible>
+                    </control>
+                </focusedlayout>
+            </control>
+            <!-- Ende Gerätetypenseite -->
+
+            <!-- Gruppenliste für Gerätetypenseite -->
+            <control type="group" id="251">
+                <visible>true</visible>
+                <posx>-350</posx>
+                <posy>-420</posy>
+                <height>250</height>
+                <width>500</width>
+                <control type="list" id="4">
+                    <posx>0</posx>
+                    <posy>10</posy>
+                    <width>760</width>
+                    <height>175</height>
+                    <onup>257</onup>
+                    <ondown>257</ondown>
+                    <onleft>96</onleft>
+                    <onright>998</onright>
+                    <pagecontrol>998</pagecontrol>
+                    <visible>true</visible>
+                    <!--scrolltime>0</scrolltime-->
+                    <itemlayout height="42" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>8</posy>
+                            <width>28</width>
+                            <height>28</height>
+                            <texture>gruppe_32.png</texture>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>400</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout height="42" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>8</posy>
+                            <width>28</width>
+                            <height>28</height>
+                            <texture>gruppe_32.png</texture>
+                        </control>
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>750</width>
+                            <height>41</height>
+                            <texture border="8">listselect_fo.png</texture>
+                            <visible>Control.HasFocus(4)</visible>
+                            <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>310</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                            <visible>!Control.HasFocus(4)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>310</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                            <visible>Control.HasFocus(4)</visible>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="998">
+                    <description>scroll bar indicator for lists</description>
+                    <posx>750</posx>
+                    <posy>20</posy>
+                    <width>12</width>
+                    <height>200</height>
+                    <onleft>999</onleft>
+                    <onright>noop</onright>
+                    <orientation>vertical</orientation>
+                    <visible>true</visible>
+                    <texturesliderbackground>-</texturesliderbackground>
+                    <texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+                    <texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+                </control>
+            </control>
+            <!-- Ende Gruppenliste -->
+
+
+            <!-- lange Geräteliste -->
+            <control type="group" id="252">
+                <visible>true</visible>
+                <posx>350</posx>
+                <posy>80</posy>
+                <height>500</height>
+                <width>500</width>
+                <control type="list" id="5">
+                    <posx>0</posx>
+                    <posy>20</posy>
+                    <width>760</width>
+                    <height>480</height>
+                    <onright>999</onright>
+                    <pagecontrol>999</pagecontrol>
+                    <visible>true</visible>
+                    <!--scrolltime>0</scrolltime-->
+                    <itemlayout height="60" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>12</posy>
+                            <width>36</width>
+                            <height>36</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>400</width>
+                            <height>40</height>
+                            <font>Font_Reg22</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
+                        <control type="label">
+                            <posx>700</posx>
+                            <posy>0</posy>
+                            <width>100</width>
+                            <height>60</height>
+                            <font>Font_Reg25</font>
+                            <align>right</align>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label2]</label>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout height="60" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>12</posy>
+                            <width>36</width>
+                            <height>36</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>750</width>
+                            <height>61</height>
+                            <texture border="8">listselect_fo.png</texture>
+                            <visible>Control.HasFocus(5)</visible>
+                            <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>310</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>700</posx>
+                                <posy>0</posy>
+                                <width>100</width>
+                                <height>60</height>
+                                <font>Font_Reg22</font>
+                                <align>right</align>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>!Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>400</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>700</posx>
+                                <posy>0</posy>
+                                <width>100</width>
+                                <height>60</height>
+                                <font>Font_Reg25</font>
+                                <align>right</align>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="999">
+                    <description>scroll bar indicator for lists</description>
+                    <posx>755</posx>
+                    <posy>0</posy>
+                    <width>8</width>
+                    <height>540</height>
+                    <onleft>Action(zoomin)</onleft>
+                    <onright>noop</onright>
+                    <orientation>vertical</orientation>
+                    <visible>true</visible>
+                    <texturesliderbackground>-</texturesliderbackground>
+                    <texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+                    <texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+                </control>
+            </control>
+            <!-- Ende lange Geräteliste -->
+
+
+
+            <!-- Geräteliste Automationen -->
+            <control type="group" id="146">
+                <visible>true</visible>
+                <posx>-350</posx>
+                <posy>-800</posy>
+                <height>300</height>
+                <width>500</width>
+                <control type="list" id="148">
+                    <posx>0</posx>
+                    <posy>20</posy>
+                    <width>760</width>
+                    <height>300</height>
+                    <onright>150</onright>
+                    <ondown>142</ondown>
+                    <pagecontrol>150</pagecontrol>
+                    <visible>true</visible>
+                    <!--scrolltime>0</scrolltime-->
+                    <itemlayout height="60" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>12</posy>
+                            <width>36</width>
+                            <height>36</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>400</width>
+                            <height>40</height>
+                            <font>Font_Reg22</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
+                        <control type="label">
+                            <posx>700</posx>
+                            <posy>0</posy>
+                            <width>100</width>
+                            <height>60</height>
+                            <font>Font_Reg25</font>
+                            <align>right</align>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label2]</label>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout height="60" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>12</posy>
+                            <width>36</width>
+                            <height>36</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>650</width>
+                            <height>61</height>
+                            <texture border="8">listselect_fo.png</texture>
+                            <visible>Control.HasFocus(148)</visible>
+                            <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        </control>
+                        <control type="group">
+                            <visible>Control.HasFocus(148)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>310</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>700</posx>
+                                <posy>0</posy>
+                                <width>100</width>
+                                <height>60</height>
+                                <font>Font_Reg22</font>
+                                <align>right</align>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
+                        </control>
+                        <control type="group">
+                            <visible>!Control.HasFocus(148)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>400</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>700</posx>
+                                <posy>0</posy>
+                                <width>100</width>
+                                <height>60</height>
+                                <font>Font_Reg25</font>
+                                <align>right</align>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="150">
+                    <description>scroll bar indicator for lists</description>
+                    <posx>655</posx>
+                    <posy>0</posy>
+                    <width>8</width>
+                    <height>150</height>
+                    <onleft>148</onleft>
+                    <onright>noop</onright>
+                    <orientation>vertical</orientation>
+                    <visible>true</visible>
+                    <texturesliderbackground>-</texturesliderbackground>
+                    <texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png</texturesliderbar>
+                    <texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+                </control>
+            </control>
+            <!-- Geräteliste Automationen -->
+
+
+
+            <!-- Szenenliste -->
+            <control type="group" id="260">
+                <visible>true</visible>
+                <posx>-350</posx>
+                <posy>-500</posy>
+                <height>500</height>
+                <width>600</width>
+                <control type="list" id="258">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>760</width>
+                    <height>500</height>
+                    <onup>258</onup>
+                    <ondown>258</ondown>
+                    <pagecontrol>259</pagecontrol>
+                    <!--scrolltime>0</scrolltime-->
+                    <itemlayout height="42" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>5</posy>
+                            <width>32</width>
+                            <height>32</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>510</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                    </itemlayout>
+                    <focusedlayout height="42" width="600">
+                        <control type="image">
+                            <posx>20</posx>
+                            <posy>5</posy>
+                            <width>32</width>
+                            <height>32</height>
+                            <info>ListItem.Icon</info>
+                        </control>
+                        <control type="image">
+                            <posx>0</posx>
+                            <posy>0</posy>
+                            <width>750</width>
+                            <height>41</height>
+                            <texture border="8">listselect_fo.png</texture>
+                            <visible>Control.HasFocus(258)</visible>
+                            <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>310</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                            <visible>Control.HasFocus(258)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>510</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                            <visible>!Control.HasFocus(258)</visible>
+                        </control>
+                    </focusedlayout>
+                </control>
+                <control type="scrollbar" id="259">
+                    <description>scroll bar indicator for lists</description>
+                    <posx>755</posx>
+                    <posy>20</posy>
+                    <width>8</width>
+                    <height>540</height>
+                    <onleft>Action(zoomin)</onleft>
+                    <onright>noop</onright>
+                    <orientation>vertical</orientation>
+                    <visible>true</visible>
+                    <texturesliderbackground>-</texturesliderbackground>
+                    <texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png
+                    </texturesliderbar>
+                    <texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+                </control>
+            </control>
+            <!-- Ende Szenenliste -->
+
+
+        <!--Automationen -->
+        <control type="group" id="138">
+            <visible>true</visible>
+            <posx>-350</posx>
+            <posy>-500</posy>
+            <height>50</height>
+            <width>620</width>
+            <control type="label" id="140">
+                <posx>40</posx>
+                <posy>0</posy>
+                <width>200</width>
+                <height>50</height>
+                <visible>true</visible>
+                <aligny>center</aligny>
+                <label>$ADDON[script.homepilot 32021]</label>
+                <font>Font_Reg29</font>
+            </control>
+            <control type="list" id="142">
+                <posx>20</posx>
+                <posy>50</posy>
+                <width>700</width>
+                <height>185</height>
+                <onright>144</onright>
+                <onup>146</onup>
+                <pagecontrol>144</pagecontrol>
+                <itemlayout height="60" width="600">
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>60</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <font>font13</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="60" width="600">
+                    <control type="image">
+                        <posx>-10</posx>
+                        <posy>0</posy>
+                        <width>600</width>
+                        <height>55</height>
+                        <texture border="8">listselect_fo.png</texture>
+                        <visible>Control.HasFocus(142)</visible>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>60</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <font>font13</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="144">
+                <description>scroll bar indicator for lists</description>
+                <posx>650</posx>
+                <posy>20</posy>
+                <width>8</width>
+                <height>180</height>
+                <onleft>142</onleft>
+                <onright>noop</onright>
+                <orientation>vertical</orientation>
+                <visible>true</visible>
+                <texturesliderbackground>-</texturesliderbackground>
+                <texturesliderbar colordiffuse="55ffffff" border="1">scrollbar/texturesliderbar2.png
+                </texturesliderbar>
+                <texturesliderbarfocus border="1">scrollbar/texturesliderbar2.png</texturesliderbarfocus>
+            </control>
+        </control>
+        <!--end Automationen -->
+
+        </control>
+    </controls>
+</window>

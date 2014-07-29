@@ -4,7 +4,7 @@
 import requests
 import json
 import xbmc
-from models import Device, Meter, Group, HomePilotBaseObject
+from models import Device, Meter, Group, HomePilotBaseObject, Scene
 
 TIMEOUT = 3
 SHORT_TIMEOUT = 2
@@ -47,12 +47,18 @@ class HomepilotClient:
         device_objects = map(lambda x: Group(x), group_list)
         return device_objects
 
+    def __map_response_to_scenes(self, scene_list):
+        scene_objects = map(lambda x: Scene(x), scene_list)
+        return scene_objects
+
+
     def get_devices(self):
         """
         request a list of all devices from the homepilot
         """
         response = requests.get(self._base_url + 'do=/devices', timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
+
 
     def get_meters(self):
         """
@@ -62,12 +68,49 @@ class HomepilotClient:
         return self.__map_response_to_meters(response)
 
 
+    def get_scenes(self):
+        response = requests.get(self._base_url + 'do=/scenes', timeout=TIMEOUT)
+        data = json.loads(response.content)
+        return self.__map_response_to_scenes(data[u'scenes'])
+
+
+    def get_manual_scenes(self):
+        response = requests.get(self._base_url + 'do=/scenes', timeout=TIMEOUT)
+        data = json.loads(response.content)
+        scene_list = [i for i in data[u'scenes'] if i[u'isExecutable'] == 1]
+        return self.__map_response_to_scenes(scene_list)
+
+
+    def get_non_manual_scenes(self):
+        response = requests.get(self._base_url + 'do=/scenes', timeout=TIMEOUT)
+        data = json.loads(response.content)
+        scene_list = [i for i in data[u'scenes'] if i[u'isExecutable'] == 0]
+        return self.__map_response_to_scenes(scene_list)
+
+
+    def get_scene_by_id(self, scene_id):
+        response = requests.get(self._base_url + 'do=/scenes/' + str(scene_id), timeout=TIMEOUT)
+        xbmc.log("scenes url: " + str(self._base_url + 'do=/scenes/' + str(scene_id)), level=xbmc.LOGNOTICE)
+        data = json.loads(response.content)
+        scene = data['scene']
+        return Scene(scene)
+
+
     def get_devices_by_device_group(self, group_id):
         """
         request a list of all devices for a specific devicegroup
         """
         response = requests.get(self._base_url + 'do=/devices/devicegroup/' + str(group_id), timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
+
+
+    def get_devices_by_group(self, group_id):
+        """
+        request a list of all devices for a specific devicegroup
+        """
+        response = requests.get(self._base_url + 'do=/groups/' + str(group_id), timeout=TIMEOUT)
+        return self.__map_response_to_devices(response)
+
 
     def get_favorite_devices(self):
         """
@@ -117,6 +160,29 @@ class HomepilotClient:
         except Exception, e:
             xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
             return False
+
+
+    def set_device_automation_on(self, device_id):
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setAutomation&state=1'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
+
+
+    def set_device_automation_off(self, device_id):
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setAutomation&state=0'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
+
 
     def switch_off(self, device_id):
         """
