@@ -25,16 +25,22 @@ icons["iconset9"] = "schiebetuer_72_"
 icons["iconset14"] = "schiebeladen_72_"
 icons["iconset27"] = "schliesskontakt_72_"
 icons["iconset30"] = "garage_72_"
-#icons["iconset31"]      -> Sektionaltor
+icons["iconset31"] = "sektionaltor_72_"
 icons["iconset25"] = "genericsensor_72_"
 #icons["iconset19"]      -> Standard
 icons["iconset10"] = "steckdose_72_"
 icons["iconset13"] = "stehlampe_72_"
-#icons["iconset20"]      -> Sunscreen
+icons["iconset20"] = "sunscreen_72_"
 icons["iconset28"] = "thermostat_72_"
 icons["iconset11"] = "tischlampe_72_"
 icons["iconset12"] = "tuer_72_"
 icons["iconset33"] = "weihnachtsbaum_72_"
+icons["iconset34"] = "dachfenster_72_"
+icons["iconset35"] = "handsender_72_"
+icons["iconset36"] = "leinwand_72_"
+icons["iconset37"] = "radio_72_"
+icons["iconset38"] = "smartphone_72_"
+icons["iconset39"] = "ventilator_72_"
 
 
 
@@ -113,7 +119,8 @@ class HomePilotBaseObject:
                 position = (float(position)/10 - 3) * 4
             an_aus = set(
                 ["iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
-                 "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33"])
+                 "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33", "iconset34",
+                 "iconset37", "iconset38", "iconset39"])
             if self._icon_set in an_aus:
                 if self.get_iconset_inverted():
                     return self.__get_icon_switch_inverted(position, base_icon)
