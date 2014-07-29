@@ -48,6 +48,8 @@ class ParametrizedGeraeteView(BaseView):
         self.controldict = {}
         self.type = type
         self.list_item_dict = {}
+        self.hp_error = False
+        self.errorcontrol = None
 
     def get_id (self):
         return self.type + "_view"
@@ -56,7 +58,8 @@ class ParametrizedGeraeteView(BaseView):
         xbmc.log("visualize gerateview: " + str(self.type), level=xbmc.LOGNOTICE)
         self.title_control = self.get_title_control(self.type)
         window.addControl(self.title_control)
-        self.gerate_group_control = window.getControl(252)
+        if not hasattr(self, "gerate_group_control"):
+            self.gerate_group_control = window.getControl(252)
         homepilot_is_reachable = self.client.ping()
         if not homepilot_is_reachable:
             self.hp_error = True
@@ -99,8 +102,10 @@ class ParametrizedGeraeteView(BaseView):
 
     def __add_listitems (self, devices):
         for device in devices:
-            item = xbmcgui.ListItem(label = device.get_name(), label2=device.get_display_value())
-
+            if self.type == SENSOREN:
+                item = xbmcgui.ListItem(label = device.get_name())
+            else:
+                item = xbmcgui.ListItem(label = device.get_name(), label2=device.get_display_value())
             icon_name = device.get_icon()
             item.setIconImage(os.path.join(_images_device, icon_name))
             item.setProperty("description", device.get_description())
@@ -122,8 +127,9 @@ class ParametrizedGeraeteView(BaseView):
 
 
     def remove_everything(self, window):
-        if self.hp_error:
+        if self.hp_error and self.errorcontrol is not None:
             window.removeControls([self.errorcontrol, self.title_control])
+            self.errorcontrol = None
         else:
             controls_to_remove = [self.title_control]
             window.removeControls(controls_to_remove)
@@ -133,43 +139,50 @@ class ParametrizedGeraeteView(BaseView):
     def update (self, window, menuControl):
         try:
             new_devices = self.__get_devices()
-            list_item_ids = self.list_item_dict.keys()
-            for new_device in new_devices:
-                new_sync_value = str(new_device.get_sync())
-                device_listitem = self.list_item_dict.get(new_device.get_device_id())
-                if device_listitem is not None:
-                    list_item_ids.remove(new_device.get_device_id())
-                    old_sync_value = device_listitem.getProperty("sync")
-                    old_status = device_listitem.getLabel2()
-                    new_status = new_device.get_display_value()
-                    if new_sync_value != old_sync_value or old_status != new_status:
-                        new_icon = new_device.get_icon()
-                        if old_status != new_status:
-                            device_listitem.setLabel2(new_status)
-                            device_listitem.setIconImage(os.path.join(_images_device, new_icon))
-                        else:
-                            device_listitem.setIconImage(os.path.join(_images_device, new_icon))
-                        old_label = device_listitem.getLabel()
-                        new_label = new_device.get_name()
-                        if old_label != new_label:
-                            device_listitem.setLabel(new_label)
-                        old_label2 = device_listitem.getProperty("description")
-                        new_label2 = new_device.get_description()
-                        if old_label2 != new_label2.encode('utf8'):
-                            device_listitem.setProperty("description", new_label2)
+            if self.hp_error:
+                self.remove_everything(window)
+                self.visualize(window)
+            else:
+                list_item_ids = self.list_item_dict.keys()
+                for new_device in new_devices:
+                    new_sync_value = str(new_device.get_sync())
+                    device_listitem = self.list_item_dict.get(new_device.get_device_id())
+                    if device_listitem is not None:
+                        list_item_ids.remove(new_device.get_device_id())
+                        old_sync_value = device_listitem.getProperty("sync")
+                        old_status = device_listitem.getLabel2()
+                        new_status = new_device.get_display_value()
+                        if new_sync_value != old_sync_value or old_status != new_status:
+                            new_icon = new_device.get_icon()
+                            if old_status != new_status:
+                                device_listitem.setLabel2(new_status)
+                                device_listitem.setIconImage(os.path.join(_images_device, new_icon))
+                            else:
+                                device_listitem.setIconImage(os.path.join(_images_device, new_icon))
+                            old_label = device_listitem.getLabel()
+                            new_label = new_device.get_name()
+                            if old_label != new_label.encode('utf8'):
+                                device_listitem.setLabel(new_label)
+                            old_label2 = device_listitem.getProperty("description")
+                            new_label2 = new_device.get_description()
+                            if old_label2 != new_label2.encode('utf8'):
+                                device_listitem.setProperty("description", new_label2)
 
-                else:
-                    #add new listitem
-                    self.__add_listitems([new_device])
-            #remove items from list when devices are no longer present
-            #workaround implementation as the ControlList.removeItem didn't work
-            if len(list_item_ids) > 0:
-                self.list_item_dict = {}
-                self.geraete_list.reset()
-                self.__add_listitems(new_devices)
+                    else:
+                        #add new listitem
+                        self.__add_listitems([new_device])
+                #remove items from list when devices are no longer present
+                #workaround implementation as the ControlList.removeItem didn't work
+                if len(list_item_ids) > 0:
+                    self.list_item_dict = {}
+                    self.geraete_list.reset()
+                    self.__add_listitems(new_devices)
+            self.hp_error = False
         except Exception, e:
             xbmc.log("Problem beim Updaten des views: " + str(self.type) + "  " + str(e), level=xbmc.LOGWARNING)
+            self.remove_everything(window)
             self.visualize(window)
+            self.hp_error = True
 
 
     def _get_list_item_position (self, item):

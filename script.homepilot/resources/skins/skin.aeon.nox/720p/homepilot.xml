@@ -323,9 +323,9 @@
                             <label>$INFO[ListItem.Property(description)]</label>
                         </control>
                         <control type="label">
-                            <posx>720</posx>
+                            <posx>700</posx>
                             <posy>0</posy>
-                            <width>80</width>
+                            <width>100</width>
                             <height>60</height>
                             <font>Font_Reg25</font>
                             <align>right</align>
@@ -379,9 +379,9 @@
                                 <label>$INFO[ListItem.Property(description)]</label>
                             </control>
                             <control type="label">
-                                <posx>720</posx>
+                                <posx>700</posx>
                                 <posy>0</posy>
-                                <width>80</width>
+                                <width>100</width>
                                 <height>60</height>
                                 <font>Font_Reg22</font>
                                 <align>right</align>
@@ -418,9 +418,9 @@
                                 <label>$INFO[ListItem.Property(description)]</label>
                             </control>
                             <control type="label">
-                                <posx>720</posx>
+                                <posx>700</posx>
                                 <posy>0</posy>
-                                <width>80</width>
+                                <width>100</width>
                                 <height>60</height>
                                 <font>Font_Reg25</font>
                                 <align>right</align>
@@ -436,7 +436,7 @@
                     <description>scroll bar indicator for lists</description>
                     <posx>755</posx>
                     <posy>0</posy>
-                    <onleft>5</onleft>
+                    <onleft>Action(zoomin)</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>

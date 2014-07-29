@@ -127,25 +127,26 @@ class HomePilotBaseObject:
                 else:
                     return self.__get_icon_switch(position, base_icon)
 
-            # Icons für Werte 0, 25, 50, 75, 100
+            elif self._icon_set == "iconset35":
+                return "handsender_72_0.png"
             else:
                 if self.get_iconset_inverted():
                     return self.__get_icon_percent_inverted(position, base_icon)
                 else:
                     return self.__get_icon_percent(position, base_icon)
         else:
-            return "gruppe_32.png"
+            return "logo-homepilot-klein.png"
 
 
     def __get_icon_switch(self, position, base_icon):
-        if position < 50:
+        if position == 0:
             return base_icon + "0.png"
         else:
             return base_icon + "1.png"
 
 
     def __get_icon_switch_inverted(self, position, base_icon):
-        if position < 50:
+        if position != 0:
             return base_icon + "1.png"
         else:
             return base_icon + "0.png"

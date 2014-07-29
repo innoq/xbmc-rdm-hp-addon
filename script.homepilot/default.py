@@ -54,9 +54,9 @@ EMPTY_VIEW = "empty_view"
 
 class StatusUpdater (threading.Thread):
 
-    def __init__(self, currentView, menuControl):
+    def __init__(self, currentView, menuControl, window):
+        self.window = window
         threading.Thread.__init__(self)
-        self.window = xbmcgui.Window(xbmcgui.getCurrentWindowId())
         self.set_current_view(currentView, menuControl)
         self.is_running = True
         self.current_window = None
@@ -116,7 +116,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
         geraete_view.visualize (self)
         self.setFocus(menu_control)
         self.currentView = geraete_view
-        self.status_updater = StatusUpdater (self.currentView, menu_control)
+        self.status_updater = StatusUpdater (self.currentView, menu_control, self)
         self.status_updater.start()
 
 
@@ -154,6 +154,8 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 geraete_view.visualize(self)
                 self.currentView = geraete_view
                 self.status_updater.set_current_view(geraete_view, menu_control)
+        elif self.getFocusId() == 999 and action == 31:
+            self.setFocusId(5)
         elif action == 13 or action == 10 or action == 160 or action == 21:
             self.shutdown()
         elif action == 92 and view == FAVORITEN_VIEW:
@@ -162,7 +164,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
             self.setFocusId(96)
         elif action == 92 and view == SENSOREN_VIEW:
             self.setFocusId(97)
-        elif is_geraeteview and (action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT):
+        elif is_geraeteview and self.getFocusId() != 999 and (action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT):
             self.__show_geraetetyp_view()
             self.__set_geraetetyp_list_focus(view)
             self.setFocusId(3)

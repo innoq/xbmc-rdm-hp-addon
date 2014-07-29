@@ -7,7 +7,7 @@ import xbmc
 from models import Device, Meter, Group, HomePilotBaseObject
 
 TIMEOUT = 3
-SHORT_TIMEOUT = 1.5
+SHORT_TIMEOUT = 2
 class HomepilotClient:
 
 

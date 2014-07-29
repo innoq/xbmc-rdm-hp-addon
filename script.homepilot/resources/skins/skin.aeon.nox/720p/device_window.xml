@@ -35,6 +35,35 @@
         </control>
         <!-- end title separator -->
 
+
+        <!--rollo buttons -->
+        <control type="group" id="1141">
+            <visible>true</visible>
+            <posx>-350</posx>
+            <posy>-420</posy>
+            <height>100</height>
+            <width>200</width>
+            <control type="button" id="1131">
+                <posx>30</posx>
+                <posy>-40</posy>
+                <width>75</width>
+                <height>122</height>
+                <texturefocus>spin-up-focus2.png</texturefocus>
+                <texturenofocus>spin-up2.png</texturenofocus>
+                <include>Default_SettingButton</include>
+            </control>
+            <control type="button" id="1121">
+                <posx>105</posx>
+                <posy>-40</posy>
+                <width>75</width>
+                <height>122</height>
+                <texturefocus>spin-down-focus2.png</texturefocus>
+                <texturenofocus>spin-down2.png</texturenofocus>
+                <include>Default_SettingButton</include>
+            </control>
+        </control>
+        <!--end up-down buttons -->
+
         <!--up-down buttons -->
         <control type="group" id="114">
             <visible>true</visible>

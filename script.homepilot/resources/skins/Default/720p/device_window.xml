@@ -49,6 +49,33 @@
         </control>
         <!-- end title separator -->
 
+
+        <!--rollo buttons -->
+        <control type="group" id="1141">
+            <visible>true</visible>
+            <posx>-350</posx>
+            <posy>-420</posy>
+            <height>100</height>
+            <width>200</width>
+            <control type="button" id="1121">
+                <posx>120</posx>
+                <posy>10</posy>
+                <width>30</width>
+                <height>30</height>
+                <texturefocus>scroll-down-focus-3.png</texturefocus>
+                <texturenofocus>scroll-down-3.png</texturenofocus>
+            </control>
+            <control type="button" id="1131">
+                <posx>90</posx>
+                <posy>10</posy>
+                <width>30</width>
+                <height>30</height>
+                <texturefocus>scroll-up-focus-3.png</texturefocus>
+                <texturenofocus>scroll-up-3.png</texturenofocus>
+            </control>
+        </control>
+        <!--end up-down buttons -->
+
         <!--up-down buttons -->
         <control type="group" id="114">
             <visible>true</visible>
