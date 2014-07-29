@@ -2,8 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import sys
-import os
 import time
+import math
 import xbmc
 import xbmcgui
 import xbmcaddon
@@ -61,6 +61,49 @@ scrollUpImg = os.path.join(_control_images, 'scroll-up-focus-2.png')
 scrollUpImgNofocus = os.path.join(_control_images, 'scroll-up-2.png')
 scrollDownImg = os.path.join(_control_images, 'scroll-down-focus-2.png')
 scrollDownImgNofocus = os.path.join(_control_images, 'scroll-down-2.png')
+PERCENT_TYPE = "PERCENT"
+DEGREE_TYPE = "DEGREE"
+
+
+class SliderUpdater (threading.Thread):
+
+    def __init__(self, client, device, type):
+        threading.Thread.__init__(self)
+        self.position = -1
+        self.update_time = 0
+        self.client = client
+        self.device = device
+        self.status = "NOTHING"
+        self.type = type
+
+    def update_slider (self, new_value):
+        if self.position != new_value:
+            #xbmc.log(str(self.position), xbmc.LOGNOTICE)
+            #xbmc.log(str(new_value), xbmc.LOGNOTICE)
+            self.update_time = time.time()
+            self.position = new_value
+            self.status = "UPDATE"
+
+    def set_is_running (self, is_running):
+        self.is_running = is_running
+
+    def get_status(self):
+        return self.status
+
+    def run(self):
+        self.is_running = 'True'
+        while self.is_running:
+
+            if self.update_time > 0 and time.time() - self.update_time > 0.4:
+                if self.status == "UPDATE":
+                    #xbmc.log("-- send move --" + str(self.position), xbmc.LOGNOTICE)
+                    if self.type == PERCENT_TYPE:
+                        self.client.move_to_position(self.device.get_device_id(), self.position)
+                    else:
+                        self.client.move_to_degree(self.device.get_device_id(), self.position)
+                    self.status = "UPDATE_SENT"
+            time.sleep(0.3)
+
 
 class DeviceWindow(BaseWindow):
 
@@ -99,6 +142,8 @@ class PercentageWindow(DeviceWindow):
         DeviceWindow.__init__( self )
         self.client = kwargs["client"]
         self.device = kwargs["device"]
+        self.updater = SliderUpdater(self.client, self.device, PERCENT_TYPE)
+        self.updater.start()
 
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
@@ -135,23 +180,38 @@ class PercentageWindow(DeviceWindow):
         return controls
 
     def update(self):
-        xbmc.log("update called", xbmc.LOGNOTICE)
-        new_device = self.client.get_device_by_id(self.device.get_device_id())
-        if new_device.get_sync() != self.device.get_sync():
-            if new_device.get_position() != self.device.get_position():
-                statusSlider = self.controls["slider"]
-                statusSlider.setPercent(new_device.get_position())
+        if self.updater.get_status() != "UPDATE":
+            #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
+            new_device = self.client.get_device_by_id(self.device.get_device_id())
+            if new_device.get_sync() != self.device.get_sync():#device has changed
+                self.__update_position(new_device)
+                self.__update_name(new_device)
                 self.device = new_device
-                statusLabel = self.controls["status"]
-                statusLabel.setLabel(new_device.get_display_value())
-                icon = self.controls["icon"]
-                image = new_device.get_icon()
-                icon_img = os.path.join(_images, image)
-                icon.setImage(icon_img)
-            if new_device.get_name() != self.device.get_name():
-                title_label = self.controls["title"]
-                title_label.setLabel(new_device.get_name())
+        else:
+            #xbmc.log("--update -- wait for status update", xbmc.LOGNOTICE)
+            new_device = self.client.get_device_by_id(self.device.get_device_id())
+            if new_device.get_sync() != self.device.get_sync():#device has changed
+                self.__update_name(new_device)
+                #self.device = new_device
+
+
+    def __update_position (self, new_device):
+        if new_device.get_position() != self.device.get_position():
+            statusSlider = self.controls["slider"]
+            #xbmc.log("set slider to position: " + str(new_device.get_position()), xbmc.LOGNOTICE)
+            statusSlider.setPercent(new_device.get_position())
             self.device = new_device
+            statusLabel = self.controls["status"]
+            statusLabel.setLabel(new_device.get_display_value())
+            icon = self.controls["icon"]
+            image = new_device.get_icon()
+            icon_img = os.path.join(_images, image)
+            icon.setImage(icon_img)
+
+    def __update_name(self, new_device):
+        if new_device.get_name() != self.device.get_name():
+            title_label = self.controls["title"]
+            title_label.setLabel(new_device.get_name())
 
 
     def __set_focus_and_navigation_handling(self):
@@ -183,11 +243,14 @@ class PercentageWindow(DeviceWindow):
         #handle up-down-buttons
         if self.device.get_devicegroup() == 4:#dimmer
             if controlId == downButton.getId():
-                if status >= 5:
-                    self.client.move_to_position(self.device.get_device_id(), status - 5)
+                self.client.move_up(self.device.get_device_id())
             elif controlId == upButton.getId():
-                if status <= 95:
-                    self.client.move_to_position(self.device.get_device_id(), status + 5)
+                self.client.move_down(self.device.get_device_id())
+        elif self.device.get_devicegroup() == 2:#rollo
+            if controlId == downButton.getId():
+                 self.client.move_down(self.device.get_device_id())
+            elif controlId == upButton.getId():
+                 self.client.move_up(self.device.get_device_id())
         else:
             if controlId == downButton.getId():
                 if status <= 95:
@@ -195,14 +258,30 @@ class PercentageWindow(DeviceWindow):
             elif controlId == upButton.getId():
                 if status >= 5:
                     self.client.move_to_position(self.device.get_device_id(), status - 5)
-
         #handle slider
         if controlId == statusSlider.getId():
             current_slider_value = statusSlider.getPercent()
+            #xbmc.log("current slider:" + str(current_slider_value), xbmc.LOGNOTICE)
+            #xbmc.log("current status:" + str(status), xbmc.LOGNOTICE)
             if current_slider_value > status:
-                self.client.move_to_position(self.device.get_device_id(), status + 5)
+                new_position = current_slider_value
+                if self.device.get_devicegroup() == 2 and new_position > 99:#rollo
+                    new_position = 99
+                elif self.device.get_devicegroup() == 2 and new_position == 6:#rollo
+                    new_position = 5
+                self.updater.update_slider(new_position)
             elif current_slider_value < status:
-                self.client.move_to_position(self.device.get_device_id(), status - 5)
+                new_position = current_slider_value
+                if self.device.get_devicegroup() == 2 and new_position < 1:#rollo
+                    new_position = 1
+                elif self.device.get_devicegroup() == 2 and new_position == 94:#rollo
+                    new_position = 95
+                self.updater.update_slider(new_position)
+
+    def onAction(self, action):
+        if action == 13 or action == 10 or action == 160 or action == 21:
+            self.updater.set_is_running(False)
+        BaseWindow.onAction(self, action)
 
 
 class SwitchWindow(DeviceWindow):
@@ -274,6 +353,8 @@ class DegreeWindow(DeviceWindow):
         DeviceWindow.__init__( self )
         self.client = kwargs["client"]
         self.device = kwargs["device"]
+        self.updater = SliderUpdater(self.client, self.device, DEGREE_TYPE)
+        self.updater.start()
 
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
@@ -333,23 +414,35 @@ class DegreeWindow(DeviceWindow):
         #favoriten_radio_control.controlLeft(upButton)
 
     def update(self):
-        new_device = self.client.get_device_by_id(self.device.get_device_id())
-        if new_device.get_sync() != self.device.get_sync():
-            if new_device.get_position() != self.device.get_position():
-                statusSlider = self.controls["slider"]
-                new_position = self.__get_slider_percent_from_position(new_device)
-                statusSlider.setPercent(new_position)
+        if self.updater.get_status() != "UPDATE":
+            new_device = self.client.get_device_by_id(self.device.get_device_id())
+            if new_device.get_sync() != self.device.get_sync():
+                self.__update_position(new_device)
+                self.__update_name(new_device)
                 self.device = new_device
-                statusLabel = self.controls["status"]
-                statusLabel.setLabel(new_device.get_display_value())
-                icon = self.controls["icon"]
-                image = new_device.get_icon()
-                icon_img = os.path.join(_images, image)
-                icon.setImage(icon_img)
-            if new_device.get_name() != self.device.get_name():
-                title_label = self.controls["title"]
-                title_label.setLabel(new_device.get_name())
+        else:
+            new_device = self.client.get_device_by_id(self.device.get_device_id())
+            if new_device.get_sync() != self.device.get_sync():
+                self.__update_name(new_device)
+
+
+    def __update_position(self, new_device):
+        if new_device.get_position() != self.device.get_position():
+            statusSlider = self.controls["slider"]
+            new_position = self.__get_slider_percent_from_position(new_device)
+            statusSlider.setPercent(new_position)
             self.device = new_device
+            statusLabel = self.controls["status"]
+            statusLabel.setLabel(new_device.get_display_value())
+            icon = self.controls["icon"]
+            image = new_device.get_icon()
+            icon_img = os.path.join(_images, image)
+            icon.setImage(icon_img)
+
+    def __update_name (self, new_device):
+        if new_device.get_name() != self.device.get_name():
+            title_label = self.controls["title"]
+            title_label.setLabel(new_device.get_name())
 
     def onClick (self, controlId):
         statusSlider = self.controls["slider"]
@@ -366,7 +459,26 @@ class DegreeWindow(DeviceWindow):
             if current_slider_position <= 95:
                 self.client.move_to_degree(self.device.get_device_id(), current_device_position + 5)
         elif controlId == statusSlider.getId():
-            if current_slider_position > current_device_position_in_percent:
-                self.client.move_to_degree(self.device.get_device_id(), current_device_position + 5)
-            elif current_slider_position < current_device_position_in_percent:
-                self.client.move_to_degree(self.device.get_device_id(), current_device_position - 5)
+            if current_slider_position != current_device_position_in_percent:
+                diff = current_slider_position - current_device_position_in_percent
+                # thermostats can only be shifted in 0.5 degree steps over a range from 3°-28°
+                # this results in 50 possible value, as the slider has 100 possible values
+                # this requires some mappings/hacks
+                if diff == 1:
+                    new_position = (float(current_slider_position + 1) * 5 + 60) / 2
+                    if new_position % 5 == 0:
+                        self.updater.update_slider(int(new_position))
+                elif diff == -1:
+                    new_position = (float(current_slider_position - 1) * 5 + 60) / 2
+                    if new_position % 5 == 0:
+                        self.updater.update_slider(int(new_position))
+                else:
+                    new_position = (float(current_slider_position) * 5 + 60) / 2
+                    if new_position % 5 == 0:
+                        self.updater.update_slider(int(new_position))
+
+
+    def onAction(self, action):
+        if action == 13 or action == 10 or action == 160 or action == 21:
+            self.updater.set_is_running(False)
+        BaseWindow.onAction(self, action)

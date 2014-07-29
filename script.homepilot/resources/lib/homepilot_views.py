@@ -92,10 +92,11 @@ class ParametrizedGeraeteView(BaseView):
 
     def __add_listitems (self, devices):
         for device in devices:
-            item = xbmcgui.ListItem(label = device.get_name(), label2=device.get_description())
+            item = xbmcgui.ListItem(label = device.get_name(), label2=device.get_display_value())
+
             icon_name = device.get_icon()
             item.setIconImage(os.path.join(_images_device, icon_name))
-            item.setProperty("status", device.get_display_value())
+            item.setProperty("description", device.get_description())
             item.setProperty("did", str(device.get_device_id()))
             item.setProperty("sync", str(device.get_sync()))
             self.list_item_dict[device.get_device_id()] = item
@@ -124,26 +125,44 @@ class ParametrizedGeraeteView(BaseView):
 
     def update (self, window, menuControl):
         new_devices = self.__get_devices()
+        list_item_ids = self.list_item_dict.keys()
         for new_device in new_devices:
             new_sync_value = str(new_device.get_sync())
             device_listitem = self.list_item_dict.get(new_device.get_device_id())
             if device_listitem is not None:
+                list_item_ids.remove(new_device.get_device_id())
                 old_sync_value = device_listitem.getProperty("sync")
-                if new_sync_value != old_sync_value:
+                old_status = device_listitem.getLabel2()
+                new_status = new_device.get_display_value()
+                if new_sync_value != old_sync_value or old_status != new_status:
+                    if old_status != new_status:
+                        device_listitem.setLabel2(new_status)
+                        icon_name = new_device.get_icon()
+                        device_listitem.setIconImage(os.path.join(_images_device, icon_name))
                     old_label = device_listitem.getLabel()
                     new_label = new_device.get_name()
                     if old_label != new_label:
                         device_listitem.setLabel(new_label)
-                    old_label2 = device_listitem.getLabel2()
+                    old_label2 = device_listitem.getProperty("description")
                     new_label2 = new_device.get_description()
-                    if old_label2 != new_label2:
-                        device_listitem.setLabel2(new_label2)
-                    old_status = device_listitem.getProperty("status")
-                    new_status = new_device.get_display_value()
-                    if old_status != new_status:
-                        device_listitem.setProperty("status", new_status)
-                        icon_name = new_device.get_icon()
-                        device_listitem.setIconImage(os.path.join(_images_device, icon_name))
+                    if old_label2 != new_label2.encode('utf8'):
+                        device_listitem.setProperty("description", new_label2)
+            else:
+                #add new listitem
+                self.__add_listitems([new_device])
+        #remove items from list when devices are no longer present
+        #workaround implementation as the ControlList.removeItem didn't work
+        if len(list_item_ids) > 0:
+            self.list_item_dict = {}
+            self.geraete_list.reset()
+            self.__add_listitems(new_devices)
+
+
+    def _get_list_item_position (self, item):
+        for i in range(0, self.geraete_list.size()):
+            if self.geraete_list.getListItem(i) == item:
+                return i
+        return -1
 
 
     def handle_click (self, control):
@@ -156,9 +175,12 @@ rollo_img = os.path.join(_images_device, 'rollladen2_72_50.png')
 dimmer_img = os.path.join(_images_device, 'birne1_72_100.png')
 thermostat_img = os.path.join(_images_device, 'thermostat_72_100.png')
 tore_img = os.path.join(_images_device, 'garage_72_50.png')
-logo_img = os.path.join(_images, 'logo-homepilot.png')
+logo_img = os.path.join(_images, 'logo-homepilot-klein.png')
 
 class GeraetetypView(BaseView):
+
+    def __init__(self, home_pilot_client):
+        self.client = home_pilot_client
 
     def get_id(self):
         return "geraetetyp_view"
@@ -167,6 +189,8 @@ class GeraetetypView(BaseView):
         window.removeControls([self.geraetelabel_control, self.gruppen_control])
         self.geraetetypen_list.setVisible(False)
         self.gruppen_group_control.setVisible(False)
+        if self.errorcontrol is not None:
+            window.removeControl(self.errorcontrol)
 
     def visualize (self, window):
         self.geraetelabel_control = self.get_title_control("Gerätetypen")
@@ -200,24 +224,24 @@ class GeraetetypView(BaseView):
 
         self.geraetetypen_list.setVisible(True)
 
-        label = unicode("Gruppen (Achtung: noch nicht implementiert)", "utf-8")
+        label = unicode("Gruppen (nur Anzeige)", "utf-8")
         self.gruppen_control = xbmcgui.ControlLabel(400, 380, 600, 75, label, font="font16")
 
         gruppen_list = window.getControl( 4 )
         gruppen_list.reset()
-        gruppen_list.addItem ("Gruppe 1")
-        gruppen_list.addItem ("Gruppe 2")
-        gruppen_list.addItem ("Gruppe 3")
-        gruppen_list.addItem ("Gruppe 4")
-        gruppen_list.addItem ("Gruppe 5")
-        gruppen_list.addItem ("Gruppe 6")
-        gruppen_list.addItem ("Gruppe 7")
-        gruppen_list.addItem ("Gruppe 8")
-        gruppen_list.addItem ("Gruppe 9")
-        gruppen_list.addItem ("Gruppe 10")
         self.gruppen_group_control = window.getControl(251)
-        self.gruppen_group_control.setPosition(350,420)
-        self.gruppen_group_control.setVisible(True)
+        groups = self.client.get_groups()
+        if len(groups) > 0:
+            for group in groups:
+                gruppen_list.addItem (group.get_name())
+
+            self.gruppen_group_control.setPosition(350,420)
+            self.gruppen_group_control.setVisible(True)
+            self.errorcontrol = None
+        else:
+            errorlabel = unicode("<Keine Gruppen vorhanden>", "utf-8")
+            self.errorcontrol = xbmcgui.ControlLabel(450, 450, 600, 75, errorlabel)
+            window.addControl(self.errorcontrol)
 
         window.addControls([self.geraetelabel_control, self.gruppen_control])
 

@@ -18,7 +18,7 @@
                 <posx>70</posx>
                 <posy>20</posy>
                 <width>1090</width>
-                <height>630</height>
+                <height>640</height>
                 <texture border="50">dialogs/dialog_back_shadow.png</texture>
                 <include>PanelGlowFade</include>
                 <visible>!Skin.HasSetting(DisableGlowbar)</visible>
@@ -28,32 +28,18 @@
                 <posx>70</posx>
                 <posy>20</posy>
                 <width>1090</width>
-                <height>630</height>
+                <height>640</height>
                 <texture border="50">dialogs/dialog_back.png</texture>
                 <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
             </control>
             <control type="image">
                 <description>LOGO</description>
-                <posx>190</posx>
+                <posx>170</posx>
                 <posy>50</posy>
-                <width>80</width>
-                <height>80</height>
+                <width>100</width>
+                <height>100</height>
                 <aspectratio>keep</aspectratio>
                 <texture>logo-homepilot.png</texture>
-            </control>
-            <control type="image">
-                <left>5</left>
-                <top>625</top>
-                <width>1090</width>
-                <height>64</height>
-                <texture border="15">ContentPanelMirror.png</texture>
-            </control>
-            <control type="image">
-                <posx>350</posx>
-                <posy>35</posy>
-                <width>800</width>
-                <height>618</height>
-                <texture border="5">black-back2.png</texture>
             </control>
             <control type="grouplist" id="9000">
                 <posx>90</posx>
@@ -67,7 +53,7 @@
                     <description>Button Favoriten</description>
                     <height>60</height>
                     <width>241</width>
-                    <textoffsetx>0</textoffsetx>
+                    <textoffsetx>10</textoffsetx>
                     <align>right</align>
                     <aligny>center</aligny>
                     <font>Font_Reg26</font>
@@ -83,7 +69,7 @@
                     <description>Button Szenen</description>
                     <height>60</height>
                     <width>241</width>
-                    <textoffsetx>0</textoffsetx>
+                    <textoffsetx>10</textoffsetx>
                     <align>right</align>
                     <aligny>center</aligny>
                     <font>Font_Reg26</font>
@@ -98,7 +84,7 @@
                     <description>Button Geräte</description>
                     <height>60</height>
                     <width>241</width>
-                    <textoffsetx>0</textoffsetx>
+                    <textoffsetx>10</textoffsetx>
                     <align>right</align>
                     <aligny>center</aligny>
                     <font>Font_Reg26</font>
@@ -113,7 +99,7 @@
                     <description>Button Sensoren</description>
                     <height>60</height>
                     <width>241</width>
-                    <textoffsetx>0</textoffsetx>
+                    <textoffsetx>10</textoffsetx>
                     <align>right</align>
                     <aligny>center</aligny>
                     <font>Font_Reg26</font>
@@ -129,7 +115,7 @@
                     <description>Button Einstellungen</description>
                     <height>60</height>
                     <width>240</width>
-                    <textoffsetx>0</textoffsetx>
+                    <textoffsetx>10</textoffsetx>
                     <align>right</align>
                     <aligny>center</aligny>
                     <font>Font_Reg26</font>
@@ -149,24 +135,17 @@
                 <width>760</width>
                 <height>320</height>
                 <onup>3</onup>
-                <ondown>4</ondown>
+                <ondown>3</ondown>
                 <onleft>96</onleft>
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
-                <itemlayout height="40" width="600">
+                <itemlayout height="42" width="600">
                     <control type="image">
                         <posx>20</posx>
-                        <posy>0</posy>
-                        <width>36</width>
-                        <height>36</height>
+                        <posy>5</posy>
+                        <width>32</width>
+                        <height>32</height>
                         <info>ListItem.Icon</info>
-                    </control>
-                    <control type="image">
-                        <posx>0</posx>
-                        <posy>0</posy>
-                        <width>600</width>
-                        <height>41</height>
-                        <texture border="0,2,0,2">MenuItemNF.png</texture>
                     </control>
                     <control type="label">
                         <posx>80</posx>
@@ -181,21 +160,22 @@
                         <label>$INFO[ListItem.Label]</label>
                     </control>
                 </itemlayout>
-                <focusedlayout height="40" width="600">
+                <focusedlayout height="42" width="600">
                     <control type="image">
                         <posx>20</posx>
-                        <posy>0</posy>
-                        <width>42</width>
-                        <height>42</height>
+                        <posy>5</posy>
+                        <width>32</width>
+                        <height>32</height>
                         <info>ListItem.Icon</info>
                     </control>
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>
-                        <width>550</width>
+                        <width>750</width>
                         <height>41</height>
-                        <texture border="0,2,0,2">MenuItemFO.png</texture>
-                        <animation effect="fade" start="100" end="0" time="100" condition="![Control.HasFocus(3)]">Conditional</animation>
+                        <texture border="8">views/tripanel/listselect_fo.png</texture>
+                        <animation effect="fade" start="100" end="0" time="190" condition="!Control.HasFocus(3)">Conditional</animation>
+                        <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                     </control>
                     <control type="label">
                         <posx>80</posx>
@@ -222,9 +202,9 @@
                 <width>500</width>
                 <control type="list" id="4">
                     <posx>0</posx>
-                    <posy>20</posy>
+                    <posy>10</posy>
                     <width>760</width>
-                    <height>200</height>
+                    <height>175</height>
                     <onup>3</onup>
                     <ondown>3</ondown>
                     <onleft>96</onleft>
@@ -232,20 +212,13 @@
                     <pagecontrol>998</pagecontrol>
                     <visible>true</visible>
                     <!--scrolltime>0</scrolltime-->
-                    <itemlayout height="40" width="600">
+                    <itemlayout height="42" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>0</posy>
-                            <width>32</width>
-                            <height>32</height>
+                            <posy>8</posy>
+                            <width>28</width>
+                            <height>28</height>
                             <texture>gruppe_32.png</texture>
-                        </control>
-                        <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>450</width>
-                            <height>41</height>
-                            <texture border="0,2,0,2">MenuItemNF.png</texture>
                         </control>
                         <control type="label">
                             <posx>80</posx>
@@ -260,21 +233,13 @@
                             <label>$INFO[ListItem.Label]</label>
                         </control>
                     </itemlayout>
-                    <focusedlayout height="40" width="600">
+                    <focusedlayout height="42" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>0</posy>
-                            <width>35</width>
-                            <height>35</height>
+                            <posy>8</posy>
+                            <width>28</width>
+                            <height>28</height>
                             <texture>gruppe_32.png</texture>
-                        </control>
-                        <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>750</width>
-                            <height>41</height>
-                            <texture border="0,2,0,2">MenuItemFO.png</texture>
-                            <animation effect="fade" start="100" end="0" time="100" condition="![Control.HasFocus(4)]">Conditional</animation>
                         </control>
                         <control type="label">
                             <posx>80</posx>
@@ -282,7 +247,7 @@
                             <width>310</width>
                             <height>40</height>
                             <font>font13</font>
-                            <textcolor>white</textcolor>
+                            <textcolor>grey2</textcolor>
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
                             <aligny>center</aligny>
@@ -329,17 +294,10 @@
                     <itemlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>10</posy>
+                            <posy>12</posy>
                             <width>36</width>
                             <height>36</height>
                             <info>ListItem.Icon</info>
-                        </control>
-                        <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>450</width>
-                            <height>61</height>
-                            <texture border="0,2,0,2">MenuItemNF.png</texture>
                         </control>
                         <control type="label">
                             <posx>80</posx>
@@ -363,7 +321,7 @@
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
                             <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
+                            <label>$INFO[ListItem.Property(description)]</label>
                         </control>
                         <control type="label">
                             <posx>600</posx>
@@ -375,13 +333,13 @@
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
                             <aligny>center</aligny>
-                            <info>ListItem.Property(status)</info>
+                            <label>$INFO[ListItem.Label2]</label>
                         </control>
                     </itemlayout>
                     <focusedlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>10</posy>
+                            <posy>12</posy>
                             <width>36</width>
                             <height>36</height>
                             <info>ListItem.Icon</info>
@@ -391,8 +349,9 @@
                             <posy>0</posy>
                             <width>750</width>
                             <height>61</height>
-                            <texture border="0,2,0,2">MenuItemFO.png</texture>
-                            <animation effect="fade" start="100" end="0" time="2" condition="![Control.HasFocus(5)]">Conditional</animation>
+                            <texture border="8">views/tripanel/listselect_fo.png</texture>
+                            <animation effect="fade" start="100" end="0" time="190" condition="!Control.HasFocus(5)">Conditional</animation>
+                            <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                         </control>
                         <control type="label">
                             <posx>80</posx>
@@ -416,7 +375,7 @@
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
                             <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
+                            <label>$INFO[ListItem.Property(description)]</label>
                         </control>
                         <control type="label">
                             <posx>600</posx>
@@ -428,7 +387,7 @@
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
                             <aligny>center</aligny>
-                            <info>ListItem.Property(status)</info>
+                            <label>$INFO[ListItem.Label2]</label>
                         </control>
                     </focusedlayout>
                 </control>

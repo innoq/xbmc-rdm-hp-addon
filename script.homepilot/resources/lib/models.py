@@ -58,6 +58,7 @@ class HomePilotBaseObject:
         self._status = device["position"]
         self._sync = device["sync"]
         self._icon_set = device["iconsetKey"]
+        self._icon_set_inverted = device.get("iconSetInverted")
 
 
     def get_name(self):
@@ -98,6 +99,9 @@ class HomePilotBaseObject:
     def get_sync(self):
         return self._sync
 
+    def get_iconset_inverted(self):
+        return self._icon_set_inverted is not None and self._icon_set_inverted != 0
+
     def get_icon(self):
         if self._icon_set in icons:
             base_icon = icons[self._icon_set]
@@ -109,24 +113,59 @@ class HomePilotBaseObject:
                 ["iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
                  "iconset27", "iconset25", "iconset10", "iconset12"])
             if self._icon_set in an_aus:
-                if position < 50:
-                    return base_icon + "0.png"
+                if self.get_iconset_inverted():
+                    return self.__get_icon_switch_inverted(position, base_icon)
                 else:
-                    return base_icon + "1.png"
+                    return self.__get_icon_switch(position, base_icon)
+
             # Icons für Werte 0, 25, 50, 75, 100
             else:
-                if position < 12:
-                    return base_icon + "0.png"
-                elif position < 37:
-                    return base_icon + "25.png"
-                elif position < 62:
-                    return base_icon + "50.png"
-                elif position < 87:
-                    return base_icon + "75.png"
+                if self.get_iconset_inverted():
+                    return self.__get_icon_percent_inverted(position, base_icon)
                 else:
-                    return base_icon + "100.png"
+                    return self.__get_icon_percent(position, base_icon)
         else:
             return "gruppe_32.png"
+
+
+    def __get_icon_switch(self, position, base_icon):
+        if position < 50:
+            return base_icon + "0.png"
+        else:
+            return base_icon + "1.png"
+
+
+    def __get_icon_switch_inverted(self, position, base_icon):
+        if position < 50:
+            return base_icon + "1.png"
+        else:
+            return base_icon + "0.png"
+
+
+    def __get_icon_percent(self, position, base_icon):
+        if position < 12:
+            return base_icon + "0.png"
+        elif position < 37:
+            return base_icon + "25.png"
+        elif position < 62:
+            return base_icon + "50.png"
+        elif position < 87:
+            return base_icon + "75.png"
+        else:
+            return base_icon + "100.png"
+
+
+    def __get_icon_percent_inverted(self, position, base_icon):
+        if position < 12:
+            return base_icon + "100.png"
+        elif position < 37:
+            return base_icon + "75.png"
+        elif position < 62:
+            return base_icon + "50.png"
+        elif position < 87:
+            return base_icon + "25.png"
+        else:
+            return base_icon + "0.png"
 
     def get_display_value(self):
         position = self.get_position()
@@ -198,7 +237,7 @@ class Group:
         self.group = group
         self._name = group["name"]
         self._description = group["description"]
-        self._gid = group["did"]
+        self._gid = group["gid"]
 
     def get_group_id(self):
         return self._gid

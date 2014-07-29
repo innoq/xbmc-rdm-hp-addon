@@ -143,7 +143,7 @@ class HomepilotClient:
         response = requests.get(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position)),
             timeout=5)
-        xbmc.log("request an homepilot: " + str(
+        xbmc.log("request an homepilot - move to position: " + str(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))),
                  level=xbmc.LOGNOTICE)
         data = json.loads(response.content)
@@ -209,3 +209,14 @@ class HomepilotClient:
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
+
+    def move_up(self, device_id):
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1', timeout=5)
+        data = json.loads(response.content)
+        return data["status"].lower() in ["ok"]
+
+
+    def move_down(self, device_id):
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3', timeout=5)
+        data = json.loads(response.content)
+        return data["status"].lower() in ["ok"]

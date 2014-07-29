@@ -187,7 +187,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
             elif control == 96: #Menüpunkt Geräte
                 if self.currentView.get_id() != GERAETETYP_VIEW:
                     self.currentView.remove_everything (self)
-                    geraetetyp_view = homepilot_views.GeraetetypView()
+                    geraetetyp_view = homepilot_views.GeraetetypView(self.client)
                     menu_control = self.window.getControl(96)
                     menu_control.controlRight(self.window.getControl(3))
                     geraetetyp_view.visualize (self)
