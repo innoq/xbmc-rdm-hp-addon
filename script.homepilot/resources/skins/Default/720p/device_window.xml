@@ -1,0 +1,26 @@
+<window id="1234" type="dialog">
+    <allowoverlay>yes</allowoverlay>
+    <visible>true</visible>
+    <coordinates>
+        <system>1</system>
+        <posX>200</posX>
+        <posY>100</posY>
+    </coordinates>
+    <controls>
+        <control type="image">
+            <description>media info background image</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1530</width>
+            <height>720</height>
+            <texture border="20,0,0,0" flipx="true">background2.png</texture>
+        </control>
+        <control type="image">
+            <posx>250</posx>
+            <posy>40</posy>
+            <width>400</width>
+            <height>500</height>
+            <texture border="15">ContentPanel2.png</texture>
+        </control>
+    </controls>
+</window>
