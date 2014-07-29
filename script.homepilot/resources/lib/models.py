@@ -1,6 +1,8 @@
 #!/usr/bin/env python
 # -*- coding: utf-8 -*-
 
+import homepilot_utils
+
 icons = {}
 icons["iconset1"] = "aquarium_72_"
 icons["iconset22"] = "bargraph_horizontal_72_"
@@ -13,9 +15,9 @@ icons["iconset18"] = "gartensprenkler_72_"
 icons["iconset21"] = "birne1_72_"
 icons["iconset6"] = "jalousie_72_"
 icons["iconset17"] = "kaffeemaschine_72_"
-#icons["iconset32"] =     -> Lichterkette
+icons["iconset32"] = "lichterkette_72"
 icons["iconset7"] = "markise_72_"
-icons["iconset16"] = "Pumpe_72_"
+icons["iconset16"] = "pumpe_72_"
 icons["iconset26"] = "rauchmelder_72_"
 icons["iconset8"] = "rollladen1_72_"
 icons["iconset15"] = "rollladen2_72_"
@@ -32,7 +34,7 @@ icons["iconset13"] = "stehlampe_72_"
 icons["iconset28"] = "thermostat_72_"
 icons["iconset11"] = "tischlampe_72_"
 icons["iconset12"] = "tuer_72_"
-#icons["iconset33"]      -> Weihnachtsbaum
+icons["iconset33"] = "weihnachtsbaum_72_"
 
 
 
@@ -111,7 +113,7 @@ class HomePilotBaseObject:
                 position = (float(position)/10 - 3) * 4
             an_aus = set(
                 ["iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
-                 "iconset27", "iconset25", "iconset10", "iconset12"])
+                 "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33"])
             if self._icon_set in an_aus:
                 if self.get_iconset_inverted():
                     return self.__get_icon_switch_inverted(position, base_icon)
@@ -170,19 +172,7 @@ class HomePilotBaseObject:
     def get_display_value(self):
         position = self.get_position()
         group = self.get_devicegroup()
-        if group == 1:
-            if position < 50:
-                return "Aus"
-            else:
-                return "An"
-        elif group == 3:
-            return ""
-        elif group == 4 or group == 8 or group == 2:
-            return str(position) + " %"
-        elif group == 5:
-            return str(float(position)/10) + " °C"
-        else:
-            return str(position)
+        return homepilot_utils.get_display_value(position, group)
 
 
 class Device(HomePilotBaseObject):

@@ -1,4 +1,4 @@
-<window>
+<window id="1">
     <!--defaultcontrol always="true">95</defaultcontrol-->
     <allowoverlay>yes</allowoverlay>
     <coordinates>
@@ -44,9 +44,9 @@
             </control>
             <control type="image" id="111">
                 <description>LOGO</description>
-                <posx>170</posx>
+                <posx>105</posx>
                 <posy>50</posy>
-                <width>100</width>
+                <width>240</width>
                 <height>100</height>
                 <aspectratio>keep</aspectratio>
                 <texture>logo-homepilot.png</texture>
@@ -149,6 +149,7 @@
                 <onup>3</onup>
                 <ondown>3</ondown>
                 <onleft>96</onleft>
+                <onright>Action(enter)</onright>
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
                 <itemlayout height="42" width="600">
@@ -193,7 +194,7 @@
                         <width>550</width>
                         <height>43</height>
                         <texture border="0,2,0,2">MenuItemFO.png</texture>
-                        <animation effect="fade" start="100" end="0" time="100" condition="![Control.HasFocus(3)]">Conditional</animation>
+                        <visible>Control.HasFocus(3)</visible>
                     </control>
                     <control type="label">
                         <posx>80</posx>
@@ -206,6 +207,20 @@
                         <align>left</align>
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(3)</visible>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>510</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(3)</visible>
                     </control>
                 </focusedlayout>
             </control>
@@ -382,43 +397,85 @@
                             <width>750</width>
                             <height>61</height>
                             <texture border="0,2,0,2">MenuItemFO.png</texture>
-                            <animation effect="fade" start="100" end="0" time="2" condition="![Control.HasFocus(5)]">Conditional</animation>
+                            <visible>Control.HasFocus(5)</visible>
                         </control>
-                        <control type="label">
-                            <posx>80</posx>
-                            <posy>0</posy>
-                            <width>310</width>
-                            <height>40</height>
-                            <font>font13</font>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label]</label>
+                        <control type="group">
+                            <visible>Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>310</width>
+                                <height>40</height>
+                                <font>font13</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>font10</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>720</posx>
+                                <posy>0</posy>
+                                <width>80</width>
+                                <height>60</height>
+                                <font>font14</font>
+                                <align>right</align>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
-                        <control type="label">
-                            <posx>80</posx>
-                            <posy>20</posy>
-                            <width>500</width>
-                            <height>40</height>
-                            <font>font10</font>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Property(description)]</label>
-                        </control>
-                        <control type="label">
-                            <posx>720</posx>
-                            <posy>0</posy>
-                            <width>80</width>
-                            <height>60</height>
-                            <font>font14</font>
-                            <align>right</align>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
+                        <control type="group">
+                            <visible>!Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>400</width>
+                                <height>40</height>
+                                <font>font13</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>font10</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>720</posx>
+                                <posy>0</posy>
+                                <width>80</width>
+                                <height>60</height>
+                                <font>font14</font>
+                                <align>right</align>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
                     </focusedlayout>
                 </control>

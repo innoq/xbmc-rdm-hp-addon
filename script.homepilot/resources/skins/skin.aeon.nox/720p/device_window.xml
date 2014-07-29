@@ -9,100 +9,21 @@
     </coordinates>
     <controls>
         <control type="image">
-            <description>media info background image</description>
             <posx>0</posx>
             <posy>0</posy>
             <width>1530</width>
             <height>720</height>
             <texture border="20,0,0,0" flipx="true">background2.png</texture>
         </control>
-        <!--control type="image">
-            <posx>250</posx>
-            <posy>40</posy>
-            <width>400</width>
-            <height>500</height>
-            <texture border="50">dialogs/dialog_back_shadow.png</texture>
-            <include>PanelGlowFade</include>
-            <visible>!Skin.HasSetting(DisableGlowbar)</visible>
-            <colordiffuse>diffuse_white</colordiffuse>
-        </control-->
-        <!--control type="image">
-            <posx>250</posx>
-            <posy>40</posy>
-            <width>400</width>
-            <height>500</height>
-            <texture border="50">dialogs/dialog_back.png</texture>
-            <colordiffuse>diffuse_white</colordiffuse>
-        </control-->
 
-
-                <!--control type="image">
-            <posx>36</posx>
-            <posy>36</posy>
-            <width>846</width>
-            <height>1006</height>
-            <texture>settings/settings_panelback_shadow.png</texture>
-            <visible>!Skin.HasSetting(DisableGlowbar)</visible>
-            <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-            <include>Animation_VisibleChange400</include>
-        </control>
         <control type="image">
-            <posx>34</posx>
-            <posy>34</posy>
-            <width>850</width>
-            <height>1010</height>
-            <texture>settings/settings_panelback.png</texture>
+            <posx>200</posx>
+            <posy>20</posy>
+            <width>470</width>
+            <height>540</height>
+            <texture border="50">panel.png</texture>
             <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
         </control>
-        <control type="image">
-            <posx>49</posx>
-            <posy>112</posy>
-            <width>819</width>
-            <height>1038</height>
-            <texture>wall/wall_bg_reflection.png</texture>
-        </control-->
-
-
-
-
-
-<!--control type="image">
-                <width>1332</width>
-                <height>612</height>
-                <texture border="50">featured/panel_featured_shadow.png</texture>
-                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-            </control>
-            <control type="image">
-                <width>1332</width>
-                <height>612</height>
-                <texture>featured/panel_featured.png</texture>
-                <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-            </control>
-            <control type="image">
-                <posx>21</posx>
-                <posy>593</posy>
-                <width>1290</width>
-                <height>119</height>
-                <texture>featured/panel_featured_reflect.png</texture>
-                <visible>Window.IsActive(1147)</visible>
-            </control-->
-
-<control type="image">
-                <posx>200</posx>
-                <posy>20</posy>
-                <width>472</width>
-                <height>540</height>
-                <texture border="50">dialogs/dialog_back_shadow.png</texture>
-                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-            </control>
-            <control type="image">
-                <posx>200</posx>
-                <posy>20</posy>
-                <width>470</width>
-                <height>540</height>
-                <texture border="50">dialogs/dialog_back.png</texture>
-                <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-            </control>
 
         <!--title separator -->
         <control type="image">
@@ -111,10 +32,8 @@
             <width>440</width>
             <height>30</height>
             <texture>settings/settings_separator.png</texture>
-            <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
         </control>
         <!-- end title separator -->
-
 
         <!--up-down buttons -->
         <control type="group" id="114">
@@ -124,26 +43,25 @@
             <height>100</height>
             <width>200</width>
             <control type="button" id="112">
-                <posx>0</posx>
-                <posy>0</posy>
-                <width>60</width>
-                <height>98</height>
+                <posx>30</posx>
+                <posy>-40</posy>
+                <width>75</width>
+                <height>122</height>
                 <texturefocus>settings/spin-down-focus.png</texturefocus>
                 <texturenofocus>settings/spin-down.png</texturenofocus>
                 <include>Default_SettingButton</include>
             </control>
             <control type="button" id="113">
-                <posx>60</posx>
-                <posy>0</posy>
-                <width>60</width>
-                <height>98</height>
+                <posx>105</posx>
+                <posy>-40</posy>
+                <width>75</width>
+                <height>122</height>
                 <texturefocus>settings/spin-up-focus.png</texturefocus>
                 <texturenofocus>settings/spin-up.png</texturenofocus>
                 <include>Default_SettingButton</include>
             </control>
         </control>
         <!--end up-down buttons -->
-
 
         <!--switch buttons -->
         <control type="group" id="118">
@@ -160,7 +78,7 @@
                 <visible>true</visible>
                 <align>center</align>
                 <aligny>center</aligny>
-                <label>ON</label>
+                <label>AN</label>
                 <font>Font_Reg29</font>
             </control>
             <control type="radiobutton" id="116">
@@ -171,8 +89,8 @@
                 <visible>true</visible>
                 <textureradioon>settings/settings_radiobuttononfocus.png</textureradioon>
                 <textureradiooff>settings/settings_radiobuttonon.png</textureradiooff>
-                <selectedcolor>$VAR[ColorDiffuseVar]</selectedcolor>
                 <texturefocus border="5">-</texturefocus>
+                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
                 <texturenofocus>-</texturenofocus>
                 <focusedcolor>-</focusedcolor>
                 <label>-</label>
@@ -187,12 +105,10 @@
                 <visible>true</visible>
                 <align>center</align>
                 <aligny>center</aligny>
-                <label>OFF</label>
+                <label>AUS</label>
                 <font>Font_Reg29</font>
             </control>
         </control>
         <!--end switch buttons -->
-
-
     </controls>
 </window>

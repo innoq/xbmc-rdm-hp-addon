@@ -32,24 +32,15 @@ import homepilot_client
 import homepilot_views
 import settings
 import time
-from device_windows import MeterWindow, PercentageWindow, SwitchWindow, DegreeWindow
+from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN, SENSOREN, ALLE, FAVORITEN
+from device_windows import MeterWindow, PercentageWindow, SwitchWindow, DegreeWindow, ErrorWindow
 
 action_previous_menu = (9, 10, 92, 216, 247, 257, 275, 61467, 61448)
 
-FAVORITEN = "Favoriten"
-SENSOREN = "Sensoren"
-SZENEN = "SZENEN"
-
-ROLLADEN = "Rolläden"
-SCHALTER = "Schalter"
-DIMMER = "Dimmer"
-THERMOSTATE = "Thermostate"
-TORE = "Tore"
-
 GERAETETYP_VIEW = "geraetetyp_view"
-FAVORITEN_VIEW = "Favoriten_view"
-ALLE_VIEW = "Alle Geräte_view"
-SENSOREN_VIEW = "Sensoren_view"
+FAVORITEN_VIEW = FAVORITEN + "_view"
+ALLE_VIEW = ALLE + "_view"
+SENSOREN_VIEW = SENSOREN + "_view"
 
 ROLLADEN_VIEW = ROLLADEN + "_view"
 SCHALTER_VIEW = SCHALTER + "_view"
@@ -83,7 +74,6 @@ class StatusUpdater (threading.Thread):
     def run(self):
         self.is_running = 'True'
         while self.is_running:
-            xbmc.log(" ------- main window running ----", xbmc.LOGNOTICE)
             if self.current_window is not None:
                 #this is a pretty sloppy implementation, as the window is updated even when it isn't display anymore
                 #I've choosen this way as I didn't find a method for getting the current state of a xbmcgui.WindowXMLDialog
@@ -134,7 +124,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
         """
         closes the window
         """
-        xbmc.log(" ------- main window shutdown ----", xbmc.LOGNOTICE)
         self.status_updater.is_running = False
         self.close()
 
@@ -147,14 +136,13 @@ class GuiController(xbmcgui.WindowXMLDialog):
         """
         handles window exits
         # ACTION_LAST_PAGE = 160
+        #ACTION_NAV_PREV = 92
         """
         BACKSPACE = 61448
         ARROW_LEFT = 61570
         view = self.currentView.get_id()
         is_geraeteview = self.__is_geraeteview(view)
-        #if is_geraeteview:
-        xbmc.log("action:" + str(action.getButtonCode()) + " " + str(self.getFocusId()), xbmc.LOGNOTICE)
-        if self.getFocusId() == 3 and action.getButtonCode() == 61453 or action == 100:#Gerätetyptabelle
+        if self.getFocusId() == 3 and (action.getButtonCode() == 61453 or action == 100 or action == 135):#Gerätetyptabelle
             #self._wait_for_visualization = True
             geraetetyp_list = self.getControl(3)
             position = geraetetyp_list.getSelectedPosition()
@@ -166,8 +154,14 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 geraete_view.visualize(self)
                 self.currentView = geraete_view
                 self.status_updater.set_current_view(geraete_view, menu_control)
-        elif action == 13 or action == 10 or action == 160 or action == 21 or action == 92:
+        elif action == 13 or action == 10 or action == 160 or action == 21:
             self.shutdown()
+        elif action == 92 and view == FAVORITEN_VIEW:
+            self.setFocusId(95)
+        elif action == 92 and view == GERAETETYP_VIEW:
+            self.setFocusId(96)
+        elif action == 92 and view == SENSOREN_VIEW:
+            self.setFocusId(97)
         elif is_geraeteview and (action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT):
             self.__show_geraetetyp_view()
             self.__set_geraetetyp_list_focus(view)
@@ -221,6 +215,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
 
     def onClick(self, control):
+        xbmc.log("onClick " + str(control), level=xbmc.LOGNOTICE)
         if control == 5:
             view_id = self.currentView.get_id()
             if view_id == SENSOREN + "_view":
@@ -271,20 +266,25 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
 
     def __open_device_window(self, did):
-        device = self.client.get_device_by_id(did)
-        dgroup = device.get_devicegroup()
-        if dgroup == 2 or dgroup == 4 or dgroup == 8:
-            percent_window = PercentageWindow('device_window.xml', home, client=self.client, device=device,parent=self)
-            self.status_updater.set_current_window(percent_window)
-            percent_window.doModal()
-        elif dgroup == 1:
-            switch_window = SwitchWindow('device_window.xml', home, client=self.client, device=device, parent=self)
-            self.status_updater.set_current_window(switch_window)
-            switch_window.doModal()
-        elif dgroup == 5:
-            percent_window = DegreeWindow('device_window.xml', home, client=self.client, device=device, parent=self)
-            self.status_updater.set_current_window(percent_window)
-            percent_window.doModal()
+        try:
+            device = self.client.get_device_by_id(did)
+            dgroup = device.get_devicegroup()
+            if dgroup == 2 or dgroup == 4 or dgroup == 8:
+                percent_window = PercentageWindow('device_window.xml', home, client=self.client, device=device,parent=self)
+                self.status_updater.set_current_window(percent_window)
+                percent_window.doModal()
+            elif dgroup == 1:
+                switch_window = SwitchWindow('device_window.xml', home, client=self.client, device=device, parent=self)
+                self.status_updater.set_current_window(switch_window)
+                switch_window.doModal()
+            elif dgroup == 5:
+                percent_window = DegreeWindow('device_window.xml', home, client=self.client, device=device, parent=self)
+                self.status_updater.set_current_window(percent_window)
+                percent_window.doModal()
+        except Exception, e:
+            xbmc.log("Fehler beim Öffnen einer Detailsicht: " + str(e), level=xbmc.LOGWARNING)
+            error_window = ErrorWindow('device_window.xml', home, parent=self)
+            error_window.doModal()
 
 
 if __name__ == "__main__":

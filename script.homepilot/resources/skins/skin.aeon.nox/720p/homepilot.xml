@@ -11,42 +11,21 @@
         <control type="multiimage">
             <aspectratio align="center" aligny="top">scale</aspectratio>
             <imagepath background="true">$VAR[SettingsFanartVar]</imagepath>
-            <!--animation effect="zoom" start="110" end="130" center="auto" time="12000" pulse="true" condition="Skin.HasSetting(animatedbg)">Conditional</animation-->
             <animation effect="slide" start="-15,-15" end="15,15" time="6000" pulse="true" condition="Skin.HasSetting(animatedbg)">Conditional</animation>
         </control>
-        <!--include>DialogBackFade</include-->
         <control type="group" id="250">
             <control type="image">
                 <posx>70</posx>
-                <posy>20</posy>
+                <posy>10</posy>
                 <width>1090</width>
-                <height>640</height>
+                <height>650</height>
                 <texture border="50">settings/settings_panelback.png</texture>
                 <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
             </control>
-            <!--control type="image">
-                <posx>70</posx>
-                <posy>20</posy>
-                <width>1090</width>
-                <height>640</height>
-                <texture border="50">dialogs/dialog_back_shadow.png</texture>
-                <include>PanelGlowFade</include>
-                <visible>!Skin.HasSetting(DisableGlowbar)</visible>
-                <colordiffuse>$VAR[ColorDiffuseVar]</colordiffuse>
-            </control>
-            <control type="image">
-                <posx>70</posx>
-                <posy>20</posy>
-                <width>1090</width>
-                <height>640</height>
-                <texture border="50">dialogs/dialog_back.png</texture>
-                <colordiffuse>$VAR[DialogColorVar]</colordiffuse>
-            </control-->
             <control type="image" id="111">
-                <description>LOGO</description>
-                <posx>170</posx>
-                <posy>50</posy>
-                <width>100</width>
+                <posx>110</posx>
+                <posy>45</posy>
+                <width>170</width>
                 <height>100</height>
                 <aspectratio>keep</aspectratio>
                 <texture>logo-homepilot.png</texture>
@@ -142,6 +121,7 @@
                 <onup>3</onup>
                 <ondown>3</ondown>
                 <onleft>96</onleft>
+                <onright>Action(enter)</onright>
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
                 <itemlayout height="42" width="600">
@@ -179,7 +159,7 @@
                         <width>750</width>
                         <height>41</height>
                         <texture border="8">views/tripanel/listselect_fo.png</texture>
-                        <animation effect="fade" start="100" end="0" time="190" condition="!Control.HasFocus(3)">Conditional</animation>
+                        <visible>Control.HasFocus(3)</visible>
                         <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                     </control>
                     <control type="label">
@@ -193,6 +173,20 @@
                         <align>left</align>
                         <aligny>center</aligny>
                         <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(3)</visible>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>510</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(3)</visible>
                     </control>
                 </focusedlayout>
             </control>
@@ -355,44 +349,86 @@
                             <width>750</width>
                             <height>61</height>
                             <texture border="8">views/tripanel/listselect_fo.png</texture>
-                            <animation effect="fade" start="100" end="0" time="190" condition="!Control.HasFocus(5)">Conditional</animation>
+                            <visible>Control.HasFocus(5)</visible>
                             <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                         </control>
-                        <control type="label">
-                            <posx>80</posx>
-                            <posy>0</posy>
-                            <width>310</width>
-                            <height>40</height>
-                            <font>Font_Reg22</font>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label]</label>
+                        <control type="group">
+                            <visible>Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>310</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>720</posx>
+                                <posy>0</posy>
+                                <width>80</width>
+                                <height>60</height>
+                                <font>Font_Reg22</font>
+                                <align>right</align>
+                                <textcolor>white</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
-                        <control type="label">
-                            <posx>80</posx>
-                            <posy>20</posy>
-                            <width>500</width>
-                            <height>40</height>
-                            <font>Font_Reg17</font>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <align>left</align>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Property(description)]</label>
-                        </control>
-                        <control type="label">
-                            <posx>720</posx>
-                            <posy>0</posy>
-                            <width>80</width>
-                            <height>60</height>
-                            <font>Font_Reg22</font>
-                            <align>right</align>
-                            <textcolor>white</textcolor>
-                            <selectedcolor>selected</selectedcolor>
-                            <aligny>center</aligny>
-                            <label>$INFO[ListItem.Label2]</label>
+                        <control type="group">
+                            <visible>!Control.HasFocus(5)</visible>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>0</posy>
+                                <width>400</width>
+                                <height>40</height>
+                                <font>Font_Reg22</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label]</label>
+                            </control>
+                            <control type="label">
+                                <posx>80</posx>
+                                <posy>20</posy>
+                                <width>500</width>
+                                <height>40</height>
+                                <font>Font_Reg17</font>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <align>left</align>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Property(description)]</label>
+                            </control>
+                            <control type="label">
+                                <posx>720</posx>
+                                <posy>0</posy>
+                                <width>80</width>
+                                <height>60</height>
+                                <font>Font_Reg25</font>
+                                <align>right</align>
+                                <textcolor>grey2</textcolor>
+                                <selectedcolor>selected</selectedcolor>
+                                <aligny>center</aligny>
+                                <label>$INFO[ListItem.Label2]</label>
+                            </control>
                         </control>
                     </focusedlayout>
                 </control>

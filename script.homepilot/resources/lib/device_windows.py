@@ -10,6 +10,7 @@ import xbmcaddon
 import threading
 import os
 import xbmcaddon
+import homepilot_utils
 __addon__ = xbmcaddon.Addon(id='script.homepilot')
 __addon_path__        = __addon__.getAddonInfo('path').decode("utf-8")
 _images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'devices')
@@ -17,13 +18,31 @@ _control_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 
 
 class BaseWindow(xbmcgui.WindowXMLDialog):
 
-    BACKSPACE = 61448
-
+    def onAction(self, action):
+        if action == 92:
+            self.close()
+        if action == 10:
+            self.parent_window.shutdown()
+            self.close()
 
     def add_error_control(self):
         label = unicode("<Probleme bei der Kommunikation \nmit dem HomePilot>", "utf-8")
         self.errorcontrol = xbmcgui.ControlLabel(280, 250, 350, 75, label, alignment=0x00000002)
         self.addControl(self.errorcontrol)
+
+
+class ErrorWindow(BaseWindow):
+
+    def __init__( self, *args, **kwargs ):
+        self.parent_window = kwargs["parent"]
+
+    def onInit(self):
+        self.add_error_control()
+
+    def onAction(self, action):
+        BaseWindow.onAction(self, action)
+
+
 
 class MeterWindow(BaseWindow):
 
@@ -67,16 +86,7 @@ class MeterWindow(BaseWindow):
 
     def onAction(self, action):
         xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
-        if action == 92:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.close()
-        if action == 10:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.parent_window.shutdown()
-            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
-
-            self.close()
-
+        BaseWindow.onAction(self, action)
 
 
 sliderbarImg = os.path.join(_control_images, 'slider.png')
@@ -113,19 +123,26 @@ class SliderUpdater (threading.Thread):
 
     def run(self):
         self.is_running = 'True'
+        count = 0
         while self.is_running:
-            xbmc.log(" ------- device window running ----" + str(self.device.get_device_id()), xbmc.LOGNOTICE)
-            #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
             if self.update_time > 0 and time.time() - self.update_time > 0.4:
                 if self.status == "UPDATE":
                     #xbmc.log("-- send move --" + str(self.position), xbmc.LOGNOTICE)
-                    if self.type == PERCENT_TYPE:
-                        self.client.move_to_position(self.device.get_device_id(), self.position)
-                    else:
-                        self.client.move_to_degree(self.device.get_device_id(), self.position)
-                    self.status = "UPDATE_SENT"
+                    if self.type == PERCENT_TYPE and count < 3:
+                        success = self.client.move_to_position(self.device.get_device_id(), self.position)
+                        if success:
+                            self.status = "UPDATE_SENT"
+                            count = 0
+                        else:
+                            count += 1
+                    elif count < 3:
+                        success = self.client.move_to_degree(self.device.get_device_id(), self.position)
+                        if success:
+                            self.status = "UPDATE_SENT"
+                            count = 0
+                        else:
+                            count += 1
             time.sleep(0.3)
-
 
 class DeviceWindow(BaseWindow):
 
@@ -137,25 +154,23 @@ class DeviceWindow(BaseWindow):
     def get_base_device_controls(self, device):
         control_dict = {}
         title = self.device.get_name()
-        title_control = xbmcgui.ControlLabel(310, 50, 600, 75, title, font="font16", textColor="white")
+        title_control = xbmcgui.ControlLabel(325, 55, 600, 75, title, font="font16", textColor="white")
         control_dict["title"] = title_control
         icon = self.device.get_icon()
         icon_img = os.path.join(_images, icon)
         image_control = xbmcgui.ControlImage ( self.x + 80, self.y + 60, 50, 50, icon_img)
         control_dict["icon"] = image_control
-        #favoriten_radio_control = xbmcgui.ControlRadioButton(380, 250, 200, 50, "Favoriten")
-        #control_dict["favoriten"] = favoriten_radio_control
         return control_dict
 
     def get_slider (self):
         if xbmc.skinHasImage ('settings/slider_back.png'):
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 280, 15, textureback = 'settings/slider_back.png', texture = 'settings/orb_nofo.png', texturefocus = 'settings/orb_fo.png')
+            statusSlider = xbmcgui.ControlSlider(self.x + 30, self.y + 130, 310, 15, textureback = 'settings/slider_back.png', texture = 'settings/orb_nofo.png', texturefocus = 'settings/orb_fo.png')
             return statusSlider
         elif xbmc.skinHasImage ('slider.png'):
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 250, 20, textureback = 'slider.png', texture = 'osd_slider_nibNF.png', texturefocus = 'osd_slider_nib.png')
+            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 240, 20, textureback = 'slider.png', texture = 'osd_slider_nibNF.png', texturefocus = 'osd_slider_nib.png')
             return statusSlider
         else:
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 250, 20, textureback = sliderbarImg, texture = sliderNibImgNF, texturefocus = sliderNibImg)
+            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 240, 20, textureback = sliderbarImg, texture = sliderNibImgNF, texturefocus = sliderNibImg)
             return statusSlider
 
 class PercentageWindow(DeviceWindow):
@@ -168,6 +183,7 @@ class PercentageWindow(DeviceWindow):
         self.updater = SliderUpdater(self.client, self.device, PERCENT_TYPE)
         self.updater.start()
         self.has_error = False
+        self.controls = {}
 
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
@@ -186,7 +202,7 @@ class PercentageWindow(DeviceWindow):
         x = self.x
         y = self.y
         status = self.device.get_display_value()
-        status_control = xbmcgui.ControlLabel(self.x+ 180, self.y + 60, 600, 75, status, font="font16", textColor="white")
+        status_control = xbmcgui.ControlLabel(self.x+ 180, self.y + 65, 600, 75, status, font="font16", textColor="white")
         controls["status"] = status_control
         slider = self.get_slider()
         controls["slider"] = slider
@@ -199,7 +215,7 @@ class PercentageWindow(DeviceWindow):
 
     def update(self):
         if self.getFocusId() == 0:
-            self.setFocus(self.controls["slider"])
+            self.setFocus(self.controls.get("slider"))
         if self.updater.get_status() != "UPDATE":
             #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
             try:
@@ -268,12 +284,8 @@ class PercentageWindow(DeviceWindow):
         #favoriten_radio_control = self.controls["favoriten"]
         status = self.device.get_status()
         #handle up-down-buttons
-        if self.device.get_devicegroup() == 4:#dimmer
-            if controlId == downButton.getId():
-                self.client.move_up(self.device.get_device_id())
-            elif controlId == upButton.getId():
-                self.client.move_down(self.device.get_device_id())
-        elif self.device.get_devicegroup() == 2:#rollo
+        device_group = self.device.get_devicegroup()
+        if device_group == 2 or device_group == 4 or device_group == 8:#rollo,dimmer,tore
             if controlId == downButton.getId():
                  self.client.move_down(self.device.get_device_id())
             elif controlId == upButton.getId():
@@ -288,8 +300,10 @@ class PercentageWindow(DeviceWindow):
         #handle slider
         if controlId == statusSlider.getId():
             current_slider_value = statusSlider.getPercent()
-            #xbmc.log("current slider:" + str(current_slider_value), xbmc.LOGNOTICE)
-            #xbmc.log("current status:" + str(status), xbmc.LOGNOTICE)
+            statusLabel = self.controls["status"]
+            device_group = self.device.get_devicegroup()
+            display_value = homepilot_utils.get_display_value(int(current_slider_value), device_group)
+            statusLabel.setLabel(display_value)
             if current_slider_value > status:
                 new_position = current_slider_value
                 if self.device.get_devicegroup() == 2 and new_position > 99:#rollo
@@ -308,19 +322,9 @@ class PercentageWindow(DeviceWindow):
 
     def onAction(self, action):
         xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
-        if action == 92:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.updater.set_is_running = False
-            self.close()
-        if action == 10:
-            self.updater.set_is_running = False
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.parent_window.shutdown()
-            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
-
-            self.close()
-
-
+        if action == 92 or action == 10:
+            self.updater.set_is_running(False)
+        BaseWindow.onAction(self, action)
 
 class SwitchWindow(DeviceWindow):
 
@@ -399,26 +403,23 @@ class SwitchWindow(DeviceWindow):
     def onClick (self, controlId):
         self.wait_for_response = True
         button = self.controls["radio"]
+        on = self.getControl(115)
+        off = self.getControl(117)
         xbmc.log("click -on: " + str(button.isSelected()), level=xbmc.LOGNOTICE)
         if controlId == button.getId():
             if button.isSelected():
+                on.setEnabled(True)
+                off.setEnabled(False)
                 self.client.switch_on(self.device.get_device_id())
             else:
+                on.setEnabled(False)
+                off.setEnabled(True)
                 self.client.switch_off(self.device.get_device_id())
         self.wait_for_response = False
 
 
     def onAction(self, action):
-        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
-        if action == 92:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.close()
-        if action == 10:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.parent_window.shutdown()
-            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
-
-            self.close()
+        BaseWindow.onAction(self, action)
 
 class DegreeWindow(DeviceWindow):
 
@@ -527,10 +528,12 @@ class DegreeWindow(DeviceWindow):
                 self.client.move_to_degree(self.device.get_device_id(), current_device_position + 5)
         elif controlId == statusSlider.getId():
             if current_slider_position != current_device_position_in_percent:
+                statusLabel = self.controls["status"]
+                device_group = self.device.get_devicegroup()
                 diff = current_slider_position - current_device_position_in_percent
                 # thermostats can only be shifted in 0.5 degree steps over a range from 3°-28°
-                # this results in 50 possible value, as the slider has 100 possible values
-                # this requires some mappings/hacks
+                # this results in 50 possible value. As the slider has 100 possible values
+                # this requires some mappings
                 if diff == 1:
                     new_position = (float(current_slider_position + 1) * 5 + 60) / 2
                     if new_position % 5 == 0:
@@ -544,17 +547,13 @@ class DegreeWindow(DeviceWindow):
                     if new_position % 5 == 0:
                         self.updater.update_slider(int(new_position))
 
+                if new_position % 5 == 0:
+                    display_value = homepilot_utils.get_display_value(int(new_position), device_group)
+                    statusLabel.setLabel(display_value)
+
 
     def onAction(self, action):
         xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
-        if action == 92:
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+        if action == 92 or action == 10:
             self.updater.set_is_running = False
-            self.close()
-        if action == 10:
-            self.updater.set_is_running = False
-            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
-            self.parent_window.shutdown()
-            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
-
-            self.close()
+        BaseWindow.onAction(self, action)

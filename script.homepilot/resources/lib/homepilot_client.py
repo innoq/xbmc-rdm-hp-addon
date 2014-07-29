@@ -6,19 +6,13 @@ import json
 import xbmc
 from models import Device, Meter, Group, HomePilotBaseObject
 
-TIMEOUT = 2
+TIMEOUT = 3
+SHORT_TIMEOUT = 1.5
 class HomepilotClient:
 
 
     """
     Implementation of a client for the HomePilot REST API
-    
-    TODO
-    - StatusCode prüfen
-    - Rückgabewert OK prüfen
-    - Verhalten bei leerer DeviceId
-    - Verhalten bei ungültiger url
-    - url prüfen
     """
 
     def __init__(self, homepilot_host):
@@ -91,7 +85,7 @@ class HomepilotClient:
         """
         request device by id
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id), timeout=TIMEOUT)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id), timeout=SHORT_TIMEOUT)
         data = json.loads(response.content)
         device = data['device']
         return Device(device)
@@ -101,7 +95,7 @@ class HomepilotClient:
         """
         request device by id
         """
-        response = requests.get(self._base_url + 'do=/meters/' + str(device_id), timeout=TIMEOUT)
+        response = requests.get(self._base_url + 'do=/meters/' + str(device_id), timeout=SHORT_TIMEOUT)
         data = json.loads(response.content)
         device = data['meter']
         data = data['data']
@@ -115,9 +109,14 @@ class HomepilotClient:
         
         device_id -- the id of the device that should be switched on
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=10', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=10'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def switch_off(self, device_id):
         """
@@ -127,9 +126,14 @@ class HomepilotClient:
         
         device_id -- the id of the device that should be switched off
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=11', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=11'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def move_to_position(self, device_id, position):
         """
@@ -138,30 +142,31 @@ class HomepilotClient:
         Arguments:
 
         device_id -- the id of the device that should be moved
-        
+
         position -- the position to which the device should be moved
         """
         assert position >= 0 and position <= 100
-        response = requests.get(
-            self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position)),
-            timeout=TIMEOUT)
-        xbmc.log("request an homepilot - move to position: " + str(
-            self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))),
-                 level=xbmc.LOGNOTICE)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
-
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            xbmc.log("request an homepilot - move to position: " + str(url), level=xbmc.LOGNOTICE)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def move_to_degree(self, device_id, position):
         assert position >= 30 and position <= 280
-        response = requests.get(
-            self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position)),
-            timeout=TIMEOUT)
-        xbmc.log("request an homepilot: " + str(
-            self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))),
-                 level=xbmc.LOGNOTICE)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            xbmc.log("request an homepilot: " + url, level=xbmc.LOGNOTICE)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def ping(self, device_id):
         """
@@ -187,7 +192,6 @@ class HomepilotClient:
             xbmc.log(str(e), level=xbmc.LOGWARNING)
             return False
 
-
     def favorize_device(self, device_id):
         """
         favorize a device
@@ -208,18 +212,31 @@ class HomepilotClient:
 
         device_id -- the id of the device that should be favorized
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
-
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def move_up(self, device_id):
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
-
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False
 
     def move_down(self, device_id):
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3'
+        try:
+            response = requests.get(url, timeout=TIMEOUT)
+            data = json.loads(response.content)
+            return data["status"].lower() in ["ok"]
+        except Exception, e:
+            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
+            return False

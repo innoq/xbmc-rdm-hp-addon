@@ -41,7 +41,7 @@
 
         <!--title separator -->
         <control type="image">
-            <posx>225</posx>
+            <posx>235</posx>
             <posy>90</posy>
             <width>440</width>
             <height>3</height>
@@ -57,16 +57,16 @@
             <height>100</height>
             <width>200</width>
             <control type="button" id="112">
-                <posx>95</posx>
-                <posy>0</posy>
+                <posx>90</posx>
+                <posy>10</posy>
                 <width>30</width>
                 <height>30</height>
                 <texturefocus>scroll-down-focus-2.png</texturefocus>
                 <texturenofocus>scroll-down-2.png</texturenofocus>
             </control>
             <control type="button" id="113">
-                <posx>125</posx>
-                <posy>0</posy>
+                <posx>120</posx>
+                <posy>10</posy>
                 <width>30</width>
                 <height>30</height>
                 <texturefocus>scroll-up-focus-2.png</texturefocus>
@@ -90,7 +90,7 @@
                 <visible>true</visible>
                 <align>center</align>
                 <aligny>center</aligny>
-                <label>ON</label>
+                <label>AN</label>
                 <font>font14</font>
             </control>
             <control type="radiobutton" id="116">
@@ -117,7 +117,7 @@
                 <visible>true</visible>
                 <align>center</align>
                 <aligny>center</aligny>
-                <label>OFF</label>
+                <label>AUS</label>
                 <font>font14</font>
             </control>
         </control>
