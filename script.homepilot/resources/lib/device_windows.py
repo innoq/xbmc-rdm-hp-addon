@@ -19,9 +19,9 @@ _control_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 
 class BaseWindow(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
-        if action == 92:
+        if action == 92 or action == 160 or action == 21:
             self.close()
-        if action == 10:
+        if action == 10 or action == 13:
             self.parent_window.shutdown()
             self.close()
 

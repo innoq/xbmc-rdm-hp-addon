@@ -155,6 +155,7 @@ def __get_icon_percent_inverted(position, base_icon):
 __addon__ = xbmcaddon.Addon(id='script.homepilot')
 __addon_path__        = __addon__.getAddonInfo('path').decode("utf-8")
 _automation_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'automations')
+_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media')
 icons_automation = {}
 icons_automation["generic"] = "global_sensor_12_"
 icons_automation["wind"] = "wind_12_"
@@ -237,7 +238,8 @@ def add_scene_to_automation_list(automation_list, automations, addon):
     automation_list.setVisible(True)
     xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
-
+def get_action_sensor_icon():
+    return os.path.join(_images, "action_sensor.png")
 
 def _add_scene_item(automation_type, value, automation_list, addon):
     if value == 1 or value == 2 or value == 0 or value == 3:
@@ -369,7 +371,6 @@ def add_device_to_automation_list(automation_list, automations, addon):
     automation_list.setVisible(True)
     xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
-
 def _add_device_item(automation_type, value, automation_list, addon):
     if value == 1 or value == 2 or value == 0 or value == 3:
         if value == 3:
@@ -445,3 +446,20 @@ def _get_label_device(type, val, addon):
 
 
 #icons_automation["smartphone"] = "global_sensor_12_"
+
+
+
+def get_title_control(text_or_id, addon):
+    '''
+    use this method to make sure view titles are everywhere on the same position
+    '''
+    xbmc.log("label: " + str(text_or_id), level=xbmc.LOGNOTICE)
+    if isinstance(text_or_id, int):
+        label = addon.getLocalizedString(text_or_id)
+    else:
+        label = text_or_id
+    if xbmc.skinHasImage('settings/slider_back.png'):
+        control = xbmcgui.ControlLabel(330, 65, 600, 75, label, font="Font_Reg22")
+    else:
+        control = xbmcgui.ControlLabel(400, 50, 600, 75, label, font="font16")
+    return control

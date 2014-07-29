@@ -225,6 +225,10 @@ class Action:
         self._iconset = action ["iconset"]
         self._iconsetInverted = action["iconsetInverted"]
         self._cmdId = action["cmdId"]
+        if "param" in action:
+            self._param = action["param"]
+        else:
+            self._param = None
 
     def get_did(self):
         return self._did
@@ -236,13 +240,21 @@ class Action:
         return self._description
 
     def get_icon(self):
-        return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, 0, type)
+        if self._cmdId == 666:#Sensor
+            return homepilot_utils.get_action_sensor_icon()
+        if self._param is not None:
+            return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, self._param, type)
+        else:
+            return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, 0, type)
 
     def get_cmdId(self):
         return self._cmdId
 
     def get_device_group(self):
         return self._type
+
+    def get_param(self):
+        return self._param
 
 
 class Scene:

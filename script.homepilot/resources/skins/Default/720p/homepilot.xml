@@ -76,7 +76,7 @@
                     <font>font13_title</font>
                     <textcolor>grey2</textcolor>
                     <focusedcolor>white</focusedcolor>
-                    <onright>5</onright>
+                    <onright>255</onright>
                     <texturefocus border="5">MenuItemFO.png</texturefocus>
                     <texturenofocus border="5">MenuItemNF.png</texturenofocus>
                     <label>$ADDON[script.homepilot 32004]</label>
@@ -147,8 +147,9 @@
                 <width>760</width>
                 <height>320</height>
                 <onup>251</onup>
-                <ondown>251</ondown>
+                <ondown>4</ondown>
                 <onright>Action(enter)</onright>
+                <onleft>96</onleft>
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
                 <itemlayout height="42" width="600">
@@ -229,7 +230,7 @@
             <control type="group" id="251">
                 <visible>true</visible>
                 <posx>-350</posx>
-                <posy>-420</posy>
+                <posy>-620</posy>
                 <height>250</height>
                 <width>500</width>
                 <control type="list" id="4">
@@ -322,7 +323,7 @@
                     <posy>20</posy>
                     <width>12</width>
                     <height>200</height>
-                    <onleft>Action(zoomin)</onleft>
+                    <onleft>SetFocus(4)</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -340,7 +341,7 @@
             <control type="group" id="252">
                 <visible>true</visible>
                 <posx>350</posx>
-                <posy>80</posy>
+                <posy>-680</posy>
                 <height>500</height>
                 <width>600</width>
                 <control type="list" id="5">
@@ -520,78 +521,22 @@
             <!-- Ende lange Geräteliste -->
 
 
-            <!--radio button block -->
-            <control type="group" id="134">
+            <!-- Favoriten Geräteliste (as it seems not to be possible to resize a scrollbar nor to add two different sized scrollbars to a list) -->
+            <control type="group" id="254">
                 <visible>true</visible>
-                <posx>-320</posx>
-                <posy>-300</posy>
-                <height>50</height>
-                <width>150</width>
-                <control type="radiobutton" id="160">
-                    <posx>0</posx>
-                    <posy>0</posy>
-                    <width>550</width>
-                    <height>50</height>
-                    <visible>true</visible>
-                    <ondown>136</ondown>
-                    <textureradioonfocus>radiobutton-focus.png</textureradioonfocus>
-                    <textureradioonnofocus>radiobutton-focus.png</textureradioonnofocus>
-                    <textureradioofffocus>radiobutton-nofocus.png</textureradioofffocus>
-                    <textureradiooffnofocus>radiobutton-nofocus.png</textureradiooffnofocus>
-                    <texturefocus border="5">button-focus.png</texturefocus>
-                    <texturenofocus>-</texturenofocus>
-                    <label>Aktiv</label>
-                    <align>left</align>
-                    <aligny>center</aligny>
-                </control>
-                <control type="radiobutton" id="136">
-                    <posx>0</posx>
-                    <posy>40</posy>
-                    <width>550</width>
-                    <height>50</height>
-                    <visible>true</visible>
-                    <onup>160</onup>
-                    <ondown>146</ondown>
-                    <textureradioonfocus>favorite_20.png</textureradioonfocus>
-                    <textureradioonnofocus>favorite_20.png</textureradioonnofocus>
-                    <textureradioofffocus>favorite_off_20.png</textureradioofffocus>
-                    <textureradiooffnofocus>favorite_off_20.png</textureradiooffnofocus>
-                    <texturefocus border="5">button-focus.png</texturefocus>
-                    <texturenofocus border="5">-</texturenofocus>
-                    <label>Favorit</label>
-                    <align>left</align>
-                    <aligny>center</aligny>
-                </control>
-            </control>
-            <!--end radio button block -->
-
-
-            <!-- Geräteliste Automationen (it seems it isn't possible to change the height of the scrollbar afterwards -->
-            <control type="group" id="146">
-                <visible>true</visible>
-                <posx>-350</posx>
-                <posy>-800</posy>
-                <height>300</height>
+                <posx>350</posx>
+                <posy>80</posy>
+                <height>250</height>
                 <width>600</width>
-                <control type="label" id="152">
-                    <posx>40</posx>
-                    <posy>-20</posy>
-                    <width>200</width>
-                    <height>50</height>
-                    <visible>true</visible>
-                    <aligny>center</aligny>
-                    <label>$ADDON[script.homepilot 32006]</label>
-                    <font>font14</font>
-                </control>
-                <control type="list" id="148">
+                <control type="list" id="255">
                     <posx>0</posx>
                     <posy>20</posy>
                     <width>760</width>
-                    <height>280</height>
-                    <onright>150</onright>
-                    <onup>136</onup>
-                    <ondown>142</ondown>
-                    <pagecontrol>150</pagecontrol>
+                    <height>250</height>
+                    <onright>993</onright>
+                    <onleft>95</onleft>
+                    <ondown>262</ondown>
+                    <pagecontrol>993</pagecontrol>
                     <visible>true</visible>
                     <!--scrolltime>0</scrolltime-->
                     <itemlayout height="60" width="630">
@@ -634,7 +579,7 @@
                             <label>$INFO[ListItem.Property(description)]</label>
                         </control>
                         <control type="label">
-                            <posx>600</posx>
+                            <posx>700</posx>
                             <posy>0</posy>
                             <width>100</width>
                             <height>60</height>
@@ -657,13 +602,13 @@
                         <control type="image">
                             <posx>0</posx>
                             <posy>0</posy>
-                            <width>650</width>
+                            <width>750</width>
                             <height>61</height>
                             <texture border="0,2,0,2">MenuItemFO.png</texture>
-                            <visible>Control.HasFocus(148)</visible>
+                            <visible>Control.HasFocus(255)</visible>
                         </control>
                         <control type="group">
-                            <visible>Control.HasFocus(148)</visible>
+                            <visible>Control.HasFocus(255)</visible>
                             <control type="label">
                                 <posx>80</posx>
                                 <posy>0</posy>
@@ -689,7 +634,7 @@
                                 <label>$INFO[ListItem.Property(description)]</label>
                             </control>
                             <control type="label">
-                                <posx>600</posx>
+                                <posx>700</posx>
                                 <posy>0</posy>
                                 <width>100</width>
                                 <height>60</height>
@@ -702,7 +647,7 @@
                             </control>
                         </control>
                         <control type="group">
-                            <visible>!Control.HasFocus(148)</visible>
+                            <visible>!Control.HasFocus(255)</visible>
                             <control type="label">
                                 <posx>80</posx>
                                 <posy>0</posy>
@@ -728,7 +673,7 @@
                                 <label>$INFO[ListItem.Property(description)]</label>
                             </control>
                             <control type="label">
-                                <posx>600</posx>
+                                <posx>700</posx>
                                 <posy>0</posy>
                                 <width>100</width>
                                 <height>60</height>
@@ -742,13 +687,13 @@
                         </control>
                     </focusedlayout>
                 </control>
-                <control type="scrollbar" id="150">
+                <control type="scrollbar" id="993">
                     <description>scroll bar indicator for lists</description>
-                    <posx>650</posx>
-                    <posy>0</posy>
+                    <posx>750</posx>
+                    <posy>20</posy>
                     <width>12</width>
-                    <height>150</height>
-                    <onleft>148</onleft>
+                    <height>250</height>
+                    <onleft>255</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -759,13 +704,15 @@
                     <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
                 </control>
             </control>
-            <!-- Ende Geräteliste Automationen -->
+            <!-- Ende Favoriten Geräteliste -->
+
+
 
             <!-- Szenenliste -->
             <control type="group" id="260">
                 <visible>true</visible>
                 <posx>-350</posx>
-                <posy>-500</posy>
+                <posy>-600</posy>
                 <height>500</height>
                 <width>600</width>
                 <control type="list" id="258">
@@ -869,103 +816,101 @@
             </control>
             <!-- Ende Szenenliste -->
 
-            <!--Automationen -->
-            <control type="group" id="138">
+            <!-- Favoriten Szenenliste (as it seems not to be possible to resize a scrollbar nor to add two different sized scrollbars to a list) -->
+            <control type="group" id="262">
                 <visible>true</visible>
-                <posx>-350</posx>
-                <posy>-500</posy>
-                <height>50</height>
-                <width>328</width>
-                <control type="label" id="140">
-                    <posx>40</posx>
+                <posx>350</posx>
+                <posy>420</posy>
+                <height>200</height>
+                <width>600</width>
+                <control type="list" id="264">
+                    <posx>0</posx>
                     <posy>0</posy>
-                    <width>200</width>
-                    <height>50</height>
-                    <visible>true</visible>
-                    <aligny>center</aligny>
-                    <label>$ADDON[script.homepilot 32021]</label>
-                    <font>font14</font>
-                </control>
-                <control type="list" id="142">
-                    <posx>20</posx>
-                    <posy>50</posy>
-                    <width>550</width>
-                    <height>125</height>
-                    <onright>144</onright>
-                    <onup>146</onup>
-                    <pagecontrol>144</pagecontrol>
-                    <itemlayout height="60" width="540">
+                    <width>760</width>
+                    <height>200</height>
+                    <onup>255</onup>
+                    <onright>266</onright>
+                    <onleft>95</onleft>
+                    <pagecontrol>266</pagecontrol>
+                    <itemlayout height="42" width="600">
                         <control type="image">
-                            <posx>0</posx>
+                            <posx>20</posx>
                             <posy>5</posy>
-                            <width>24</width>
-                            <height>24</height>
+                            <width>32</width>
+                            <height>32</height>
                             <info>ListItem.Icon</info>
                         </control>
-                        <control type="textbox">
-                            <posx>50</posx>
+                        <control type="image">
+                            <posx>0</posx>
                             <posy>0</posy>
-                            <width>490</width>
-                            <height>60</height>
-                            <wrapmultiline>true</wrapmultiline>
-                            <font>font12</font>
+                            <width>600</width>
+                            <height>43</height>
+                            <texture border="0,2,0,2">MenuItemNF.png</texture>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>510</width>
+                            <height>40</height>
+                            <font>font13</font>
                             <textcolor>grey2</textcolor>
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
+                            <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
                     </itemlayout>
-                    <focusedlayout height="60" width="540">
+                    <focusedlayout height="42" width="600">
                         <control type="image">
-                            <posx>0</posx>
-                            <posy>0</posy>
-                            <width>650</width>
-                            <height>55</height>
-                            <texture border="0,2,0,2">MenuItemFO.png</texture>
-                            <visible>Control.HasFocus(142)</visible>
-                        </control>
-                        <control type="image">
-                            <posx>0</posx>
+                            <posx>20</posx>
                             <posy>5</posy>
-                            <width>24</width>
-                            <height>24</height>
+                            <width>32</width>
+                            <height>32</height>
                             <info>ListItem.Icon</info>
                         </control>
-                        <control type="textbox">
-                            <posx>50</posx>
+                        <control type="image">
+                            <posx>0</posx>
                             <posy>0</posy>
-                            <width>490</width>
-                            <height>60</height>
-                            <font>font12</font>
-                            <wrapmultiline>true</wrapmultiline>
+                            <width>550</width>
+                            <height>43</height>
+                            <texture border="0,2,0,2">MenuItemFO.png</texture>
+                            <visible>Control.HasFocus(264)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>310</width>
+                            <height>40</height>
+                            <font>font13</font>
                             <textcolor>white</textcolor>
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
+                            <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
-                            <visible>Control.HasFocus(142)</visible>
+                            <visible>Control.HasFocus(264)</visible>
                         </control>
-                        <control type="textbox">
-                            <posx>50</posx>
+                        <control type="label">
+                            <posx>80</posx>
                             <posy>0</posy>
-                            <width>490</width>
-                            <height>60</height>
-                            <font>font12</font>
-                            <wrapmultiline>true</wrapmultiline>
+                            <width>510</width>
+                            <height>40</height>
+                            <font>font13</font>
                             <textcolor>grey2</textcolor>
                             <selectedcolor>selected</selectedcolor>
                             <align>left</align>
+                            <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
-                            <visible>!Control.HasFocus(142)</visible>
+                            <visible>!Control.HasFocus(264)</visible>
                         </control>
                     </focusedlayout>
                 </control>
-                <control type="scrollbar" id="144">
+                <control type="scrollbar" id="266">
                     <description>scroll bar indicator for lists</description>
-                    <posx>650</posx>
-                    <posy>20</posy>
+                    <posx>750</posx>
+                    <posy>10</posy>
                     <width>12</width>
-                    <height>130</height>
-                    <onleft>142</onleft>
+                    <height>200</height>
+                    <onleft>264</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -976,7 +921,7 @@
                     <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
                 </control>
             </control>
-            <!--end Automationen -->
+            <!-- Ende Favoriten Szenenliste -->
 
         </control>
         <include>Clock</include>

@@ -1,0 +1,399 @@
+<window id="1234" type="dialog">
+    <backgroundcolor>backgroundcolor</backgroundcolor>
+    <include>MainWindowMouseButtons</include>
+    <allowoverlay>no</allowoverlay>
+    <visible>true</visible>
+    <coordinates>
+        <system>1</system>
+        <posX>300</posX>
+        <posY>100</posY>
+    </coordinates>
+    <controls>
+        <control type="image" id="1001">
+            <description>media info background image</description>
+            <posx>0</posx>
+            <posy>0</posy>
+            <width>1530</width>
+            <height>720</height>
+            <texture border="20,0,0,0" flipx="true">background2.png</texture>
+        </control>
+        <control type="image" id="1002">
+            <posx>350</posx>
+            <posy>40</posy>
+            <width>700</width>
+            <height>650</height>
+            <texture border="15">ContentPanel2.png</texture>
+        </control>
+        <control type="button">
+            <description>Close Window button</description>
+            <posx>980</posx>
+            <posy>50</posy>
+            <width>64</width>
+            <height>32</height>
+            <label>-</label>
+            <font>-</font>
+            <onclick>back</onclick>
+            <texturefocus>DialogCloseButton-focus.png</texturefocus>
+            <texturenofocus>DialogCloseButton.png</texturenofocus>
+            <visible>system.getbool(input.enablemouse)</visible>
+            <aspectratio>keep</aspectratio>
+        </control>
+
+
+        <!--radio button block -->
+        <control type="group" id="134">
+            <visible>true</visible>
+            <posx>400</posx>
+            <posy>180</posy>
+            <height>50</height>
+            <width>150</width>
+            <control type="radiobutton" id="160">
+                <posx>0</posx>
+                <posy>0</posy>
+                <width>550</width>
+                <height>50</height>
+                <visible>true</visible>
+                <ondown>136</ondown>
+                <textureradioonfocus>radiobutton-focus.png</textureradioonfocus>
+                <textureradioonnofocus>radiobutton-focus.png</textureradioonnofocus>
+                <textureradioofffocus>radiobutton-nofocus.png</textureradioofffocus>
+                <textureradiooffnofocus>radiobutton-nofocus.png</textureradiooffnofocus>
+                <texturefocus border="5">button-focus.png</texturefocus>
+                <texturenofocus>-</texturenofocus>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white</focusedcolor>
+                <label>Aktiv</label>
+                <align>left</align>
+                <aligny>center</aligny>
+            </control>
+            <control type="radiobutton" id="136">
+                <posx>0</posx>
+                <posy>40</posy>
+                <width>550</width>
+                <height>50</height>
+                <visible>true</visible>
+                <onup>160</onup>
+                <ondown>146</ondown>
+                <textureradioonfocus>favorite_20.png</textureradioonfocus>
+                <textureradioonnofocus>favorite_20.png</textureradioonnofocus>
+                <textureradioofffocus>favorite_off_20.png</textureradioofffocus>
+                <textureradiooffnofocus>favorite_off_20.png</textureradiooffnofocus>
+                <texturefocus border="5">button-focus.png</texturefocus>
+                <texturenofocus border="5">-</texturenofocus>
+                <textcolor>grey2</textcolor>
+                <focusedcolor>white</focusedcolor>
+                <label>Favorit</label>
+                <align>left</align>
+                <aligny>center</aligny>
+            </control>
+        </control>
+        <!--end radio button block -->
+
+
+        <!-- Geräteliste Automationen (it seems it isn't possible to change the height of the scrollbar afterwards -->
+        <control type="group" id="146">
+            <visible>true</visible>
+            <posx>350</posx>
+            <posy>800</posy>
+            <height>200</height>
+            <width>600</width>
+            <control type="label" id="152">
+                <posx>40</posx>
+                <posy>-20</posy>
+                <width>200</width>
+                <height>50</height>
+                <visible>true</visible>
+                <aligny>center</aligny>
+                <label>$ADDON[script.homepilot 32006]</label>
+                <font>font14</font>
+            </control>
+            <control type="list" id="148">
+                <posx>0</posx>
+                <posy>20</posy>
+                <width>760</width>
+                <height>180</height>
+                <onright>150</onright>
+                <onup>136</onup>
+                <ondown>142</ondown>
+                <pagecontrol>150</pagecontrol>
+                <visible>true</visible>
+                <!--scrolltime>0</scrolltime-->
+                <itemlayout height="60" width="630">
+                    <control type="image">
+                        <posx>20</posx>
+                        <posy>12</posy>
+                        <width>36</width>
+                        <height>36</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>0</posy>
+                        <width>720</width>
+                        <height>61</height>
+                        <texture border="0,2,0,2">MenuItemNF.png</texture>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>0</posy>
+                        <width>400</width>
+                        <height>40</height>
+                        <font>font13</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                    <control type="label">
+                        <posx>80</posx>
+                        <posy>20</posy>
+                        <width>500</width>
+                        <height>40</height>
+                        <font>font10</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Property(description)]</label>
+                    </control>
+                    <control type="label">
+                        <posx>600</posx>
+                        <posy>0</posy>
+                        <width>100</width>
+                        <height>60</height>
+                        <font>font14</font>
+                        <align>right</align>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <aligny>center</aligny>
+                        <label>$INFO[ListItem.Label2]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="60" width="630">
+                    <control type="image">
+                        <posx>20</posx>
+                        <posy>12</posy>
+                        <width>36</width>
+                        <height>36</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>0</posy>
+                        <width>650</width>
+                        <height>61</height>
+                        <texture border="0,2,0,2">MenuItemFO.png</texture>
+                        <visible>Control.HasFocus(148)</visible>
+                    </control>
+                    <control type="group">
+                        <visible>Control.HasFocus(148)</visible>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>310</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>font10</font>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
+                        <control type="label">
+                            <posx>600</posx>
+                            <posy>0</posy>
+                            <width>100</width>
+                            <height>60</height>
+                            <font>font14</font>
+                            <align>right</align>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label2]</label>
+                        </control>
+                    </control>
+                    <control type="group">
+                        <visible>!Control.HasFocus(148)</visible>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>0</posy>
+                            <width>400</width>
+                            <height>40</height>
+                            <font>font13</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label]</label>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>font10</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
+                        <control type="label">
+                            <posx>600</posx>
+                            <posy>0</posy>
+                            <width>100</width>
+                            <height>60</height>
+                            <font>font14</font>
+                            <align>right</align>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Label2]</label>
+                        </control>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="150">
+                <description>scroll bar indicator for lists</description>
+                <posx>650</posx>
+                <posy>30</posy>
+                <width>12</width>
+                <height>150</height>
+                <onleft>148</onleft>
+                <onright>noop</onright>
+                <orientation>vertical</orientation>
+                <visible>StringCompare(Window(Home).Property(show_bar),1)</visible>
+                <texturesliderbackground border="10,14,10,14">ScrollBarV.png</texturesliderbackground>
+                <texturesliderbar border="10,14,10,14">ScrollBarV_bar.png</texturesliderbar>
+                <texturesliderbarfocus border="10,14,10,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+                <textureslidernib>ScrollBarNib.png</textureslidernib>
+                <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+            </control>
+        </control>
+        <!-- Ende Geräteliste Automationen -->
+
+
+        <!--Automationen -->
+        <control type="group" id="138">
+            <visible>true</visible>
+            <posx>350</posx>
+            <posy>510</posy>
+            <height>50</height>
+            <width>328</width>
+            <control type="label" id="140">
+                <posx>40</posx>
+                <posy>0</posy>
+                <width>200</width>
+                <height>50</height>
+                <visible>true</visible>
+                <aligny>center</aligny>
+                <label>$ADDON[script.homepilot 32021]</label>
+                <font>font14</font>
+            </control>
+            <control type="list" id="142">
+                <posx>20</posx>
+                <posy>50</posy>
+                <width>550</width>
+                <height>125</height>
+                <onright>144</onright>
+                <onup>146</onup>
+                <pagecontrol>144</pagecontrol>
+                <itemlayout height="60" width="540">
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <wrapmultiline>true</wrapmultiline>
+                        <font>font12</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                    </control>
+                </itemlayout>
+                <focusedlayout height="60" width="540">
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>0</posy>
+                        <width>650</width>
+                        <height>55</height>
+                        <texture border="0,2,0,2">MenuItemFO.png</texture>
+                        <visible>Control.HasFocus(142)</visible>
+                    </control>
+                    <control type="image">
+                        <posx>0</posx>
+                        <posy>5</posy>
+                        <width>24</width>
+                        <height>24</height>
+                        <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <font>font12</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(142)</visible>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <font>font12</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(142)</visible>
+                    </control>
+                </focusedlayout>
+            </control>
+            <control type="scrollbar" id="144">
+                <description>scroll bar indicator for lists</description>
+                <posx>650</posx>
+                <posy>20</posy>
+                <width>12</width>
+                <height>130</height>
+                <onleft>142</onleft>
+                <onright>noop</onright>
+                <orientation>vertical</orientation>
+                <visible>true</visible>
+                <texturesliderbackground border="10,14,10,14">ScrollBarV.png</texturesliderbackground>
+                <texturesliderbar border="10,14,10,14">ScrollBarV_bar.png</texturesliderbar>
+                <texturesliderbarfocus border="10,14,10,14">ScrollBarV_bar_focus.png</texturesliderbarfocus>
+                <textureslidernib>ScrollBarNib.png</textureslidernib>
+                <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
+            </control>
+        </control>
+        <!--end Automationen -->
+
+    </controls>
+</window>
