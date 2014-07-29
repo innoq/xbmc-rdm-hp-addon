@@ -6,7 +6,6 @@ import xbmcgui
 import xbmc
 import xbmcaddon
 
-FAVORITEN = 32004
 SENSOREN = 32007
 SZENEN = 32005
 SZENENTYPEN = 32016
@@ -22,6 +21,10 @@ ALLE = 32002
 SZENEN_MANUELL = 32017
 SZENEN_NICHT_MANUELL = 32018
 SZENEN_ALLE = 32020
+
+SZENEN_DETAILS = 100
+FAVORITEN = 101
+FAVORITEN_LOKAL = 102
 
 
 icons = {}
@@ -176,68 +179,69 @@ icons_automation["temperator"] = "global_sensor_12_"
 icons_automation["warning"] = "warning_12_"
 icons_automation["rain"] = "regen_12_"
 
-def add_items_to_automation_list(automation_list, automations):
-        dusk = automations.get_dusk()
-        _add_list_item("dusk", dusk, automation_list)
+def add_scene_to_automation_list(automation_list, automations, addon):
+    dusk = automations.get_dusk()
+    _add_scene_item("dusk", dusk, automation_list)
 
-        dawn = automations.get_dawn()
-        _add_list_item("dawn", dawn, automation_list)
+    dawn = automations.get_dawn()
+    _add_scene_item("dawn", dawn, automation_list)
 
-        time = automations.get_time()
-        _add_list_item("time", time, automation_list)
+    time = automations.get_time()
+    _add_scene_item("time", time, automation_list)
 
-        generic = automations.get_generic()
-        _add_list_item("generic", generic, automation_list)
+    generic = automations.get_generic()
+    _add_scene_item("generic", generic, automation_list)
 
-        wind = automations.get_wind()
-        _add_list_item("wind", wind, automation_list)
+    wind = automations.get_wind()
+    _add_scene_item("wind", wind, automation_list)
 
-        trigger = automations.get_trigger()
-        _add_list_item("trigger", trigger, automation_list)
+    trigger = automations.get_trigger()
+    _add_scene_item("trigger", trigger, automation_list)
 
-        closingContact = automations.get_closing_contact()
-        _add_list_item("closingContact", closingContact, automation_list)
+    closingContact = automations.get_closing_contact()
+    _add_scene_item("closingContact", closingContact, automation_list)
 
-        dust = automations.get_dust()
-        _add_list_item("dust", dust, automation_list)
+    dust = automations.get_dust()
+    _add_scene_item("dust", dust, automation_list)
 
-        smoke = automations.get_smoke()
-        _add_list_item("smoke", smoke, automation_list)
+    smoke = automations.get_smoke()
+    _add_scene_item("smoke", smoke, automation_list)
 
-        sun = automations.get_sun()
-        _add_list_item("sun", sun, automation_list)
+    sun = automations.get_sun()
+    _add_scene_item("sun", sun, automation_list)
 
-        temperature = automations.get_temperature()
-        _add_list_item("temperature", temperature, automation_list)
+    temperature = automations.get_temperature()
+    _add_scene_item("temperature", temperature, automation_list)
 
-        manual = automations.get_manual()
-        _add_list_item("manual", manual, automation_list)
+    manual = automations.get_manual()
+    _add_scene_item("manual", manual, automation_list)
 
-        favored = automations.get_favored()
-        _add_list_item("favored", favored, automation_list)
+    favored = automations.get_favored()
+    _add_scene_item("favored", favored, automation_list)
 
-        smartphone = automations.get_smartphone()
-        _add_list_item("smartphone", smartphone, automation_list)
+    smartphone = automations.get_smartphone()
+    _add_scene_item("smartphone", smartphone, automation_list)
 
-        motion = automations.get_motion()
-        _add_list_item("motion", motion, automation_list)
+    motion = automations.get_motion()
+    _add_scene_item("motion", motion, automation_list)
 
-        temperator = automations.get_temperator()
-        _add_list_item("temperator", temperator, automation_list)
+    temperator = automations.get_temperator()
+    _add_scene_item("temperator", temperator, automation_list)
 
-        warning = automations.get_warning()
-        _add_list_item("warning", warning, automation_list)
+    warning = automations.get_warning()
+    _add_scene_item("warning", warning, automation_list)
 
-        rain = automations.get_rain()
-        _add_list_item("rain", rain, automation_list)
+    rain = automations.get_rain()
+    _add_scene_item("rain", rain, automation_list)
 
-        automation_list.setVisible(True)
-        xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
+    automation_list.setVisible(True)
+    xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
 
-def _add_list_item(automation_type, value, automation_list):
+
+def _add_scene_item(automation_type, value, automation_list):
     if value == 1 or value == 2 or value == 0 or value == 3:
-        label = _get_label_device(automation_type, value)
+        label = _get_label_scene(automation_type, value)
         item = xbmcgui.ListItem(label=label)
         image = os.path.join(_automation_images, icons_automation[automation_type] + str(value) + ".png")
         item.setIconImage(image)
@@ -245,38 +249,149 @@ def _add_list_item(automation_type, value, automation_list):
     else:
         return None
 
-def _get_label_device(type, value):
-    if value != 1 and value != 2:
-        return "<Dummy-Text>"
-    if type == "dusk":
-        return "Die Abenddämmerungsautomatik " + _get_automation_text_device(value) + ", wenn es dunkel wird."
-    elif type == "dawn":
-        return "Die Morgendämmerungsautomatik " + _get_automation_text_device(value) + ", wenn es hell wird."
-    elif type == "time":
-        return "Die Zeitautomatik " + _get_automation_text_device(value) + " auf Zeitbefehle."
-    else:
-        return "<Dummy-Text>"
-
 def _get_label_scene(type, value):
     if value != 1 and value != 2:
         return "<Dummy-Text>"
     if type == "dusk":
-        return "Die Abenddämmerungsautomatik " + _get_automation_text_scene(value) + ", wenn es dunkel wird."
+        return "<Dummy-Text>"
     elif type == "dawn":
-        return "Die Morgendämmerungsautomatik " + _get_automation_text_scene(value) + ", wenn es hell wird."
+        return "<Dummy-Text>"
     elif type == "time":
-        return "Die Szene ist " + _get_automation_text_scene(value) + " auf eingestellte Zeit-Automationen."
+        return "<Dummy-Text>"
     else:
         return "<Dummy-Text>"
 
-def _get_automation_text_device(status):
-    if status == 1:
-        return "des Gerätes ist deaktiviert. Es reagiert nicht"
-    elif status == 2:
-        return "des Gerätes ist aktiviert. Es reagiert"
+def add_device_to_automation_list(automation_list, automations, addon):
+    dusk = automations.get_dusk()
+    _add_device_item("dusk", dusk, automation_list, addon)
 
-def _get_automation_text_scene(status):
-    if status == 1:
-        return "deaktiviert und reagiert nicht"
-    elif status == 2:
-        return "aktiviert und reagiert"
+    dawn = automations.get_dawn()
+    _add_device_item("dawn", dawn, automation_list, addon)
+
+    time = automations.get_time()
+    _add_device_item("time", time, automation_list, addon)
+
+    generic = automations.get_generic()
+    _add_device_item("generic", generic, automation_list, addon)
+
+    wind = automations.get_wind()
+    _add_device_item("wind", wind, automation_list, addon)
+
+    trigger = automations.get_trigger()
+    _add_device_item("trigger", trigger, automation_list, addon)
+
+    closingContact = automations.get_closing_contact()
+    _add_device_item("closingContact", closingContact, automation_list, addon)
+
+    dust = automations.get_dust()
+    _add_device_item("dust", dust, automation_list, addon)
+
+    smoke = automations.get_smoke()
+    _add_device_item("smoke", smoke, automation_list, addon)
+
+    sun = automations.get_sun()
+    _add_device_item("sun", sun, automation_list, addon)
+
+    temperature = automations.get_temperature()
+    _add_device_item("temperature", temperature, automation_list, addon)
+
+    manual = automations.get_manual()
+    _add_device_item("manual", manual, automation_list, addon)
+
+    favored = automations.get_favored()
+    _add_device_item("favored", favored, automation_list, addon)
+
+    smartphone = automations.get_smartphone()
+    _add_device_item("smartphone", smartphone, automation_list, addon)
+
+    motion = automations.get_motion()
+    _add_device_item("motion", motion, automation_list, addon)
+
+    temperator = automations.get_temperator()
+    _add_device_item("temperator", temperator, automation_list, addon)
+
+    warning = automations.get_warning()
+    _add_device_item("warning", warning, automation_list, addon)
+
+    rain = automations.get_rain()
+    _add_device_item("rain", rain, automation_list, addon)
+
+    automation_list.setVisible(True)
+    xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
+
+
+def _add_device_item(automation_type, value, automation_list, addon):
+    if value == 1 or value == 2 or value == 0 or value == 3:
+        if value == 3:
+            label = _get_label_device(automation_type, 4, addon)
+        else:
+            label = _get_label_device(automation_type, value, addon)
+        item = xbmcgui.ListItem(label=label)
+        image = os.path.join(_automation_images, icons_automation[automation_type] + str(value) + ".png")
+        item.setIconImage(image)
+        automation_list.addItem(item)
+    else:
+        return None
+
+def _get_label_device(type, val, addon):
+    xbmc.log("auto type: " + str(type) + "  " + str(val), level=xbmc.LOGNOTICE)
+
+    if val != 1 and val != 2 and val != 4 and val != 0:
+        return "<Dummy-Text>"
+    value = str(val)
+    if type == "dusk":
+        id = int(str(3205) + value)
+        return addon.getLocalizedString(id)
+    elif type == "dawn":
+        id = int(str(3204) + value)
+        return addon.getLocalizedString(id)
+    elif type == "time":
+        id = int(str(3203) + value)
+        return addon.getLocalizedString(id)
+    elif type == "dust":
+        id = int(str(3206) + value)
+        return addon.getLocalizedString(id)
+    elif type == "sun":
+        id = int(str(3207) + value)
+        return addon.getLocalizedString(id)
+    elif type == "favored":
+        id = int(str(3208) + value)
+        return addon.getLocalizedString(id)
+    elif type == "wind":
+        id = int(str(3210) + value)
+        return addon.getLocalizedString(id)
+    elif type == "manual":
+        id = int(str(3209) + value)
+        return addon.getLocalizedString(id)
+    elif type == "rain":
+        id = int(str(3211) + value)
+        return addon.getLocalizedString(id)
+    elif type == "trigger":
+        id = int(str(3212) + value)
+        return addon.getLocalizedString(id)
+    elif type == "generic":
+        id = int(str(3213) + value)
+        return addon.getLocalizedString(id)
+    elif type == "temperator":
+        id = int(str(3214) + value)
+        return addon.getLocalizedString(id)
+    elif type == "temperature":
+        id = int(str(3215) + value)
+        return addon.getLocalizedString(id)
+    elif type == "motion":
+        id = int(str(3216) + value)
+        return addon.getLocalizedString(id)
+    elif type == "smoke":
+        id = int(str(3217) + value)
+        return addon.getLocalizedString(id)
+    elif type == "closingContact":
+        id = int(str(3218) + value)
+        return addon.getLocalizedString(id)
+    elif type == "warning":
+        id = int(str(3219) + value)
+        return addon.getLocalizedString(id)
+    else:
+        return "<Dummy-Text>"
+
+
+#icons_automation["smartphone"] = "global_sensor_12_"

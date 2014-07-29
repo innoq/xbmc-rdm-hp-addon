@@ -11,8 +11,9 @@ _images_device = os.path.join(__addon_path__, 'resources', 'skins', 'Default', '
 _images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media')
 
 from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN_MANUELL, SZENEN_NICHT_MANUELL, \
-    SZENEN_ALLE, SZENENTYPEN, SENSOREN, FAVORITEN, ALLE, GRUPPEN
+    SZENEN_ALLE, SZENENTYPEN, SENSOREN, FAVORITEN, FAVORITEN_LOKAL, ALLE, GRUPPEN, SZENEN_DETAILS
 import homepilot_utils
+import local_favorites
 
 device_types = {}
 device_types[SCHALTER] = 1
@@ -36,8 +37,8 @@ class BaseView:
         if isinstance( text_or_id, int ):
             label = addon.getLocalizedString(text_or_id)
         else:
-            label = unicode(text_or_id, "utf-8")
-        if xbmc.skinHasImage ('settings/slider_back.png'):
+            label = text_or_id
+        if xbmc.skinHasImage('settings/slider_back.png'):
             control = xbmcgui.ControlLabel(330, 65, 600, 75, label, font="Font_Reg22")
         else:
             control = xbmcgui.ControlLabel(400, 50, 600, 75, label, font="font16")
@@ -84,10 +85,15 @@ class ParametrizedGeraeteView(BaseView):
             window.addControl(self.errorcontrol)
         else:
             self.hp_error = False
-            try:
-                devices = self.__get_devices()
+            self.__visualize_devices(window)
+
+
+    def __visualize_devices(self, window):
+        try:
+            devices = self.__get_devices()
+            if len(devices) > 0:
                 self.geraete_list = window.getControl(5)
-                if self.type == SENSOREN or self.type == FAVORITEN:
+                if self.type == SENSOREN or self.type == FAVORITEN or self.type == FAVORITEN_LOKAL:
                     self.geraete_list.controlLeft(self.__get_menu_control(window))
                 else:
                     #set a fake control to prevent xbmc from setting it back to the main menu
@@ -97,17 +103,29 @@ class ParametrizedGeraeteView(BaseView):
                 self.__add_listitems(devices)
                 self.gerate_group_control.setPosition(350,100)
                 self.gerate_group_control.setVisible(True)
-                if self.type != FAVORITEN and self.type != SENSOREN:
+                if self.type != FAVORITEN and self.type != FAVORITEN_LOKAL and self.type != SENSOREN:
                     window.setFocus(self.geraete_list)
-            except Exception as inst:
-                self.hp_error = True
-                errorlabel = self.get_communication_error_label()
-                self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
-                window.addControl(self.errorcontrol)
-                xbmc.log(str(inst), level=xbmc.LOGWARNING)
+            else:
+                pass
+                errorlabel = ""
+                #self.hp_error = True
+                #if self.type == SENSOREN:
+                #    errorlabel = unicode("<keine Sensoren vorhanden>", "utf-8")
+                #elif self.type == FAVORITEN_LOKAL or self.type == FAVORITEN:
+                #    errorlabel = unicode("<keine Favoriten vorhanden>", "utf-8")
+                #else:
+                #    errorlabel = unicode("<keine Geräte vorhanden>", "utf-8")
+                #self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
+                #window.addControl(self.errorcontrol)
+        except Exception as inst:
+            self.hp_error = True
+            errorlabel = self.get_communication_error_label()
+            self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
+            window.addControl(self.errorcontrol)
+            xbmc.log(str(inst), level=xbmc.LOGWARNING)
 
     def __get_menu_control(self, window):
-        if self.type == FAVORITEN:
+        if self.type == FAVORITEN or self.type == FAVORITEN_LOKAL:
             return window.getControl(95)
         elif self.type == SENSOREN:
             return window.getControl(97)
@@ -121,7 +139,6 @@ class ParametrizedGeraeteView(BaseView):
             else:
                 item = xbmcgui.ListItem(label=device.get_name(), label2=device.get_display_value())
             icon_name = device.get_icon()
-
             item.setIconImage(os.path.join(_images_device, icon_name))
             item.setProperty("description", device.get_description())
             item.setProperty("did", str(device.get_device_id()))
@@ -132,6 +149,9 @@ class ParametrizedGeraeteView(BaseView):
     def __get_devices(self):
         if self.type == FAVORITEN:
             devices = self.client.get_favorite_devices()
+        elif self.type == FAVORITEN_LOKAL:
+            xbmc.log("get local devices ", level=xbmc.LOGNOTICE)
+            devices = self.__get_local_favorit_devices()
         elif self.type == ALLE:
             devices = self.client.get_devices()
         elif self.type == SENSOREN:
@@ -141,6 +161,15 @@ class ParametrizedGeraeteView(BaseView):
         else:
             devices = self.client.get_devices_by_device_group(device_types[self.type])
         return devices
+
+    def __get_local_favorit_devices(self):
+        device_ids = local_favorites.get_devices_as_set()
+        all_devices = self.client.get_devices()
+        favorite_devices = []
+        for device in all_devices:
+            if device.get_device_id() in device_ids:
+                favorite_devices.append(device)
+        return favorite_devices
 
     def remove_everything(self, window):
         if self.hp_error and self.errorcontrol is not None:
@@ -360,7 +389,7 @@ class SzenenView(BaseView):
         self.client = client
 
     def get_id(self):
-        return self.type + "_view"
+        return str(self.type) + "_view"
 
     def remove_everything(self, window):
         window.removeControls([self.title_control])
@@ -409,53 +438,63 @@ class SzenenView(BaseView):
 class SzenenDetailView(BaseView):
 
     def __init__(self, client, scene_id):
-        client = client
+        self.client = client
         scene_id = scene_id
         self.scene = client.get_scene_by_id(scene_id)
 
     def get_id(self):
-        return "szenendetail_view"
+        return str(SZENEN_DETAILS) + "_view"
 
     def visualize(self, window, addon):
         self.title_control = self.get_title_control(self.scene.get_name().encode("utf-8"), addon)
         self.execcontrol = None
-        if xbmc.skinHasImage('settings/slider_back.png'):
-            self.imagecontrol = xbmcgui.ControlImage(330, 70, 32, 32, szene_img)
-            self.geratecontrol = xbmcgui.ControlLabel(330, 120, 600, 75, addon.getLocalizedString(32006))
-            if self.scene.is_executable():
-                #self.execcontrol = xbmcgui.ControlButton(380, 70, 100, 50, "Ausführen")
-                pass
-        else:
-            self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)
-            self.geratecontrol = xbmcgui.ControlLabel(400, 240, 600, 75, addon.getLocalizedString(32006))
-            if self.scene.is_executable():
-                #self.execcontrol = xbmcgui.ControlButton(380, 70, 100, 50, "Ausführen")
-                pass
+        self.radiobutton_control = window.getControl(134)
+        self.radiobutton_control.setVisible(True)
+        self.radiobutton_control.setPosition(400, 180)
+
+        self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)
+        if self.scene.is_executable():
+            self.execcontrol = xbmcgui.ControlButton(600, 110, 120, 50, "Ausführen")
         if self.execcontrol is None:
-            window.addControls([self.title_control, self.imagecontrol, self.geratecontrol])
+            window.addControls([self.title_control, self.imagecontrol])
         else:
-            window.addControls([self.title_control, self.imagecontrol, self.geratecontrol, self.execcontrol])
+            window.addControls([self.title_control, self.imagecontrol, self.execcontrol])
 
         self.gerate_group_control = window.getControl(146)
-        self.gerate_group_control.setPosition(350, 270)
+        self.gerate_group_control.setPosition(350, 300)
         self.gerate_group_control.setVisible(True)
         self.gerate_group_control.setHeight(100)
         self.geraete_list = window.getControl(148)
+
         self.geraete_list.reset()
         self.__add_geraetelistitems(self.scene.get_actions())
 
-
         self.automation_group_control = window.getControl(138)
-        self.automation_group_control.setPosition(350, 430)
+        self.automation_group_control.setPosition(350, 460)
         self.automation_group_control.setHeight(100)
         self.automation_group_control.setVisible(True)
         self.automation_list = window.getControl(142)
         self.automation_list.reset()
         automations = self.scene.get_automationen()
-        homepilot_utils.add_items_to_automation_list(self.automation_list, automations)
+        homepilot_utils.add_scene_to_automation_list(self.automation_list, automations, __addon__)
 
-        window.setFocus(self.geraete_list)
+        self.__handle_navigation(window)
 
+
+    def __set_state(self, window, scene):
+        aktiv_button = window.getControl(160)
+        aktiv_button.setSelected(scene.is_active())
+        fav_button = window.getControl(136)
+        fav_button.setSelected(scene.is_favored())
+
+    def __handle_navigation(self, window):
+        aktiv_button = window.getControl(160)
+        if self.execcontrol is not None:
+            window.setFocus(self.execcontrol)
+            self.execcontrol.controlDown(self.radiobutton_control)
+            aktiv_button.controlUp(self.execcontrol)
+        else:
+            window.setFocus(aktiv_button)
 
 
     def __add_geraetelistitems(self, actions):
@@ -516,12 +555,38 @@ class SzenenDetailView(BaseView):
 
     def remove_everything(self, window):
         if self.execcontrol is None:
-            window.removeControls([self.title_control, self.geratecontrol, self.imagecontrol])
+            window.removeControls([self.title_control, self.imagecontrol])
         else:
-            window.removeControls([self.title_control, self.geratecontrol, self.imagecontrol, self.execcontrol])
+            window.removeControls([self.title_control, self.imagecontrol, self.execcontrol])
         self.gerate_group_control.setVisible(False)
         self.automation_group_control.setVisible(False)
+        self.radiobutton_control.setVisible(False)
 
+
+    def handle_click(self, controlId, window, use_local_favorites):
+        xbmc.log("controlId: " + str(controlId), level=xbmc.LOGNOTICE)
+        if controlId == 160:
+            aktiv_button = window.getControl(160)
+            button_is_akiv = aktiv_button.isSelected()
+            if self.scene.is_active() and not button_is_akiv:
+                self.client.set_scene_inactive(self.scene.get_id())
+            elif not self.scene.is_active() and button_is_akiv:
+                self.client.set_scene_active(self.scene.get_id())
+        elif controlId == 136:
+            fav_button = window.getControl(136)
+            button_is_faved = fav_button.isSelected()
+            if self.scene.is_favored() and not button_is_faved:
+                if use_local_favorites:
+                    local_favorites.add_scene(self.scene.get_id())
+                else:
+                    self.client.favorize_scene(self.scene.get_id())
+            elif not self.scene.is_favored() and button_is_faved:
+                if use_local_favorites:
+                    local_favorites.remove_scene(self.scene.get_id())
+                else:
+                    self.client.unfavorize_scene(self.scene.get_id())
+        elif controlId == self.execcontrol.getId():
+            self.client.execute_scene(self.scene.get_id())
 
 
 class EmptyView(BaseView):

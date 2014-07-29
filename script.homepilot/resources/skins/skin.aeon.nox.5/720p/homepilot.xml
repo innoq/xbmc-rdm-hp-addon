@@ -485,6 +485,50 @@
             <!-- Ende lange Geräteliste -->
 
 
+            <!--radio button bliock -->
+            <control type="group" id="134">
+                <visible>true</visible>
+                <posx>-320</posx>
+                <posy>-300</posy>
+                <height>50</height>
+                <width>150</width>
+                <control type="radiobutton" id="160">
+                    <posx>0</posx>
+                    <posy>0</posy>
+                    <width>600</width>
+                    <height>50</height>
+                    <visible>true</visible>
+                    <ondown>136</ondown>
+                    <textureradioon>android/btn_radio_on_holo_dark.png</textureradioon>
+                    <textureradiooff>android/btn_radio_off_holo_dark.png</textureradiooff>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <focusedcolor>-</focusedcolor>
+                    <label>Aktiv</label>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                </control>
+                <control type="radiobutton" id="136">
+                    <posx>0</posx>
+                    <posy>40</posy>
+                    <width>600</width>
+                    <height>50</height>
+                    <visible>true</visible>
+                    <onup>160</onup>
+                    <ondown>148</ondown>
+                    <textureradioon>favorite_20.png</textureradioon>
+                    <textureradiooff>favorite_off_20.png</textureradiooff>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus>-</texturenofocus>
+                    <focusedcolor>-</focusedcolor>
+                    <label>Favorit</label>
+                    <align>left</align>
+                    <aligny>center</aligny>
+                </control>
+            </control>
+            <!--end radio button block -->
+
+
 
             <!-- Geräteliste Automationen -->
             <control type="group" id="146">
@@ -493,12 +537,23 @@
                 <posy>-800</posy>
                 <height>300</height>
                 <width>500</width>
+                <control type="label" id="140">
+                    <posx>40</posx>
+                    <posy>-20</posy>
+                    <width>200</width>
+                    <height>50</height>
+                    <visible>true</visible>
+                    <aligny>center</aligny>
+                    <label>$ADDON[script.homepilot 32006]</label>
+                    <font>Font_Reg29</font>
+                </control>
                 <control type="list" id="148">
                     <posx>0</posx>
                     <posy>20</posy>
                     <width>760</width>
                     <height>300</height>
                     <onright>150</onright>
+                    <onup>136</onup>
                     <ondown>142</ondown>
                     <pagecontrol>150</pagecontrol>
                     <visible>true</visible>

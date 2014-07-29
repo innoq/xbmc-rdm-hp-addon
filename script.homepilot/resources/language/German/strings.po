@@ -89,9 +89,286 @@ msgid "Camera"
 msgstr "Kameras"
 
 msgctxt "#32020"
-msgid "Alle Szenen"
-msgstr ""
+msgid "All Scenes"
+msgstr "Alle Szenen"
 
 msgctxt "#32021"
-msgid "Automationen"
+msgid "Automations"
+msgstr "Automationen"
+
+msgctxt "#32022"
+msgid "Save favorites locally"
+msgstr "Favoriten lokal speichern"
+
+msgctxt "#32030"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32031"
+msgid "The automatic timer of the device is deactivated. It does not respond to time commands."
+msgstr "Die Zeitautomatik des Gerätes ist deaktiviert. Es reagiert nicht auf Zeitbefehle."
+
+msgctxt "#32032"
+msgid "The automatic timer of the device is activated. It responds to time commands."
+msgstr "Die Zeitautomatik des Gerätes ist aktiviert. Es reagiert auf Zeitbefehle."
+
+msgctxt "#32034"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32040"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32041"
+msgid "The automatic dawn function of the device is deactivated. It does not respond when it gets light."
+msgstr "Die Morgendämmerungsautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn es hell wird."
+
+msgctxt "#32042"
+msgid "The automatic dawn function of the device is activated. It responds when it gets light."
+msgstr "Die Morgendämmerungsautomatik des Gerätes ist aktiviert. Es reagiert, wenn es hell wird."
+
+msgctxt "#32044"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32050"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32051"
+msgid "The automatic dusk function of the device is deactivated. It does not respond when it gets dark."
+msgstr "Die Abenddämmerungsautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn es dunkel wird."
+
+msgctxt "#32052"
+msgid "The automatic dusk function of the device is activated. It responds when it gets dark."
+msgstr "Die Abenddämmerungsautomatik des Gerätes ist aktiviert. Es reagiert, wenn es dunkel wird."
+
+msgctxt "#32054"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32060"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32061"
+msgid "The automatic dust function of the device is deactivated. It does not respond when it gets dark."
+msgstr "Die Abenddämmerungsautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn es dunkel wird."
+
+msgctxt "#32062"
+msgid "The automatic dust function of the device is activated. It responds when it gets dark."
+msgstr "Die Abenddämmerungsautomatik des Gerätes ist aktiviert. Es reagiert, wenn es dunkel wird."
+
+msgctxt "#32064"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32070"
+msgid "The solar program is currently being executed."
+msgstr "Das Sonnenprogramm wird aktuell ausgeführt."
+
+msgctxt "#32071"
+msgid "The automated solar function of the device is deactivated. It does not respond when a solar limit value is reached."
+msgstr "Die Sonnenautomatik des Gerätes ist deaktiviert. Es reagiert nicht bei Erreichen eines Sonnenreaktionswertes."
+
+msgctxt "#32072"
+msgid "The automated solar function of the device is activated. It responds when a solar limit value is reached."
+msgstr "Die Sonnenautomatik des Gerätes ist aktiviert. Es reagiert bei Erreichen eines Sonnenreaktionswertes."
+
+msgctxt "#32074"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32080"
+msgid "The device is designated as favourite in the HomePilot®."
+msgstr "Das Gerät ist im HomePilot® als Favorit gekennzeichnet."
+
+msgctxt "#32081"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32082"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32084"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32090"
+msgid "unused
 msgstr ""
+
+msgctxt "#32091"
+msgid "unused
+msgstr ""
+
+msgctxt "#32092"
+msgid "unused
+msgstr ""
+
+msgctxt "#32094"
+msgid "unused"
+msgstr ""
+
+msgctxt "#32100"
+msgid "The wind program is currently being executed."
+msgstr "Das Windprogramm wird aktuell ausgeführt."
+
+msgctxt "#32101""
+msgid "The automated wind function of the device is deactivated. It does not respond when a wind limit value is reached."
+msgstr "Die Windautomatik des Gerätes ist deaktiviert. Es reagiert nicht bei Erreichen eines Windreaktionswertes."
+
+msgctxt "#32102""
+msgid "The automated wind function of the device is activated. It responds when a wind limit value is reached."
+msgstr "Die Windautomatik des Gerätes ist aktiviert. Es reagiert bei Erreichen eines Windreaktionswertes."
+
+msgctxt "#32104""
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32110"
+msgid "The rain program is currently being executed."
+msgstr "Das Regenprogramm wird aktuell ausgeführt."
+
+msgctxt "#32111"
+msgid "The automated rain function of the device is deactivated. It does not respond when it rains."
+msgstr "Die Regenautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn es regnet."
+
+msgctxt "#32112"
+msgid "The automated rain function of the device is activated. It responds when it rains."
+msgstr "Die Regenautomatik des Gerätes ist aktiviert. Es reagiert, wenn es regnet."
+
+msgctxt "#32114"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32120"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32121"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32122"
+msgid "The device can be controlled from a transmitter."
+msgstr "Das Gerät kann von einem Sender gesteuert werden."
+
+msgctxt "#32124"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32130"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32131"
+msgid "The automated sensor function of the device is deactivated. It does not respond when the sensor is triggered."
+msgstr "Die Sensorautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn der Sensor auslöst. "
+
+msgctxt "#32132"
+msgid "The automated sensor function of the device is activated. It responds when the sensor is triggered."
+msgstr "Die Sensorautomatik des Gerätes ist aktiviert. Es reagiert, wenn der Sensor auslöst."
+
+msgctxt "#32134"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32140"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32141"
+msgid "The automated temperature function of the device is deactivated. It does not respond when a temperature limit value is reached."
+msgstr "Die Temperaturautomatik des Gerätes ist deaktiviert. Es reagiert nicht bei Erreichen eines Temperaturreaktionswertes."
+
+msgctxt "#32142"
+msgid "The automated temperature function of the device is activated. It responds when a temperature limit value is reached."
+msgstr "Die Temperaturautomatik des Gerätes ist aktiviert. Es reagiert bei Erreichen eines Temperaturreaktionswertes."
+
+msgctxt "#32144"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32150"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32151"
+msgid "The automated temperature function of the device is deactivated. It does not respond when a temperature limit value is reached."
+msgstr "Die Temperaturautomatik des Gerätes ist deaktiviert. Es reagiert nicht bei Erreichen eines Temperaturreaktionswertes."
+
+msgctxt "#32152"
+msgid "The automated temperature function of the device is activated. It responds when a temperature limit value is reached."
+msgstr "Die Temperaturautomatik des Gerätes ist aktiviert. Es reagiert bei Erreichen eines Temperaturreaktionswertes."
+
+msgctxt "#32154"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32160"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32161"
+msgid "The automated motion function of the device is deactivated. It does not respond when motion is registered."
+msgstr "Die Bewegungsautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn Bewegung erkannt wird."
+
+msgctxt "#32162"
+msgid "The automated motion function of the device is activated. It responds when motion is registered."
+msgstr "Die Bewegungsautomatik des Gerätes ist aktiviert. Es reagiert, wenn Bewegung erkannt wird."
+
+msgctxt "#32164"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32170"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32171"
+msgid "The automated smoke function of the device is deactivated. It does not respond when smoke is registered."
+msgstr "Die Rauchautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn Rauch erkannt wird. "
+
+msgctxt "#32172"
+msgid "The automated smoke function of the device is activated. It responds when smoke is registered."
+msgstr "Die Rauchautomatik des Gerätes ist aktiviert. Es reagiert, wenn Rauch erkannt wird. "
+
+msgctxt "#32174"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32180"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32181"
+msgid "The automated closer contact function of the device is deactivated. It does not respond when the contact is opened or closed."
+msgstr "Die Schließkontaktautomatik des Gerätes ist deaktiviert. Es reagiert nicht, bei Öffnen bzw. Schließen des Kontaktes."
+
+msgctxt "#32182"
+msgid "The automated closer contact function of the device is activated. It responds when the contact is opened or closed."
+msgstr "Die Schließkontaktautomatik des Gerätes ist aktiviert. Es reagiert, bei Öffnen bzw. Schließen des Kontaktes."
+
+msgctxt "#32184"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32190"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32191"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32192"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32194"
+msgid "A fault was registered. Please check the mechanical condition of the device."
+msgstr "Es wurde ein Fehlerfall erkannt. Bitte prüfen Sie die mechanischen Gegebenheiten des Gerätes."
+

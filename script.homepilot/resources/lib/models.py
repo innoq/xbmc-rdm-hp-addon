@@ -248,15 +248,17 @@ class Action:
 class Scene:
 
     def __init__(self, scene):
-        self._sid = scene["sid"]
-        self._name = scene["name"]
-        self._description = scene["description"]
+        self._sid           = scene["sid"]
+        self._name          = scene["name"]
+        self._description   = scene["description"]
         self._is_executable = scene["isExecutable"]
-        self._sync = scene["sync"]
-        self._groups = scene["groups"]
+        self._sync          = scene["sync"]
+        self._groups        = scene["groups"]
         if 'actions' in scene:
-            self._actions = scene["actions"]
-        self._properties = scene["properties"]
+            self._actions   = scene["actions"]
+        self._properties    = scene["properties"]
+        self._is_active     = scene["isActive"]
+        self._favored       = scene["favoredId"]
 
     def get_id(self):
         return self._sid
@@ -272,3 +274,9 @@ class Scene:
 
     def is_executable(self):
         return self._is_executable == 1
+
+    def is_active(self):
+        return self._is_active == 1
+
+    def is_favored(self):
+        return self._favored != 0

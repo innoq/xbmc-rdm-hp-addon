@@ -95,6 +95,35 @@ class HomepilotClient:
         scene = data['scene']
         return Scene(scene)
 
+    def favorize_scene(self, scene_id):
+        url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setFavored'
+        return self._call_url(url)
+
+    def unfavorize_scene(self, scene_id):
+        url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setUnfavored'
+        return self._call_url(url)
+
+    def get_favorite_scenes(self):
+        response = requests.get(self._base_url + 'do=/scenes/favorites/', timeout=TIMEOUT)
+        data = json.loads(response.content)
+        return self.__map_response_to_scenes(data[u'scenes'])
+
+    def execute_scene(self, scene_id):
+        url = self._base_url + 'do=/scenes/' + scene_id + '?do=use'
+        return self._call_url(url)
+
+    def set_scene_active(self, scene_id):
+        url = self._base_url + 'do=/scenes/' + scene_id + '?do=setActive&state=1'
+        return self._call_url(url)
+
+    def set_scene_inactive(self, scene_id):
+        url = self._base_url + 'do=/scenes/' + scene_id + '?do=setActive&state=0'
+        return self._call_url(url)
+
+    def unfavorize_device(self, device_id):
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored'
+        return self._call_url(url)
+
 
     def get_devices_by_device_group(self, group_id):
         """
@@ -118,6 +147,7 @@ class HomepilotClient:
         """
         response = requests.get(self._base_url + 'do=/devices/favorites/', timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
+
 
     def get_groups(self):
         response = requests.get(self._base_url + 'do=/groups', timeout=TIMEOUT)
@@ -153,53 +183,22 @@ class HomepilotClient:
         device_id -- the id of the device that should be switched on
         """
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=10'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
 
     def set_device_automation_on(self, device_id):
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setAutomation&state=1'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
 
     def set_device_automation_off(self, device_id):
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setAutomation&state=0'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
 
     def switch_off(self, device_id):
-        """
-        sends command 11 to a given device
-        
-        Arguments:
-        
-        device_id -- the id of the device that should be switched off
-        """
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=11'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
     def move_to_position(self, device_id, position):
         """
@@ -213,26 +212,12 @@ class HomepilotClient:
         """
         assert position >= 0 and position <= 100
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            xbmc.log("request an homepilot - move to position: " + str(url), level=xbmc.LOGNOTICE)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
     def move_to_degree(self, device_id, position):
         assert position >= 30 and position <= 280
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            xbmc.log("request an homepilot: " + url, level=xbmc.LOGNOTICE)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
     def ping(self, device_id):
         """
@@ -242,63 +227,29 @@ class HomepilotClient:
 
         device_id -- the id of the device that should be pinged
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=12', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=12'
+        return self._call_url(url)
 
     def ping(self):
         """
         Pings the homepilot
         """
-        try:
-            response = requests.get(self._base_url + 'do=/ping?var=1359030565', timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log(str(e), level=xbmc.LOGWARNING)
-            return False
+        url = self._base_url + 'do=/ping?var=1359030565'
+        return self._call_url(url)
 
     def favorize_device(self, device_id):
-        """
-        favorize a device
-
-        Arguments:
-
-        device_id -- the id of the device that should be favorized
-        """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setFavored', timeout=TIMEOUT)
-        data = json.loads(response.content)
-        return data["status"].lower() in ["ok"]
-
-    def unfavorize_device(self, device_id):
-        """
-        unfavorize a device
-
-        Arguments:
-
-        device_id -- the id of the device that should be favorized
-        """
-        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        url = self._base_url + 'do=/devices/' + str(device_id) + '?do=setFavored'
+        return self._call_url(url)
 
     def move_up(self, device_id):
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1'
-        try:
-            response = requests.get(url, timeout=TIMEOUT)
-            data = json.loads(response.content)
-            return data["status"].lower() in ["ok"]
-        except Exception, e:
-            xbmc.log("Fehler beim Aufruf der Url: " + url + " " + str(e), level=xbmc.LOGWARNING)
-            return False
+        return self._call_url(url)
 
     def move_down(self, device_id):
         url = self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3'
+        return self._call_url(url)
+
+    def _call_url(self, url):
         try:
             response = requests.get(url, timeout=TIMEOUT)
             data = json.loads(response.content)

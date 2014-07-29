@@ -15,3 +15,7 @@ class SettingsDialogManager (object):
     def update_ip_address(self, addon):
         addon.openSettings()
         addon.setSetting("homepilot_ip_set", "true")
+
+    def use_local_favorites(self, addon):
+        use_local_favorites = addon.getSetting("local_favorites")
+        return use_local_favorites

@@ -146,7 +146,6 @@ class SliderUpdater (threading.Thread):
 
 
 
-
 class DeviceWindow(BaseWindow):
     '''
     Parent class for all types of devices (Thermostat, Schalter, Dimmer, Tor, ...)
@@ -191,12 +190,14 @@ class DeviceWindow(BaseWindow):
         elif not is_selected and is_automated:
             self.client.set_device_automation_off(deviceId)
 
-    def handle_favorit(self, deviceId, is_selected, is_favorited):
-        xbmc.log("-- handle favorit is_selected: " + str(is_selected) + "  is_favorited: " + str(is_favorited), xbmc.LOGNOTICE)
-        if is_selected and not is_favorited:
-            self.client.favorize_device(deviceId)
-        elif not is_selected and is_favorited:
-            self.client.unfavorize_device(deviceId)
+    def handle_favorit(self, deviceId, is_selected, is_favorited, use_local_favorites):
+        if use_local_favorites:
+            pass
+        else:
+            if is_selected and not is_favorited:
+                self.client.favorize_device(deviceId)
+            elif not is_selected and is_favorited:
+                self.client.unfavorize_device(deviceId)
 
     def set_navigation_handling_for_automatik_and_favorit(self, previous_control):
         autoButton = self.getControl(132)
@@ -219,8 +220,7 @@ class DeviceWindow(BaseWindow):
         automation_list = self.getControl(142)
         automation_list.reset()
         automations = device.get_automationen()
-        homepilot_utils.add_items_to_automation_list(automation_list, automations)
-
+        homepilot_utils.add_device_to_automation_list(automation_list, automations, __addon__)
 
 
 class PercentageWindow(DeviceWindow):
@@ -230,6 +230,7 @@ class PercentageWindow(DeviceWindow):
         self.client = kwargs["client"]
         self.device = kwargs["device"]
         self.parent_window = kwargs["parent"]
+        self.use_local_favorites = kwargs["local_favs"]
         self.updater = SliderUpdater(self.client, self.device, PERCENT_TYPE)
         self.updater.start()
         self.has_error = False
@@ -402,7 +403,7 @@ class PercentageWindow(DeviceWindow):
             self.handle_automation(self.device.get_device_id(), auto_button.isSelected(), self.device.is_automated())
 
         if controlId == favoriten_radio_control.getId():
-            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored(), self.use_local_favorites)
 
 
     def onAction(self, action):
@@ -417,6 +418,7 @@ class SwitchWindow(DeviceWindow):
         self.client = kwargs["client"]
         self.device = kwargs["device"]
         self.parent_window = kwargs["parent"]
+        self.use_local_favorites = kwargs["local_favs"]
         self.wait_for_response = False
         self.updater = SliderUpdater(self.client, self.device, DEGREE_TYPE)
         self.errorcontrol = None
@@ -425,9 +427,10 @@ class SwitchWindow(DeviceWindow):
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
         switch_controls = self.__get_switch_controls()
-        self.addControls(base_device_controls.values())
+
         self.controls = base_device_controls
         self.controls.update(switch_controls)
+        self.addControls([self.controls["title"], self.controls["icon"]])
         self.__set_focus_and_navigation_handling()
         self.visualize_automations(self.device)
 
@@ -518,7 +521,7 @@ class SwitchWindow(DeviceWindow):
             self.handle_automation(self.device.get_device_id(), autoButton.isSelected(), self.device.is_automated())
 
         if controlId == favoriten_radio_control.getId():
-            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored(), self.use_local_favorites)
 
     def onAction(self, action):
         BaseWindow.onAction(self, action)
@@ -530,6 +533,7 @@ class DegreeWindow(DeviceWindow):
         self.client = kwargs["client"]
         self.device = kwargs["device"]
         self.parent_window = kwargs["parent"]
+        self.use_local_favorites = kwargs["local_favs"]
         self.updater = SliderUpdater(self.client, self.device, DEGREE_TYPE)
         self.updater.start()
         self.errorcontrol = None
@@ -673,7 +677,7 @@ class DegreeWindow(DeviceWindow):
             self.handle_automation(self.device.get_device_id(), autoButton.isSelected(), self.device.is_automated())
 
         if controlId == favoriten_radio_control.getId():
-            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored())
+            self.handle_favorit(self.device.get_device_id(), favoriten_radio_control.isSelected(), self.device.is_favored(), self.use_local_favorites)
 
     def onAction(self, action):
         if action == 92 or action == 10:

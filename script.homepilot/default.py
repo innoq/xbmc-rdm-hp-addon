@@ -32,13 +32,15 @@ import homepilot_client
 import homepilot_views
 import settings
 import time
-from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN_MANUELL, SZENEN_NICHT_MANUELL, SZENEN_ALLE, SZENENTYPEN, SENSOREN, ALLE, FAVORITEN, GRUPPEN
+from homepilot_utils import ROLLADEN, SCHALTER, DIMMER, THERMOSTATE, TORE, SZENEN_MANUELL, SZENEN_NICHT_MANUELL, \
+    SZENEN_ALLE, SZENENTYPEN, SZENEN_DETAILS, SENSOREN, ALLE, FAVORITEN, GRUPPEN, FAVORITEN_LOKAL
 from device_windows import MeterWindow, PercentageWindow, SwitchWindow, DegreeWindow, ErrorWindow
 
 action_previous_menu = (9, 10, 92, 216, 247, 257, 275, 61467, 61448)
 
 GERAETETYP_VIEW     = "geraetetyp_view"
 FAVORITEN_VIEW      = str(FAVORITEN) + "_view"
+FAVORITEN_LOKAL_VIEW = str(FAVORITEN_LOKAL) + "_view"
 GRUPPEN_VIEW        = str(GRUPPEN) + "_view"
 ALLE_VIEW           = str(ALLE) + "_view"
 SENSOREN_VIEW       = str(SENSOREN) + "_view"
@@ -52,6 +54,7 @@ SZENEN_MANUELL_VIEW = str(SZENEN_MANUELL) + "_view"
 SZENEN_NICHT_MANUELL_VIEW = str(SZENEN_NICHT_MANUELL) + "_view"
 SZENEN_ALLE_VIEW    = str(SZENEN_ALLE) + "_view"
 SZENENTYP_VIEW      = str(SZENENTYPEN) + "_view"
+SZENEN_DETAILS_VIEW = str(SZENEN_DETAILS) + "_views"
 EMPTY_VIEW = "empty_view"
 
 BACKSPACE = 61448
@@ -90,9 +93,9 @@ class StatusUpdater (threading.Thread):
                 #this is a pretty sloppy implementation, as the window is updated even when it isn't display anymore
                 #I've choosen this way as I didn't find a method for getting the current state of a xbmcgui.WindowXMLDialog
                 #and the possible alternatives(e.g. passing references of this class around) looked more error prone
-                self.current_window.update(__addon__)
+                self.current_window.update()
             view_id = self.currentView.get_id()
-            if view_id == FAVORITEN_VIEW or view_id == ROLLADEN_VIEW or view_id == SCHALTER_VIEW or view_id == DIMMER_VIEW or view_id ==THERMOSTATE_VIEW or view_id == TORE_VIEW:
+            if view_id == FAVORITEN_VIEW or view_id == FAVORITEN_LOKAL_VIEW or view_id == ROLLADEN_VIEW or view_id == SCHALTER_VIEW or view_id == DIMMER_VIEW or view_id ==THERMOSTATE_VIEW or view_id == TORE_VIEW:
                 self.currentView.update(self.window, __addon__, self.menuControl)
             time.sleep(1.5)
 
@@ -111,7 +114,11 @@ class GuiController(xbmcgui.WindowXMLDialog):
         ip_address = self.settings_dialog_manager.get_ip_address(__addon__)
         self.client = homepilot_client.HomepilotClient(ip_address)
 
-        self.favoritenView = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
+        useLocalFavorites = self.settings_dialog_manager.use_local_favorites(__addon__)
+        if useLocalFavorites == "true":
+            self.favoritenView = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN_LOKAL)
+        else:
+            self.favoritenView = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
         self._wait_for_visualization = False
 
     def onInit(self):
@@ -122,7 +129,9 @@ class GuiController(xbmcgui.WindowXMLDialog):
         self.window.setProperty('windowLabel', 'Rademacher HomePilot')
         geraete_view = self.favoritenView
         menu_control = self.window.getControl(95)
-        geraete_view.visualize (self, __addon__)
+        useLocalFavorites = self.settings_dialog_manager.use_local_favorites(__addon__)
+        title = self.__get_favorite_view_title(useLocalFavorites)
+        geraete_view.visualize (self, __addon__, title)
         self.setFocus(menu_control)
         self.currentView = geraete_view
         self.status_updater = StatusUpdater (self.currentView, menu_control, self)
@@ -138,6 +147,15 @@ class GuiController(xbmcgui.WindowXMLDialog):
     def __is_geraeteview (self, view):
         return view == ALLE_VIEW or view == ROLLADEN_VIEW or view == SCHALTER_VIEW or view == DIMMER_VIEW or \
                          view == THERMOSTATE_VIEW or view == TORE_VIEW
+
+    def __get_favorite_view_title(self, useLocalFavorites):
+        label = __addon__.getLocalizedString(32004)
+        if useLocalFavorites == "true":
+            label += " (lokale Favoriten)"
+        else:
+            label += " (HomePilot)"
+        xbmc.log("label " + str(label), level=xbmc.LOGNOTICE)
+        return label
 
     def onAction(self, action):
         """
@@ -171,7 +189,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 self.setFocusId(257)
         elif self.getFocusId() == 999 and action == 31:
             self.setFocusId(5)
-        elif action == ACTION_NAV_BACK and view == FAVORITEN_VIEW:
+        elif action == ACTION_NAV_BACK and (view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW):
             self.setFocusId(95)
         elif action == ACTION_NAV_BACK and view == SENSOREN_VIEW:
             self.setFocusId(97)
@@ -179,8 +197,8 @@ class GuiController(xbmcgui.WindowXMLDialog):
             self.setFocusId(5)
         elif action.getButtonCode() == BACKSPACE or action.getButtonCode() == ARROW_LEFT:
             self.__handle_back_action_on_nested_sites(view, is_geraeteview)
-        if self.getFocusId() == 0:
-            if view == FAVORITEN_VIEW or view == SENSOREN_VIEW or is_geraeteview:
+        if self.getFocusId() == 0 and action.getButtonCode() != 0:
+            if view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW or view == SENSOREN_VIEW or is_geraeteview:
                 self.setFocusId(5)
             elif view == GERAETETYP_VIEW:
                 self.setFocusId(257)
@@ -229,7 +247,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
             self.__set_gruppen_list_focus(group_id)
 
 
-
     def onFocus(self, control):
         xbmc.log("onFocus " + str(control), level=xbmc.LOGNOTICE)
         if not self._wait_for_visualization:
@@ -242,11 +259,17 @@ class GuiController(xbmcgui.WindowXMLDialog):
                     self.currentView = empty_view
                     self.status_updater.set_current_view(empty_view, menu_control)
             elif control == 95: #Menüpunkt Favoriten
-                if self.currentView.get_id() != FAVORITEN_VIEW:
+                if self.currentView.get_id() != FAVORITEN_VIEW and self.currentView.get_id != FAVORITEN_LOKAL_VIEW:
+                    xbmc.log("visualize Favoritenview ")
                     self.currentView.remove_everything (self)
-                    geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
+                    useLocalFavorites = self.settings_dialog_manager.use_local_favorites(__addon__)
+                    title = self.__get_favorite_view_title(useLocalFavorites)
+                    if useLocalFavorites == "true":
+                        geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN_LOKAL)
+                    else:
+                        geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, FAVORITEN)
                     menu_control = self.window.getControl(95)
-                    geraete_view.visualize (self, __addon__)
+                    geraete_view.visualize (self, __addon__, title)
                     self.currentView = geraete_view
                     self.status_updater.set_current_view(geraete_view, menu_control)
             elif control == 96: #Menüpunkt Geräte
@@ -272,15 +295,17 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
     def onClick(self, control):
         xbmc.log("onClick " + str(control), level=xbmc.LOGNOTICE)
-        if control == 5:
-            view_id = self.currentView.get_id()
-            if view_id == SENSOREN + "_view":
+        view_id = self.currentView.get_id()
+        if view_id == SZENEN_DETAILS_VIEW:
+            self.currentView.handle_click(control, self)
+        elif control == 5:
+            if view_id == SENSOREN_VIEW:
                 geraete_listcontrol = self.getControl(5)
                 list_item = geraete_listcontrol.getSelectedItem()
                 did = list_item.getProperty("did")
                 device_window = MeterWindow('device_window.xml', home, client=self.client, did=did, parent=self)
                 device_window.doModal()
-            elif view_id == FAVORITEN_VIEW or view_id == ALLE_VIEW or view_id == ROLLADEN_VIEW \
+            elif view_id == FAVORITEN_VIEW or view_id == FAVORITEN_LOKAL_VIEW or view_id == ALLE_VIEW or view_id == ROLLADEN_VIEW \
                 or view_id == SCHALTER_VIEW or view_id == DIMMER_VIEW or view_id == THERMOSTATE_VIEW or view_id == TORE_VIEW:
                 geraete_listcontrol = self.getControl(5)
                 list_item = geraete_listcontrol.getSelectedItem()
@@ -347,19 +372,24 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
 
     def __open_device_window(self, did):
+        useLocalFavorites = self.settings_dialog_manager.use_local_favorites(__addon__)
+        local_favs = False
+        if useLocalFavorites == "true":
+            local_favs = True
         try:
             device = self.client.get_device_by_id(did)
             dgroup = device.get_devicegroup()
             if dgroup == 2 or dgroup == 4 or dgroup == 8:
-                percent_window = PercentageWindow('device_window.xml', home, client=self.client, device=device,parent=self)
+
+                percent_window = PercentageWindow('device_window.xml', home, client=self.client, device=device, parent=self, local_favs= local_favs)
                 self.status_updater.set_current_window(percent_window)
                 percent_window.doModal()
             elif dgroup == 1:
-                switch_window = SwitchWindow('device_window.xml', home, client=self.client, device=device, parent=self)
+                switch_window = SwitchWindow('device_window.xml', home, client=self.client, device=device, parent=self, local_favs= local_favs)
                 self.status_updater.set_current_window(switch_window)
                 switch_window.doModal()
             elif dgroup == 5:
-                percent_window = DegreeWindow('device_window.xml', home, client=self.client, device=device, parent=self)
+                percent_window = DegreeWindow('device_window.xml', home, client=self.client, device=device, parent=self, local_favs= local_favs)
                 self.status_updater.set_current_window(percent_window)
                 percent_window.doModal()
         except Exception, e:
