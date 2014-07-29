@@ -24,17 +24,17 @@ device_types[THERMOSTATE] = 5
 device_types[TORE] = 8
 
 
-MESSAGE_SETTINGS_DIALOG = "Durch drücken von <Enter> gelangen Sie zum Einstellungsdialog"
+MESSAGE_SETTINGS_DIALOG = __addon__.getLocalizedString(32384)
 
 
 class BaseView:
 
-    @staticmethod
-    def get_title_control(text_or_id, addon):
+    def get_title_control(self, text_or_id, addon):
         '''
         use this method to make sure view titles are everywhere on the same position
         '''
-        if isinstance( text_or_id, int ):
+        xbmc.log("label: " + str(text_or_id), level=xbmc.LOGNOTICE)
+        if isinstance(text_or_id, int):
             label = addon.getLocalizedString(text_or_id)
         else:
             label = text_or_id
@@ -44,9 +44,9 @@ class BaseView:
             control = xbmcgui.ControlLabel(400, 50, 600, 75, label, font="font16")
         return control
 
-    @staticmethod
+
     def get_communication_error_label():
-        return unicode("<Probleme bei der Kommunikation mit dem HomePilot>", "utf-8")
+        return __addon__.getLocalizedString(32381)
 
 
 class ParametrizedGeraeteView(BaseView):
@@ -85,10 +85,10 @@ class ParametrizedGeraeteView(BaseView):
             window.addControl(self.errorcontrol)
         else:
             self.hp_error = False
-            self.__visualize_devices(window)
+            self.__visualize_devices(window, addon)
 
 
-    def __visualize_devices(self, window):
+    def __visualize_devices(self, window, addon):
         try:
             devices = self.__get_devices()
             if len(devices) > 0:
@@ -310,7 +310,7 @@ class GeraetetypView(BaseView):
                 self.gruppen_group_control.setVisible(True)
                 self.errorcontrol = None
             else:
-                errorlabel = unicode("<Keine Gruppen vorhanden>", "utf-8")
+                errorlabel = addon.getLocalizedString(32380)
                 self.errorcontrol = xbmcgui.ControlLabel(450, 450, 600, 75, errorlabel)
                 window.addControl(self.errorcontrol)
         except Exception, e:
@@ -336,6 +336,9 @@ class GeraetetypView(BaseView):
 
 
 szene_img = os.path.join(_images, 'szene_32.png')
+szene_img_deact = os.path.join(_images, 'szene_32_deactivated.png')
+scene_manual = os.path.join(_images, 'scene_manual2.png')
+scene_non_manual = os.path.join(_images, 'scene_no_manual2.png')
 
 
 class SzenentypView(BaseView):
@@ -358,14 +361,14 @@ class SzenentypView(BaseView):
         self.geraetetypen_list.reset()
 
         self.manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32017))
-        self.manuell_item.setIconImage(szene_img)
+        self.manuell_item.setIconImage(scene_manual)
         self.geraetetypen_list.addItem(self.manuell_item)
 
         self.nicht_manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32018))
-        self.nicht_manuell_item.setIconImage(szene_img)
+        self.nicht_manuell_item.setIconImage(scene_non_manual)
         self.geraetetypen_list.addItem(self.nicht_manuell_item)
 
-        self.alle_item = xbmcgui.ListItem(addon.getLocalizedString(32002))
+        self.alle_item = xbmcgui.ListItem(addon.getLocalizedString(32020))
         self.geraetetypen_list.addItem(self.alle_item)
 
         self.geraetetypen_list.setVisible(True)
@@ -382,7 +385,7 @@ class SzenentypView(BaseView):
         return ""
 
 
-class SzenenView(BaseView):
+class SzenenListView(BaseView):
 
     def __init__(self, client, type):
         self.type = type
@@ -417,7 +420,7 @@ class SzenenView(BaseView):
                 scenes_list.addItem(scene_item)
             self.errorcontrol = None
         else:
-            errorlabel = unicode("<Keine Szenen vorhanden>", "utf-8")
+            errorlabel = addon.getLocalizedString(32380)
             self.errorcontrol = xbmcgui.ControlLabel(450, 150, 600, 75, errorlabel)
             window.addControl(self.errorcontrol)
         scenes_list.setVisible(True)
@@ -437,13 +440,17 @@ class SzenenView(BaseView):
 
 class SzenenDetailView(BaseView):
 
-    def __init__(self, client, scene_id):
+    def __init__(self, client, scene_id, previous_list_position):
         self.client = client
         scene_id = scene_id
         self.scene = client.get_scene_by_id(scene_id)
+        self.previous_list_position = previous_list_position
 
     def get_id(self):
         return str(SZENEN_DETAILS) + "_view"
+
+    def get_previous_list_position(self):
+        return self.previous_list_position
 
     def visualize(self, window, addon):
         self.title_control = self.get_title_control(self.scene.get_name().encode("utf-8"), addon)
@@ -451,10 +458,9 @@ class SzenenDetailView(BaseView):
         self.radiobutton_control = window.getControl(134)
         self.radiobutton_control.setVisible(True)
         self.radiobutton_control.setPosition(400, 180)
-
-        self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)
+        self.__set_state(window, self.scene)
         if self.scene.is_executable():
-            self.execcontrol = xbmcgui.ControlButton(600, 110, 120, 50, "Ausführen")
+            self.execcontrol = xbmcgui.ControlButton(600, 110, 120, 50, addon.getLocalizedString(32370))
         if self.execcontrol is None:
             window.addControls([self.title_control, self.imagecontrol])
         else:
@@ -467,7 +473,7 @@ class SzenenDetailView(BaseView):
         self.geraete_list = window.getControl(148)
 
         self.geraete_list.reset()
-        self.__add_geraetelistitems(self.scene.get_actions())
+        self.__add_geraetelistitems(self.scene.get_actions(), __addon__)
 
         self.automation_group_control = window.getControl(138)
         self.automation_group_control.setPosition(350, 460)
@@ -483,7 +489,13 @@ class SzenenDetailView(BaseView):
 
     def __set_state(self, window, scene):
         aktiv_button = window.getControl(160)
-        aktiv_button.setSelected(scene.is_active())
+        is_active = scene.is_active()
+        aktiv_button.setSelected(is_active)
+        if is_active:
+            self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)
+        else:
+            self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img_deact)
+
         fav_button = window.getControl(136)
         fav_button.setSelected(scene.is_favored())
 
@@ -497,58 +509,63 @@ class SzenenDetailView(BaseView):
             window.setFocus(aktiv_button)
 
 
-    def __add_geraetelistitems(self, actions):
+    def __add_geraetelistitems(self, actions, addon):
         for action in actions:
             item = xbmcgui.ListItem(label=action.get_name())
             icon_name = action.get_icon()
-            item.setLabel2(self.get_cmd_txt(action.get_cmdId(), action.get_device_group()))
+            item.setLabel2(self.get_cmd_txt(action.get_cmdId(), action.get_device_group(), addon))
             item.setIconImage(os.path.join(_images_device, icon_name))
             item.setProperty("description", action.get_description())
             self.geraete_list.addItem(item)
 
-    def get_cmd_txt (self, cmd_id, device_group):
+    def get_cmd_txt (self, cmd_id, device_group, addon):
+        EIN = 10
+        AUS = 11
+        AUF = 1
+        AB = 2
+        STOPP = 3
         if device_group == 1:
-            if cmd_id == 10:
-                return "Ein"
-            elif cmd_id == 11:
-                return "Aus"
+            if cmd_id == EIN:
+                return addon.getLocalizedString(32375)
+            elif cmd_id == AUS:
+                return addon.getLocalizedString(32376)
         elif device_group == 2:
-            if cmd_id == 1:
-                return "Auf"
-            elif cmd_id == 3:
-                return "Stopp"
-            elif cmd_id == 2:
-                return "Ab"
+            if cmd_id == AUF:
+                return addon.getLocalizedString(32371)
+            elif cmd_id == STOPP:
+                return addon.getLocalizedString(32372)
+            elif cmd_id == AB:
+                return addon.getLocalizedString(32373)
             #Fahre in Pos (%)
         elif device_group == 5:
-            if cmd_id == 10:
-                return "Ein"
-            elif cmd_id == 11:
-                return "Aus"
+            if cmd_id == EIN:
+                return addon.getLocalizedString(32375)
+            elif cmd_id == AUS:
+                return addon.getLocalizedString(32376)
             #Fahre in Pos (°C * 10))
         elif device_group == 4:
-            if cmd_id == 10:
-                return "Ein"
-            elif cmd_id == 11:
-                return "Aus"
-            elif cmd_id == 1:
-                return "Auf"
-            elif cmd_id == 3:
-                return "Stopp"
-            elif cmd_id == 2:
-                return "Ab"
+            if cmd_id == EIN:
+                return addon.getLocalizedString(32375)
+            elif cmd_id == AUS:
+                return addon.getLocalizedString(32376)
+            elif cmd_id == AUF:
+                return addon.getLocalizedString(32371)
+            elif cmd_id == STOPP:
+                return addon.getLocalizedString(32372)
+            elif cmd_id == AB:
+                return addon.getLocalizedString(32373)
             elif cmd_id == 23:
-                return "Inkrement"
+                return addon.getLocalizedString(32371)
             elif cmd_id == 24:
-                return "Dekrement"
+                return addon.getLocalizedString(32373)
             #Fahre in Pos (%)
         elif device_group == 8:
-            if cmd_id == 1:
-                return "Auf"
-            elif cmd_id == 3:
-                return "Stopp"
-            elif cmd_id == 2:
-                return "Ab"
+            if cmd_id == AUF:
+                return addon.getLocalizedString(32371)
+            elif cmd_id == STOPP:
+                return addon.getLocalizedString(32372)
+            elif cmd_id == AB:
+                return addon.getLocalizedString(32373)
             #Fahre in Pos (%))
         return ""
 
@@ -564,14 +581,19 @@ class SzenenDetailView(BaseView):
 
 
     def handle_click(self, controlId, window, use_local_favorites):
-        xbmc.log("controlId: " + str(controlId), level=xbmc.LOGNOTICE)
         if controlId == 160:
             aktiv_button = window.getControl(160)
             button_is_akiv = aktiv_button.isSelected()
             if self.scene.is_active() and not button_is_akiv:
                 self.client.set_scene_inactive(self.scene.get_id())
+                window.removeControl(self.imagecontrol)
+                self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img_deact)
+                window.addControl(self.imagecontrol)
             elif not self.scene.is_active() and button_is_akiv:
                 self.client.set_scene_active(self.scene.get_id())
+                window.removeControl(self.imagecontrol)
+                self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)
+                window.addControl(self.imagecontrol)
         elif controlId == 136:
             fav_button = window.getControl(136)
             button_is_faved = fav_button.isSelected()

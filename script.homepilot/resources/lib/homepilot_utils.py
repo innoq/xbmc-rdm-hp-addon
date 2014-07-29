@@ -16,7 +16,7 @@ SCHALTER = 32011
 DIMMER = 32012
 THERMOSTATE = 32013
 TORE = 32014
-ALLE = 32002
+ALLE = 32020
 
 SZENEN_MANUELL = 32017
 SZENEN_NICHT_MANUELL = 32018
@@ -29,35 +29,35 @@ FAVORITEN_LOKAL = 102
 
 icons = {}
 icons["iconset1"] = "aquarium_72_"
-icons["iconset22"] = "bargraph_horizontal_72_"
 icons["iconset2"] = "bargraph_vertikal_72_"
-icons["iconset23"] = "bewegungsmelder_72_"
 icons["iconset4"] = "deckenlampe_72_"
 icons["iconset5"] = "ein_aus_schalter1_72_"
-icons["iconset24"] = "fenster_72_"
-icons["iconset18"] = "gartensprenkler_72_"
-icons["iconset21"] = "birne1_72_"
 icons["iconset6"] = "jalousie_72_"
-icons["iconset17"] = "kaffeemaschine_72_"
-icons["iconset32"] = "lichterkette_72"
 icons["iconset7"] = "markise_72_"
-icons["iconset16"] = "pumpe_72_"
-icons["iconset26"] = "rauchmelder_72_"
 icons["iconset8"] = "rollladen1_72_"
-icons["iconset15"] = "rollladen2_72_"
 icons["iconset9"] = "schiebetuer_72_"
-icons["iconset14"] = "schiebeladen_72_"
-icons["iconset27"] = "schliesskontakt_72_"
-icons["iconset30"] = "garage_72_"
-icons["iconset31"] = "sektionaltor_72_"
-icons["iconset25"] = "genericsensor_72_"
-#icons["iconset19"]      -> Standard
 icons["iconset10"] = "steckdose_72_"
-icons["iconset13"] = "stehlampe_72_"
-icons["iconset20"] = "sunscreen_72_"
-icons["iconset28"] = "thermostat_72_"
 icons["iconset11"] = "tischlampe_72_"
 icons["iconset12"] = "tuer_72_"
+icons["iconset13"] = "stehlampe_72_"
+icons["iconset14"] = "schiebeladen_72_"
+icons["iconset15"] = "rollladen2_72_"
+icons["iconset16"] = "pumpe_72_"
+icons["iconset17"] = "kaffeemaschine_72_"
+icons["iconset18"] = "gartensprenkler_72_"
+#icons["iconset19"]      -> Standard
+icons["iconset20"] = "sunscreen_72_"
+icons["iconset21"] = "birne1_72_"
+icons["iconset22"] = "bargraph_horizontal_72_"
+icons["iconset23"] = "bewegungsmelder_72_"
+icons["iconset24"] = "fenster_72_"
+icons["iconset25"] = "genericsensor_72_"
+icons["iconset26"] = "rauchmelder_72_"
+icons["iconset27"] = "schliesskontakt_72_"
+icons["iconset28"] = "thermostat_72_"
+icons["iconset30"] = "garage_72_"
+icons["iconset31"] = "sektionaltor_72_"
+icons["iconset32"] = "lichterkette_72_"
 icons["iconset33"] = "weihnachtsbaum_72_"
 icons["iconset34"] = "dachfenster_72_"
 icons["iconset35"] = "handsender_72_"
@@ -181,67 +181,71 @@ icons_automation["rain"] = "regen_12_"
 
 def add_scene_to_automation_list(automation_list, automations, addon):
     dusk = automations.get_dusk()
-    _add_scene_item("dusk", dusk, automation_list)
+    _add_scene_item("dusk", dusk, automation_list, addon)
 
     dawn = automations.get_dawn()
-    _add_scene_item("dawn", dawn, automation_list)
+    _add_scene_item("dawn", dawn, automation_list, addon)
 
     time = automations.get_time()
-    _add_scene_item("time", time, automation_list)
+    _add_scene_item("time", time, automation_list, addon)
 
     generic = automations.get_generic()
-    _add_scene_item("generic", generic, automation_list)
+    _add_scene_item("generic", generic, automation_list, addon)
 
     wind = automations.get_wind()
-    _add_scene_item("wind", wind, automation_list)
+    _add_scene_item("wind", wind, automation_list, addon)
 
     trigger = automations.get_trigger()
-    _add_scene_item("trigger", trigger, automation_list)
+    _add_scene_item("trigger", trigger, automation_list, addon)
 
     closingContact = automations.get_closing_contact()
-    _add_scene_item("closingContact", closingContact, automation_list)
+    _add_scene_item("closingContact", closingContact, automation_list, addon)
 
     dust = automations.get_dust()
-    _add_scene_item("dust", dust, automation_list)
+    _add_scene_item("dust", dust, automation_list, addon)
 
     smoke = automations.get_smoke()
-    _add_scene_item("smoke", smoke, automation_list)
+    _add_scene_item("smoke", smoke, automation_list, addon)
 
     sun = automations.get_sun()
-    _add_scene_item("sun", sun, automation_list)
+    _add_scene_item("sun", sun, automation_list, addon)
 
     temperature = automations.get_temperature()
-    _add_scene_item("temperature", temperature, automation_list)
+    _add_scene_item("temperature", temperature, automation_list, addon)
 
     manual = automations.get_manual()
-    _add_scene_item("manual", manual, automation_list)
+    _add_scene_item("manual", manual, automation_list, addon)
 
     favored = automations.get_favored()
-    _add_scene_item("favored", favored, automation_list)
+    _add_scene_item("favored", favored, automation_list, addon)
 
     smartphone = automations.get_smartphone()
-    _add_scene_item("smartphone", smartphone, automation_list)
+    _add_scene_item("smartphone", smartphone, automation_list, addon)
 
     motion = automations.get_motion()
-    _add_scene_item("motion", motion, automation_list)
+    _add_scene_item("motion", motion, automation_list, addon)
 
     temperator = automations.get_temperator()
-    _add_scene_item("temperator", temperator, automation_list)
+    _add_scene_item("temperator", temperator, automation_list, addon)
 
     warning = automations.get_warning()
-    _add_scene_item("warning", warning, automation_list)
+    _add_scene_item("warning", warning, automation_list, addon)
 
     rain = automations.get_rain()
-    _add_scene_item("rain", rain, automation_list)
+    _add_scene_item("rain", rain, automation_list, addon)
 
     automation_list.setVisible(True)
     xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
 
 
-def _add_scene_item(automation_type, value, automation_list):
+def _add_scene_item(automation_type, value, automation_list, addon):
     if value == 1 or value == 2 or value == 0 or value == 3:
-        label = _get_label_scene(automation_type, value)
+        if value == 3:
+            label = _get_label_scene(automation_type, 4, addon)
+        else:
+            label = _get_label_scene(automation_type, value, addon)
+
         item = xbmcgui.ListItem(label=label)
         image = os.path.join(_automation_images, icons_automation[automation_type] + str(value) + ".png")
         item.setIconImage(image)
@@ -249,17 +253,63 @@ def _add_scene_item(automation_type, value, automation_list):
     else:
         return None
 
-def _get_label_scene(type, value):
-    if value != 1 and value != 2:
-        return "<Dummy-Text>"
+def _get_label_scene(type, val, addon):
+    if val != 1 and val != 2 and val != 4 and val != 0:
+        return "-"
+    value = str(val)
     if type == "dusk":
-        return "<Dummy-Text>"
+        id = int(str(3222) + value)
+        return addon.getLocalizedString(id)
     elif type == "dawn":
-        return "<Dummy-Text>"
+        id = int(str(3221) + value)
+        return addon.getLocalizedString(id)
     elif type == "time":
-        return "<Dummy-Text>"
+        id = int(str(3220) + value)
+        return addon.getLocalizedString(id)
+    elif type == "dust":
+        id = int(str(3223) + value)
+        return addon.getLocalizedString(id)
+    elif type == "sun":
+        id = int(str(3224) + value)
+        return addon.getLocalizedString(id)
+    elif type == "favored":
+        id = int(str(3225) + value)
+        return addon.getLocalizedString(id)
+    elif type == "wind":
+        id = int(str(3227) + value)
+        return addon.getLocalizedString(id)
+    elif type == "manual":
+        id = int(str(3226) + value)
+        return addon.getLocalizedString(id)
+    elif type == "rain":
+        id = int(str(3228) + value)
+        return addon.getLocalizedString(id)
+    elif type == "trigger":
+        id = int(str(3229) + value)
+        return addon.getLocalizedString(id)
+    elif type == "generic":
+        id = int(str(3230) + value)
+        return addon.getLocalizedString(id)
+    elif type == "temperator":
+        id = int(str(3231) + value)
+        return addon.getLocalizedString(id)
+    elif type == "temperature":
+        id = int(str(3232) + value)
+        return addon.getLocalizedString(id)
+    elif type == "motion":
+        id = int(str(3233) + value)
+        return addon.getLocalizedString(id)
+    elif type == "smoke":
+        id = int(str(3234) + value)
+        return addon.getLocalizedString(id)
+    elif type == "closingContact":
+        id = int(str(3235) + value)
+        return addon.getLocalizedString(id)
+    elif type == "warning":
+        id = int(str(3236) + value)
+        return addon.getLocalizedString(id)
     else:
-        return "<Dummy-Text>"
+        return "-"
 
 def add_device_to_automation_list(automation_list, automations, addon):
     dusk = automations.get_dusk()
@@ -337,7 +387,7 @@ def _get_label_device(type, val, addon):
     xbmc.log("auto type: " + str(type) + "  " + str(val), level=xbmc.LOGNOTICE)
 
     if val != 1 and val != 2 and val != 4 and val != 0:
-        return "<Dummy-Text>"
+        return "-"
     value = str(val)
     if type == "dusk":
         id = int(str(3205) + value)
@@ -391,7 +441,7 @@ def _get_label_device(type, val, addon):
         id = int(str(3219) + value)
         return addon.getLocalizedString(id)
     else:
-        return "<Dummy-Text>"
+        return "-"
 
 
 #icons_automation["smartphone"] = "global_sensor_12_"

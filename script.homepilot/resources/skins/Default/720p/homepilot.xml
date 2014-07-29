@@ -322,7 +322,7 @@
                     <posy>20</posy>
                     <width>12</width>
                     <height>200</height>
-                    <onleft>999</onleft>
+                    <onleft>Action(zoomin)</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>

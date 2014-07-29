@@ -16,40 +16,66 @@ msgstr ""
 "Language: en\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-msgctxt "#32002"
-msgid "All"
-msgstr "Alle"
+## Additional properties
 
-msgctxt "#32003"
-msgid "IP-Address HomePilot"
-msgstr "IP-Adresse HomePilot"
+msgctxt "#32384"
+msgid "Please press <Enter> to change settings"
+msgstr "Durch drücken von <Enter> gelangen Sie zum Einstellungsdialog"
+
+msgctxt "#32385"
+msgid "local Favorites"
+msgstr "lokale Favoriten"
+
+msgctxt "#32386"
+msgid "Save favorites locally"
+msgstr "Favoriten lokal speichern"
+
+#######################################
+
+
+
+msgctxt "#32383"
+msgid "HomePilot by Rademacher GmbH & Co. KG"
+msgstr "HomePilot by Rademacher GmbH & Co. KG"
+
+msgctxt "#32380"
+msgid "No connection to HomePilot or no data available."
+msgstr "Es besteht keine Verbindung zum HomePilot oder es sind keine Daten verfügbar."
+
+msgctxt "#32381"
+msgid "No data could be loaded. Please check your settings in the configuration and your internet connection, both of HomePilot and your smartphone. As soon as a connection to HomePilot is possible, this will be automatically re-connected."
+msgstr "Es konnten keine Daten geladen werden. Bitte überprüfen Sie Ihre Einstellungen in der Konfiguration und Ihre Internet-Verbindung, vom HomePilot und dem Smartphone. Sobald eine Verbindung zum HomePilot möglich ist, wird diese automatisch wieder hergestellt."
 
 msgctxt "#32004"
 msgid "Favourites"
 msgstr "Favoriten"
 
-msgctxt "#32005"
-msgid "Scenes"
-msgstr "Szenen"
-
 msgctxt "#32006"
 msgid "Devices"
 msgstr "Geräte"
 
-msgctxt "#32007"
-msgid "Sensors"
-msgstr "Sensoren"
+msgctxt "#32005"
+msgid "Scenes"
+msgstr "Szenen"
 
 msgctxt "#32008"
 msgid "Settings"
 msgstr "Einstellungen"
 
 msgctxt "#32009"
-msgid "Device Types"
+msgid "Device types"
 msgstr "Gerätetypen"
 
+msgctxt "#32015"
+msgid "Group"
+msgstr "Gruppen"
+
+msgctxt "#32002"
+msgid "All"
+msgstr "Alle"
+
 msgctxt "#32010"
-msgid "Roller Shutters"
+msgid "Roller shutters"
 msgstr "Rollläden"
 
 msgctxt "#32011"
@@ -60,45 +86,45 @@ msgctxt "#32012"
 msgid "Dimmer"
 msgstr "Dimmer"
 
+msgctxt "#32387"
+msgid "Automatic"
+msgstr "Automatik"
+
+msgctxt "#32388"
+msgid "Favourite"
+msgstr "Favorit"
+
+msgctxt "#32370"
+msgid "Execute"
+msgstr "Ausführen"
+
+msgctxt "#32007"
+msgid "Sensors"
+msgstr "Sensoren"
+
+msgctxt "#32003"
+msgid "Local access (IP address)"
+msgstr "Lokaler Zugriff (IP Adresse)"
+
 msgctxt "#32013"
 msgid "Thermostats"
 msgstr "Thermostate"
 
+msgctxt "#32389"
+msgid "Current data"
+msgstr "Aktuelle Daten"
+
+msgctxt "#32383"
+msgid "HomePilot by Rademacher GmbH & Co. KG"
+msgstr "HomePilot"
+
 msgctxt "#32014"
-msgid "Garage Doors"
+msgid "Doors"
 msgstr "Tore"
-
-msgctxt "#32015"
-msgid "Groups"
-msgstr "Gruppen"
-
-msgctxt "#32016"
-msgid "Scene Types"
-msgstr "Szenentypen"
-
-msgctxt "#32017"
-msgid "Can be run manually"
-msgstr "Auch Manuell ausführbar"
-
-msgctxt "#32018"
-msgid "Can not be run manually"
-msgstr "Nicht Manuell ausführbar"
-
-msgctxt "#32019"
-msgid "Camera"
-msgstr "Kameras"
-
-msgctxt "#32020"
-msgid "All Scenes"
-msgstr "Alle Szenen"
 
 msgctxt "#32021"
 msgid "Automations"
 msgstr "Automationen"
-
-msgctxt "#32022"
-msgid "Save favorites locally"
-msgstr "Favoriten lokal speichern"
 
 msgctxt "#32030"
 msgid "An error has occurred! Please contact RADEMACHER Service."
@@ -197,34 +223,34 @@ msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
 msgctxt "#32090"
-msgid "unused
-msgstr ""
+msgid "unused"
+msgstr "unused"
 
 msgctxt "#32091"
-msgid "unused
-msgstr ""
+msgid "unused"
+msgstr "unused"
 
 msgctxt "#32092"
-msgid "unused
-msgstr ""
+msgid "unused"
+msgstr "unused"
 
 msgctxt "#32094"
 msgid "unused"
-msgstr ""
+msgstr "unused"
 
 msgctxt "#32100"
 msgid "The wind program is currently being executed."
 msgstr "Das Windprogramm wird aktuell ausgeführt."
 
-msgctxt "#32101""
+msgctxt "#32101"
 msgid "The automated wind function of the device is deactivated. It does not respond when a wind limit value is reached."
 msgstr "Die Windautomatik des Gerätes ist deaktiviert. Es reagiert nicht bei Erreichen eines Windreaktionswertes."
 
-msgctxt "#32102""
+msgctxt "#32102"
 msgid "The automated wind function of the device is activated. It responds when a wind limit value is reached."
 msgstr "Die Windautomatik des Gerätes ist aktiviert. Es reagiert bei Erreichen eines Windreaktionswertes."
 
-msgctxt "#32104""
+msgctxt "#32104"
 msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
@@ -265,7 +291,7 @@ msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
 msgctxt "#32131"
-msgid "The automated sensor function of the device is deactivated. It does not respond when the sensor is triggered."
+msgid "The automated sensor function of the device is deactivated. It does not respond when the sensor is triggered. "
 msgstr "Die Sensorautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn der Sensor auslöst. "
 
 msgctxt "#32132"
@@ -329,11 +355,11 @@ msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
 msgctxt "#32171"
-msgid "The automated smoke function of the device is deactivated. It does not respond when smoke is registered."
+msgid "The automated smoke function of the device is deactivated. It does not respond when smoke is registered. "
 msgstr "Die Rauchautomatik des Gerätes ist deaktiviert. Es reagiert nicht, wenn Rauch erkannt wird. "
 
 msgctxt "#32172"
-msgid "The automated smoke function of the device is activated. It responds when smoke is registered."
+msgid "The automated smoke function of the device is activated. It responds when smoke is registered. "
 msgstr "Die Rauchautomatik des Gerätes ist aktiviert. Es reagiert, wenn Rauch erkannt wird. "
 
 msgctxt "#32174"
@@ -369,6 +395,337 @@ msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
 msgctxt "#32194"
-msgid "A fault was registered. Please check the mechanical condition of the device."
+msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es wurde ein Fehlerfall erkannt. Bitte prüfen Sie die mechanischen Gegebenheiten des Gerätes."
 
+msgctxt "#32200"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32201"
+msgid "The scene is deactivated and no longer responds to set time automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Zeit-Automationen."
+
+msgctxt "#32202"
+msgid "The scene is activated and responds to set time automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Zeit-Automationen."
+
+msgctxt "#32204"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32210"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32211"
+msgid "The scene is deactivated and no longer responds to set dawn automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Morgendämmerungs-Automationen."
+
+msgctxt "#32212"
+msgid "The scene is activated and responds to set dawn automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Morgendämmerungs-Automationen."
+
+msgctxt "#32214"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32220"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32221"
+msgid "The scene is deactivated and no longer responds to set dusk automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Abenddämmerungs-Automationen."
+
+msgctxt "#32222"
+msgid "The scene is activated and responds to set dusk automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Abenddämmerungs-Automationen."
+
+msgctxt "#32224"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32230"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32231"
+msgid "The scene is deactivated and no longer responds to set dusk automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Abenddämmerungs-Automationen."
+
+msgctxt "#32232"
+msgid "The scene is activated and responds to set dusk automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Abenddämmerungs-Automationen."
+
+msgctxt "#32234"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32240"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32241"
+msgid "The scene is deactivated and no longer responds to set solar automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Sonnen-Automationen."
+
+msgctxt "#32242"
+msgid "The scene is activated and responds to set solar automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Sonnen-Automationen."
+
+msgctxt "#32244"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32250"
+msgid "This scene is designated as favourite in the HomePilot®."
+msgstr "Diese Szene ist im HomePilot® als Favorit gekennzeichnet."
+
+msgctxt "#32251"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32252"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32254"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32260"
+msgid "unused"
+msgstr "unused"
+
+msgctxt "#32261"
+msgid "unused"
+msgstr "unused"
+
+msgctxt "#32262"
+msgid "unused"
+msgstr "unused"
+
+msgctxt "#32264"
+msgid "unused"
+msgstr "unused"
+
+msgctxt "#32270"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32271"
+msgid "The scene is deactivated and no longer responds to set wind automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Wind-Automationen."
+
+msgctxt "#32272"
+msgid "The scene is activated and responds to set wind automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Wind-Automationen."
+
+msgctxt "#32274"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32280"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32281"
+msgid "The scene is deactivated and no longer responds to set rain automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Regen-Automationen."
+
+msgctxt "#32282"
+msgid "The scene is activated and responds to set rain automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Regen-Automationen."
+
+msgctxt "#32284"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32290"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32291"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32292"
+msgid "This scene can be carried out by a transmitter."
+msgstr "Diese Szene kann durch einen Sender ausgeführt werden."
+
+msgctxt "#32294"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32300"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32301"
+msgid "The scene is deactivated and no longer responds to set general automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Allgemein-Automationen."
+
+msgctxt "#32302"
+msgid "The scene is activated and responds to set general automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Allgemein-Automationen."
+
+msgctxt "#32304"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32310"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32311"
+msgid "The scene is deactivated and no longer responds to set temperature automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Temperatur-Automationen."
+
+msgctxt "#32312"
+msgid "The scene is activated and responds to set temperature automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Temperatur-Automationen."
+
+msgctxt "#32314"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32320"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32321"
+msgid "The scene is deactivated and no longer responds to set temperature automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Temperatur-Automationen."
+
+msgctxt "#32322"
+msgid "The scene is activated and responds to set temperature automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Temperatur-Automationen."
+
+msgctxt "#32324"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32330"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32331"
+msgid "The scene is deactivated and no longer responds to set motion automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Bewegungs-Automationen."
+
+msgctxt "#32332"
+msgid "The scene is activated and responds to set motion automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Bewegungs-Automationen."
+
+msgctxt "#32334"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32340"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32341"
+msgid "The scene is deactivated and no longer responds to set smoke automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Rauch-Automationen."
+
+msgctxt "#32342"
+msgid "The scene is activated and responds to set smoke automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Rauch-Automationen."
+
+msgctxt "#32344"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32350"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32351"
+msgid "The scene is deactivated and no longer responds to set closer contact automation."
+msgstr "Die Szene ist deaktiviert und reagiert nicht mehr auf eingestellte Schließkontakt-Automationen."
+
+msgctxt "#32352"
+msgid "The scene is activated and responds to set closer contact automation."
+msgstr "Die Szene ist aktiviert und reagiert auf eingestellte Schließkontakt-Automationen."
+
+msgctxt "#32354"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32360"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32361"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32362"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32364"
+msgid "An error has occurred! Please contact RADEMACHER Service."
+msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
+
+msgctxt "#32020"
+msgid "All"
+msgstr "Alle"
+
+msgctxt "#32017"
+msgid "Can be run manually"
+msgstr "Auch Manuell ausführbar"
+
+msgctxt "#32018"
+msgid "Can notbe run manually"
+msgstr "Nicht Manuell ausführbar"
+
+msgctxt "#32016"
+msgid "Scene types"
+msgstr "Szenentypen"
+
+msgctxt "#32382"
+msgid "HomePilot"
+msgstr "HomePilot"
+
+msgctxt "#32371"
+msgid "Up"
+msgstr "Auf"
+
+msgctxt "#32372"
+msgid "Stop"
+msgstr "Stopp"
+
+msgctxt "#32373"
+msgid "Down"
+msgstr "Ab"
+
+msgctxt "#32374"
+msgid "%"
+msgstr "%"
+
+msgctxt "#32375"
+msgid "On"
+msgstr "Ein"
+
+msgctxt "#32376"
+msgid "Off"
+msgstr "Aus"
+
+msgctxt "#32377"
+msgid "Auto"
+msgstr "Auto"
+
+msgctxt "#32378"
+msgid "Manual"
+msgstr "Manuell"
+
+msgctxt "#32379"
+msgid "Sensor"
+msgstr "Sensor"
+
+msgctxt "#32019"
+msgid "Cameras"
+msgstr "Kameras"

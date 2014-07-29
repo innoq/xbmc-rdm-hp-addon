@@ -894,6 +894,20 @@
                         <selectedcolor>selected</selectedcolor>
                         <align>left</align>
                         <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(142)</visible>
+                    </control>
+                    <control type="textbox">
+                        <posx>60</posx>
+                        <posy>0</posy>
+                        <width>490</width>
+                        <height>60</height>
+                        <font>font13</font>
+                        <wrapmultiline>true</wrapmultiline>
+                        <textcolor>white</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>Control.HasFocus(142)</visible>
                     </control>
                 </focusedlayout>
             </control>

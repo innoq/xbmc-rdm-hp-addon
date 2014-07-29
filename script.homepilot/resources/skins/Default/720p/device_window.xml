@@ -9,7 +9,7 @@
         <posY>100</posY>
     </coordinates>
     <controls>
-        <control type="image">
+        <control type="image" id="1001">
             <description>media info background image</description>
             <posx>0</posx>
             <posy>0</posy>
@@ -17,7 +17,7 @@
             <height>720</height>
             <texture border="20,0,0,0" flipx="true">background2.png</texture>
         </control>
-        <control type="image">
+        <control type="image" id="1002">
             <posx>250</posx>
             <posy>40</posy>
             <width>400</width>
@@ -26,7 +26,7 @@
         </control>
         <control type="button">
             <description>Close Window button</description>
-            <posx>580</posx>
+            <posx>780</posx>
             <posy>50</posy>
             <width>64</width>
             <height>32</height>
@@ -40,9 +40,9 @@
         </control>
 
         <!--title separator -->
-        <control type="image">
+        <control type="image" id="1004">
             <posx>235</posx>
-            <posy>90</posy>
+            <posy>100</posy>
             <width>440</width>
             <height>3</height>
             <texture>separator.png</texture>
@@ -170,7 +170,7 @@
                 <textureradiooffnofocus>radiobutton-nofocus.png</textureradiooffnofocus>
 	            <texturefocus border="5">button-focus.png</texturefocus>
 		        <texturenofocus border="5">button-nofocus.png</texturenofocus>
-                <label>Automatik</label>
+                <label>$ADDON[script.homepilot 32387]</label>
                 <align>left</align>
                 <aligny>center</aligny>
             </control>
@@ -197,7 +197,7 @@
                 <textureradiooffnofocus>favorite_off_20.png</textureradiooffnofocus>
 	            <texturefocus border="5">button-focus.png</texturefocus>
 		        <texturenofocus border="5">button-nofocus.png</texturenofocus>
-                <label>Favorit</label>
+                <label>$ADDON[script.homepilot 32388]</label>
                 <align>left</align>
                 <aligny>center</aligny>
             </control>
@@ -218,7 +218,7 @@
                 <height>50</height>
                 <visible>true</visible>
                 <aligny>center</aligny>
-                <label>Automationen</label>
+                <label>$ADDON[script.homepilot 32021]</label>
                 <font>font14</font>
             </control>
             <control type="list" id="142">
@@ -264,6 +264,19 @@
                         <width>24</width>
                         <height>24</height>
                         <info>ListItem.Icon</info>
+                    </control>
+                    <control type="textbox">
+                        <posx>50</posx>
+                        <posy>0</posy>
+                        <width>280</width>
+                        <height>85</height>
+                        <wrapmultiline>true</wrapmultiline>
+                        <font>font12</font>
+                        <textcolor>grey2</textcolor>
+                        <selectedcolor>selected</selectedcolor>
+                        <align>left</align>
+                        <label>$INFO[ListItem.Label]</label>
+                        <visible>!Control.HasFocus(142)</visible>
                     </control>
                     <control type="textbox">
                         <posx>50</posx>

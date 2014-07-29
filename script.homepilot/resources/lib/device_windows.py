@@ -26,7 +26,7 @@ class BaseWindow(xbmcgui.WindowXMLDialog):
             self.close()
 
     def add_error_control(self):
-        label = unicode("<Probleme bei der Kommunikation \nmit dem HomePilot>", "utf-8")
+        label = __addon__.getLocalizedString(32381)
         self.errorcontrol = xbmcgui.ControlLabel(280, 250, 350, 75, label, alignment=0x00000002)
         self.addControl(self.errorcontrol)
 
@@ -58,19 +58,19 @@ class MeterWindow(BaseWindow):
 
     def onInit(self):
         controls = []
-        automation_control = self.getControl(130)
-        automation_control.setVisible(False)
+        self.__disable_favorite_and_automatik_control()
+        self.__resize_window()
         if self.meter is not None:
             icon = self.meter.get_icon()
             icon_img = os.path.join(_images, icon)
-            image_control = xbmcgui.ControlImage (260, 50, 40,40, icon_img)
+            image_control = xbmcgui.ControlImage(260, 55, 40,40, icon_img)
             controls.append(image_control)
             title = self.meter.get_name()
             data = self.meter.get_data()
-            title_control = xbmcgui.ControlLabel(310, 50, 600, 75, title, font="font16", textColor="white")
+            title_control = xbmcgui.ControlLabel(310, 55, 600, 75, title, font="font16", textColor="white")
             controls.append(title_control)
-
-            aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, "Aktuelle Daten", font="font12", textColor="white")
+            label = __addon__.getLocalizedString(32389)
+            aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, label, font="font12", textColor="white")
             controls.append(aktuell_control)
 
             y = 150
@@ -83,6 +83,23 @@ class MeterWindow(BaseWindow):
             self.addControls(controls)
         else:
             self.add_error_control()
+
+    def __disable_favorite_and_automatik_control(self):
+        automation_control = self.getControl(138)
+        automation_control.setVisible(False)
+        favorit_control = self.getControl(134)
+        favorit_control.setVisible(False)
+        automatik_control = self.getControl(130)
+        automatik_control.setVisible(False)
+
+    def __resize_window(self):
+        background = self.getControl(1002)
+        background.setWidth(600)
+        separator = self.getControl(1004)
+        if xbmc.getSkinDir() == "skin.confluence":
+            separator.setWidth(620)
+        else:
+            separator.setWidth(540)
 
 
     def onAction(self, action):

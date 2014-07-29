@@ -109,15 +109,15 @@ class HomepilotClient:
         return self.__map_response_to_scenes(data[u'scenes'])
 
     def execute_scene(self, scene_id):
-        url = self._base_url + 'do=/scenes/' + scene_id + '?do=use'
+        url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=use'
         return self._call_url(url)
 
     def set_scene_active(self, scene_id):
-        url = self._base_url + 'do=/scenes/' + scene_id + '?do=setActive&state=1'
+        url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setActive&state=1'
         return self._call_url(url)
 
     def set_scene_inactive(self, scene_id):
-        url = self._base_url + 'do=/scenes/' + scene_id + '?do=setActive&state=0'
+        url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setActive&state=0'
         return self._call_url(url)
 
     def unfavorize_device(self, device_id):

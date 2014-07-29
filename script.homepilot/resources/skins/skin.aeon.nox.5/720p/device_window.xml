@@ -8,7 +8,7 @@
         <posY>100</posY>
     </coordinates>
     <controls>
-         <control type="image">
+         <control type="image" id="1002">
             <posx>200</posx>
             <posy>20</posy>
             <width>470</width>
@@ -17,9 +17,9 @@
         </control>
 
         <!--title separator -->
-        <control type="image">
+        <control type="image" id="1004">
             <posx>230</posx>
-            <posy>60</posy>
+            <posy>70</posy>
             <width>410</width>
             <height>30</height>
             <texture>separator2.png</texture>
