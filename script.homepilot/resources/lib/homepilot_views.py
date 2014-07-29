@@ -13,8 +13,9 @@ _images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media')
 FAVORITEN = "Favoriten"
 ALLE = "Alle Geräte"
 SENSOREN = "Sensoren"
+SZENEN = "SZENEN"
 
-ROLLADEN = "Rolläden"
+ROLLADEN = "Rollläden"
 SCHALTER = "Schalter"
 DIMMER = "Dimmer"
 THERMOSTATE = "Thermostate"
@@ -39,6 +40,9 @@ class BaseView:
         control = xbmcgui.ControlLabel(400, 50, 600, 75, label, font="font16")
         return control
 
+    def get_communication_error_label(self):
+        return unicode("<Probleme bei der Kommunikation mit dem HomePilot>", "utf-8")
+
 
 
 class ParametrizedGeraeteView(BaseView):
@@ -57,11 +61,11 @@ class ParametrizedGeraeteView(BaseView):
         xbmc.log("visualize gerateview: " + str(self.type), level=xbmc.LOGNOTICE)
         self.title_control = self.get_title_control(self.type)
         window.addControl(self.title_control)
-
+        self.gerate_group_control = window.getControl(252)
         homepilot_is_reachable = self.client.ping()
         if not homepilot_is_reachable:
             self.hp_error = True
-            errorlabel = unicode("<Home-Pilot nicht erreichbar>", "utf-8")
+            errorlabel = self.get_communication_error_label()
             self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
             window.addControl(self.errorcontrol)
         else:
@@ -69,17 +73,25 @@ class ParametrizedGeraeteView(BaseView):
             try:
                 devices = self.__get_devices()
                 self.geraete_list = window.getControl(5)
-                self.geraete_list.controlLeft(self.__get_menu_control(window))
+                if self.type == SENSOREN or self.type == FAVORITEN:
+                    self.geraete_list.controlLeft(self.__get_menu_control(window))
+                else:
+                    #set a fake control to prevent xbmc from setting it back to the main menu
+                    control = window.getControl(111)
+                    self.geraete_list.controlLeft(control)
                 self.geraete_list.reset()
                 self.__add_listitems(devices)
-                self.gerate_group_control = window.getControl(252)
                 self.gerate_group_control.setPosition(350,100)
                 self.gerate_group_control.setVisible(True)
                 if self.type != FAVORITEN and self.type != SENSOREN:
                     window.setFocus(self.geraete_list)
                 xbmc.log("visualized gerateview: " + str(self.type), level=xbmc.LOGNOTICE)
             except Exception as inst:
-                xbmc.log(str(inst), level=xbmc.LOGNOTICE)
+                self.hp_error = True
+                errorlabel = self.get_communication_error_label()
+                self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
+                window.addControl(self.errorcontrol)
+                xbmc.log(str(inst), level=xbmc.LOGWARNING)
 
 
     def __get_menu_control(self, window):
@@ -135,10 +147,12 @@ class ParametrizedGeraeteView(BaseView):
                 old_status = device_listitem.getLabel2()
                 new_status = new_device.get_display_value()
                 if new_sync_value != old_sync_value or old_status != new_status:
+                    new_icon = new_device.get_icon()
                     if old_status != new_status:
                         device_listitem.setLabel2(new_status)
-                        icon_name = new_device.get_icon()
-                        device_listitem.setIconImage(os.path.join(_images_device, icon_name))
+                        device_listitem.setIconImage(os.path.join(_images_device, new_icon))
+                    else:
+                        device_listitem.setIconImage(os.path.join(_images_device, new_icon))
                     old_label = device_listitem.getLabel()
                     new_label = new_device.get_name()
                     if old_label != new_label:
@@ -147,6 +161,7 @@ class ParametrizedGeraeteView(BaseView):
                     new_label2 = new_device.get_description()
                     if old_label2 != new_label2.encode('utf8'):
                         device_listitem.setProperty("description", new_label2)
+
             else:
                 #add new listitem
                 self.__add_listitems([new_device])
@@ -226,24 +241,30 @@ class GeraetetypView(BaseView):
 
         label = unicode("Gruppen (nur Anzeige)", "utf-8")
         self.gruppen_control = xbmcgui.ControlLabel(400, 380, 600, 75, label, font="font16")
+        window.addControls([self.geraetelabel_control, self.gruppen_control])
 
         gruppen_list = window.getControl( 4 )
         gruppen_list.reset()
         self.gruppen_group_control = window.getControl(251)
-        groups = self.client.get_groups()
-        if len(groups) > 0:
-            for group in groups:
-                gruppen_list.addItem (group.get_name())
+        try:
+            groups = self.client.get_groups()
+            if len(groups) > 0:
+                for group in groups:
+                    gruppen_list.addItem (group.get_name())
 
-            self.gruppen_group_control.setPosition(350,420)
-            self.gruppen_group_control.setVisible(True)
-            self.errorcontrol = None
-        else:
-            errorlabel = unicode("<Keine Gruppen vorhanden>", "utf-8")
+                self.gruppen_group_control.setPosition(350,420)
+                self.gruppen_group_control.setVisible(True)
+                self.errorcontrol = None
+            else:
+                errorlabel = unicode("<Keine Gruppen vorhanden>", "utf-8")
+                self.errorcontrol = xbmcgui.ControlLabel(450, 450, 600, 75, errorlabel)
+                window.addControl(self.errorcontrol)
+        except Exception, e:
+            xbmc.log(str(e), level=xbmc.LOGWARNING)
+            errorlabel = self.get_communication_error_label()
             self.errorcontrol = xbmcgui.ControlLabel(450, 450, 600, 75, errorlabel)
             window.addControl(self.errorcontrol)
 
-        window.addControls([self.geraetelabel_control, self.gruppen_control])
 
 
 
@@ -271,7 +292,7 @@ class SzenenView(BaseView):
         self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
 
     def get_id (self):
-        return "not_implemented"
+        return SZENEN + "_view"
 
     def remove_everything(self, window):
         window.removeControls([self.errorcontrol, self.title_control])
@@ -293,13 +314,16 @@ class EmptyView(BaseView):
         pass
 
     def get_id (self):
-        return "empty"
+        return "empty_view"
 
     def remove_everything(self, window):
-        pass
+        window.removeControls([self.einstellungen_control, self.label])
 
     def visualize (self, window):
-        return []
+        self.einstellungen_control = self.get_title_control("Einstellungen")
+        self.label = xbmcgui.ControlLabel(460,250, 590, 40, "Durch drücken von <Enter> gelangen Sie zum Einstellungsdialog", alignment=0x00000002)
+        window.addControls([self.einstellungen_control, self.label])
+        return [self.einstellungen_control, self.label]
 
     def handle_click (self, control):
         pass

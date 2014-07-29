@@ -17,9 +17,13 @@ _control_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 
 
 class BaseWindow(xbmcgui.WindowXMLDialog):
 
-    def onAction(self, action):
-        if action == 13 or action == 10 or action == 160 or action == 21:
-            self.close()
+    BACKSPACE = 61448
+
+
+    def add_error_control(self):
+        label = unicode("<Probleme bei der Kommunikation \nmit dem HomePilot>", "utf-8")
+        self.errorcontrol = xbmcgui.ControlLabel(280, 250, 350, 75, label, alignment=0x00000002)
+        self.addControl(self.errorcontrol)
 
 class MeterWindow(BaseWindow):
 
@@ -27,40 +31,57 @@ class MeterWindow(BaseWindow):
         xbmcgui.WindowXMLDialog.__init__( self )
         client = kwargs["client"]
         did = kwargs["did"]
-        self.meter = client.get_meter_by_id(did)
+        self.parent_window = kwargs["parent"]
+        try:
+            self.meter = client.get_meter_by_id(did)
+        except Exception, e:
+            xbmc.log(str(e), level=xbmc.LOGWARNING)
+            self.meter = None
 
     def onInit(self):
         controls = []
-        icon = self.meter.get_icon()
-        icon_img = os.path.join(_images, icon)
-        image_control = xbmcgui.ControlImage (260, 50, 40,40, icon_img)
-        controls.append(image_control)
-        title = self.meter.get_name()
-        data = self.meter.get_data()
-        title_control = xbmcgui.ControlLabel(310, 50, 600, 75, title, font="font16", textColor="white")
-        controls.append(title_control)
+        if self.meter is not None:
+            icon = self.meter.get_icon()
+            icon_img = os.path.join(_images, icon)
+            image_control = xbmcgui.ControlImage (260, 50, 40,40, icon_img)
+            controls.append(image_control)
+            title = self.meter.get_name()
+            data = self.meter.get_data()
+            title_control = xbmcgui.ControlLabel(310, 50, 600, 75, title, font="font16", textColor="white")
+            controls.append(title_control)
 
-        aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, "Aktuelle Daten", font="font12", textColor="white")
-        controls.append(aktuell_control)
+            aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, "Aktuelle Daten", font="font12", textColor="white")
+            controls.append(aktuell_control)
 
-        y = 150
-        for data_dict in data:
-            for d in data_dict:
-                label = d + ": " + data_dict[d]
-                data_control = xbmcgui.ControlLabel(300, y, 600, 75, label, font="font12", textColor="white")
-                y += 35
-                controls.append(data_control)
-        self.addControls(controls)
+            y = 150
+            for data_dict in data:
+                for d in data_dict:
+                    label = d + ": " + data_dict[d]
+                    data_control = xbmcgui.ControlLabel(300, y, 600, 75, label, font="font12", textColor="white")
+                    y += 35
+                    controls.append(data_control)
+            self.addControls(controls)
+        else:
+            self.add_error_control()
+
+
+    def onAction(self, action):
+        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
+        if action == 92:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.close()
+        if action == 10:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.parent_window.shutdown()
+            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
+
+            self.close()
 
 
 
-sliderbarImg = os.path.join(_control_images, 'osd_slider_bg.png')
+sliderbarImg = os.path.join(_control_images, 'slider.png')
 sliderNibImg = os.path.join(_control_images, 'osd_slider_nib.png')
 sliderNibImgNF = os.path.join(_control_images, 'osd_slider_nibNF.png')
-scrollUpImg = os.path.join(_control_images, 'scroll-up-focus-2.png')
-scrollUpImgNofocus = os.path.join(_control_images, 'scroll-up-2.png')
-scrollDownImg = os.path.join(_control_images, 'scroll-down-focus-2.png')
-scrollDownImgNofocus = os.path.join(_control_images, 'scroll-down-2.png')
 PERCENT_TYPE = "PERCENT"
 DEGREE_TYPE = "DEGREE"
 
@@ -93,7 +114,8 @@ class SliderUpdater (threading.Thread):
     def run(self):
         self.is_running = 'True'
         while self.is_running:
-
+            xbmc.log(" ------- device window running ----" + str(self.device.get_device_id()), xbmc.LOGNOTICE)
+            #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
             if self.update_time > 0 and time.time() - self.update_time > 0.4:
                 if self.status == "UPDATE":
                     #xbmc.log("-- send move --" + str(self.position), xbmc.LOGNOTICE)
@@ -126,14 +148,14 @@ class DeviceWindow(BaseWindow):
         return control_dict
 
     def get_slider (self):
-        if xbmc.skinHasImage ('osd/osd_slider_bg.png'):
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 180, 30, textureback = 'osd/osd_slider_bg.png', texture = 'osd/osd_slider_nib_nf.png', texturefocus = 'osd/osd_slider_nib.png')
+        if xbmc.skinHasImage ('settings/slider_back.png'):
+            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 280, 15, textureback = 'settings/slider_back.png', texture = 'settings/orb_nofo.png', texturefocus = 'settings/orb_fo.png')
             return statusSlider
-        elif xbmc.skinHasImage ('osd_slider_bg.png'):
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 150, 20, textureback = 'osd_slider_bg.png', texture = 'osd_slider_nibNF.png', texturefocus = 'osd_slider_nib.png')
+        elif xbmc.skinHasImage ('slider.png'):
+            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 250, 20, textureback = 'slider.png', texture = 'osd_slider_nibNF.png', texturefocus = 'osd_slider_nib.png')
             return statusSlider
         else:
-            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 150, 20, textureback = sliderbarImg, texture = sliderNibImgNF, texturefocus = sliderNibImg)
+            statusSlider = xbmcgui.ControlSlider(self.x + 80, self.y + 130, 250, 20, textureback = sliderbarImg, texture = sliderNibImgNF, texturefocus = sliderNibImg)
             return statusSlider
 
 class PercentageWindow(DeviceWindow):
@@ -142,15 +164,19 @@ class PercentageWindow(DeviceWindow):
         DeviceWindow.__init__( self )
         self.client = kwargs["client"]
         self.device = kwargs["device"]
+        self.parent_window = kwargs["parent"]
         self.updater = SliderUpdater(self.client, self.device, PERCENT_TYPE)
         self.updater.start()
+        self.has_error = False
 
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
         percent_controls = self.__get_percent_controls()
         self.controls = base_device_controls
         self.controls.update(percent_controls)
-        self.addControls(self.controls.values())
+        button_group = self.getControl(114)
+        button_group.setPosition(330,200)
+        self.addControls([self.controls["slider"], self.controls["status"], self.controls["title"], self.controls["icon"]])
         slider = self.controls["slider"]
         slider.setPercent(self.device.get_position())
         self.__set_focus_and_navigation_handling()
@@ -165,37 +191,45 @@ class PercentageWindow(DeviceWindow):
         slider = self.get_slider()
         controls["slider"] = slider
         slider.setPercent(self.device.get_position())
-
-        if xbmc.skinHasImage ('settings/spin-down.png'):
-            downButton = xbmcgui.ControlButton(x + 80 , y + 160, 60, 98, "", focusTexture = 'settings/spin-down-focus.png', noFocusTexture = 'settings/spin-down.png')
-            upButton   = xbmcgui.ControlButton(x + 140 , y + 160, 60, 98, "", focusTexture = 'settings/spin-up-focus.png', noFocusTexture = 'settings/spin-up.png')
-            controls["down"] = downButton
-            controls["up"] = upButton
-        else:
-            downButton = xbmcgui.ControlButton(x + 80 , y + 160    ,  30, 30, "", focusTexture = scrollDownImg, noFocusTexture = scrollDownImgNofocus)
-            upButton   = xbmcgui.ControlButton(x + 110 , y  + 160   , 30, 30, "", focusTexture = scrollUpImg, noFocusTexture = scrollUpImgNofocus)
-            controls["down"] = downButton
-            controls["up"] = upButton
-
+        down_button = self.getControl(112)
+        up_button = self.getControl(113)
+        controls["down"] = down_button
+        controls["up"] = up_button
         return controls
 
     def update(self):
+        if self.getFocusId() == 0:
+            self.setFocus(self.controls["slider"])
         if self.updater.get_status() != "UPDATE":
             #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
-            new_device = self.client.get_device_by_id(self.device.get_device_id())
-            if new_device.get_sync() != self.device.get_sync():#device has changed
-                self.__update_position(new_device)
-                self.__update_name(new_device)
-                self.device = new_device
+            try:
+                new_device = self.client.get_device_by_id(self.device.get_device_id())
+                if new_device.get_sync() != self.device.get_sync():#device has changed
+                    self.__update_position(new_device)
+                    self.__update_name(new_device)
+                    self.device = new_device
+            except Exception, e:
+                xbmc.log(str(e), level=xbmc.LOGWARNING)
+                self.has_error = True
         else:
             #xbmc.log("--update -- wait for status update", xbmc.LOGNOTICE)
             new_device = self.client.get_device_by_id(self.device.get_device_id())
             if new_device.get_sync() != self.device.get_sync():#device has changed
+                self.__update_icon(new_device)
                 self.__update_name(new_device)
-                #self.device = new_device
 
+        if self.has_error:
+            self.add_error_control()
+
+
+    def __update_icon(self, new_device):
+        icon = self.controls["icon"]
+        image = new_device.get_icon()
+        icon_img = os.path.join(_images, image)
+        icon.setImage(icon_img)
 
     def __update_position (self, new_device):
+        self.__update_icon(new_device)
         if new_device.get_position() != self.device.get_position():
             statusSlider = self.controls["slider"]
             #xbmc.log("set slider to position: " + str(new_device.get_position()), xbmc.LOGNOTICE)
@@ -203,10 +237,8 @@ class PercentageWindow(DeviceWindow):
             self.device = new_device
             statusLabel = self.controls["status"]
             statusLabel.setLabel(new_device.get_display_value())
-            icon = self.controls["icon"]
-            image = new_device.get_icon()
-            icon_img = os.path.join(_images, image)
-            icon.setImage(icon_img)
+
+
 
     def __update_name(self, new_device):
         if new_device.get_name() != self.device.get_name():
@@ -218,7 +250,6 @@ class PercentageWindow(DeviceWindow):
         statusSlider = self.controls["slider"]
         downButton = self.controls["down"]
         upButton = self.controls["up"]
-        #favoriten_radio_control = self.controls["favoriten"]
 
         self.setFocus(statusSlider)
         statusSlider.controlDown(downButton)
@@ -226,12 +257,8 @@ class PercentageWindow(DeviceWindow):
         downButton.controlRight(upButton)
         downButton.controlUp(statusSlider)
         downButton.controlLeft(statusSlider)
-        #upButton.controlDown(favoriten_radio_control)
-        #upButton.controlRight(favoriten_radio_control)
         upButton.controlUp(downButton)
         upButton.controlLeft(downButton)
-        #favoriten_radio_control.controlUp(upButton)
-        #favoriten_radio_control.controlLeft(upButton)
 
 
     def onClick (self, controlId):
@@ -278,10 +305,21 @@ class PercentageWindow(DeviceWindow):
                     new_position = 95
                 self.updater.update_slider(new_position)
 
+
     def onAction(self, action):
-        if action == 13 or action == 10 or action == 160 or action == 21:
-            self.updater.set_is_running(False)
-        BaseWindow.onAction(self, action)
+        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
+        if action == 92:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.updater.set_is_running = False
+            self.close()
+        if action == 10:
+            self.updater.set_is_running = False
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.parent_window.shutdown()
+            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
+
+            self.close()
+
 
 
 class SwitchWindow(DeviceWindow):
@@ -290,62 +328,97 @@ class SwitchWindow(DeviceWindow):
         DeviceWindow.__init__( self )
         self.client = kwargs["client"]
         self.device = kwargs["device"]
+        self.parent_window = kwargs["parent"]
+        self.wait_for_response = False
+        self.updater = SliderUpdater(self.client, self.device, DEGREE_TYPE)
 
     def onInit(self):
         base_device_controls = self.get_base_device_controls(self.device)
         switch_controls = self.__get_switch_controls()
+        self.addControls(base_device_controls.values())
         self.controls = base_device_controls
         self.controls.update(switch_controls)
-        self.addControls(self.controls.values())
 
         self.__set_focus_and_navigation_handling()
 
 
     def __get_switch_controls(self):
         controls = {}
-        label = "Einschalten"
+        group_control = self.getControl(118)
+        group_control.setPosition(350, 100)
+
+        radio = self.getControl(116)
+        on = self.getControl(115)
+        off = self.getControl(117)
         if self.device.get_position() > 50:
-            label = "Ausschalten"
-        button = xbmcgui.ControlButton(self.x + 180 , self.y + 60, 180, 40, label)
-        controls["button"] = button
+            radio.setSelected(True)
+            on.setEnabled(True)
+            off.setEnabled(False)
+        else:
+            radio.setSelected(False)
+            on.setEnabled(False)
+            off.setEnabled(True)
+        controls["group"] = group_control
+        controls["radio"] = radio
+        controls["on"] = on
+        controls["off"] = off
         return controls
 
     def update (self):
-        new_device = self.client.get_device_by_id(self.device.get_device_id())
-        if new_device.get_sync() != self.device.get_sync():
-            #favoriten_radio_control = self.controls["favoriten"]
-            if new_device.get_position() != self.device.get_position():
-                button = self.controls["button"]
-                icon = self.controls["icon"]
-                label = "Einschalten"
-                image = new_device.get_icon()
-                icon_img = os.path.join(_images, image)
-                if new_device.get_position() > 50:
-                    label = "Ausschalten"
-                button.setLabel(label)
-                icon.setImage(icon_img)
-            if new_device.get_name() != self.device.get_name():
-                title_label = self.controls["title"]
-                title_label.setLabel(new_device.get_name())
-            self.device = new_device
+        if self.getFocusId() == 0:
+            self.setFocusId(116)
+        if not self.wait_for_response:
+            new_device = self.client.get_device_by_id(self.device.get_device_id())
+            if new_device.get_sync() != self.device.get_sync():
+                if new_device.get_position() != self.device.get_position():
+                    radio = self.getControl(116)
+                    on = self.getControl(115)
+                    off = self.getControl(117)
+                    icon = self.controls["icon"]
+                    if new_device.get_position() > 50:
+                        radio.setSelected(True)
+                        on.setEnabled(True)
+                        off.setEnabled(False)
+                    else:
+                        radio.setSelected(False)
+                        on.setEnabled(False)
+                        off.setEnabled(True)
+                    image = new_device.get_icon()
+                    icon_img = os.path.join(_images, image)
+                    icon.setImage(icon_img)
+                if new_device.get_name() != self.device.get_name():
+                    title_label = self.controls["title"]
+                    title_label.setLabel(new_device.get_name())
+                self.device = new_device
 
 
     def __set_focus_and_navigation_handling(self):
-        button = self.controls["button"]
-        #favoriten_radio_control = self.controls["favoriten"]
+        button = self.controls["radio"]
         self.setFocus(button)
-        #button.controlDown(favoriten_radio_control)
-        #button.controlRight(favoriten_radio_control)
-        #favoriten_radio_control.controlUp(button)
-        #favoriten_radio_control.controlLeft(button)
 
     def onClick (self, controlId):
-        button = self.controls["button"]
+        self.wait_for_response = True
+        button = self.controls["radio"]
+        xbmc.log("click -on: " + str(button.isSelected()), level=xbmc.LOGNOTICE)
         if controlId == button.getId():
-            if button.getLabel() == "Einschalten":
+            if button.isSelected():
                 self.client.switch_on(self.device.get_device_id())
             else:
                 self.client.switch_off(self.device.get_device_id())
+        self.wait_for_response = False
+
+
+    def onAction(self, action):
+        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
+        if action == 92:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.close()
+        if action == 10:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.parent_window.shutdown()
+            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
+
+            self.close()
 
 class DegreeWindow(DeviceWindow):
 
@@ -353,6 +426,7 @@ class DegreeWindow(DeviceWindow):
         DeviceWindow.__init__( self )
         self.client = kwargs["client"]
         self.device = kwargs["device"]
+        self.parent_window = kwargs["parent"]
         self.updater = SliderUpdater(self.client, self.device, DEGREE_TYPE)
         self.updater.start()
 
@@ -361,7 +435,9 @@ class DegreeWindow(DeviceWindow):
         degree_controls = self.__get_degree_controls()
         self.controls = base_device_controls
         self.controls.update(degree_controls)
-        self.addControls(self.controls.values())
+        button_group = self.getControl(114)
+        button_group.setPosition(330,200)
+        self.addControls([self.controls["slider"], self.controls["status"], self.controls["title"], self.controls["icon"]])
         slider = self.controls["slider"]
         slider_position = self.__get_slider_percent_from_position(self.device)
         slider.setPercent(slider_position)
@@ -375,18 +451,8 @@ class DegreeWindow(DeviceWindow):
         status_control = xbmcgui.ControlLabel(self.x+ 180, self.y + 60, 600, 75, status, font="font16", textColor="white")
         controls["status"] = status_control
         controls["slider"] = self.get_slider()
-
-        if xbmc.skinHasImage ('settings/spin-down.png'):
-            downButton = xbmcgui.ControlButton(x + 80 , y + 160, 60, 98, "", focusTexture = 'settings/spin-down-focus.png', noFocusTexture = 'settings/spin-down.png')
-            upButton   = xbmcgui.ControlButton(x + 110 , y + 160, 60, 98, "", focusTexture = 'settings/spin-up-focus.png', noFocusTexture = 'settings/spin-up.png')
-            controls["down"] = downButton
-            controls["up"] = upButton
-        else:
-            downButton = xbmcgui.ControlButton(x + 80 , y + 160    ,  30, 30, "", focusTexture = scrollDownImg, noFocusTexture = scrollDownImgNofocus)
-            upButton   = xbmcgui.ControlButton(x + 110 , y  + 160   , 30, 30, "", focusTexture = scrollUpImg, noFocusTexture = scrollUpImgNofocus)
-            controls["down"] = downButton
-            controls["up"] = upButton
-
+        controls["down"] = self.getControl(112)
+        controls["up"] = self.getControl(113)
         return controls
 
     def __get_slider_percent_from_position (self, device):
@@ -398,7 +464,6 @@ class DegreeWindow(DeviceWindow):
         statusSlider = self.controls["slider"]
         downButton = self.controls["down"]
         upButton = self.controls["up"]
-        #favoriten_radio_control = self.controls["favoriten"]
 
         self.setFocus(statusSlider)
         statusSlider.controlDown(downButton)
@@ -406,14 +471,12 @@ class DegreeWindow(DeviceWindow):
         downButton.controlRight(upButton)
         downButton.controlUp(statusSlider)
         downButton.controlLeft(statusSlider)
-        #upButton.controlDown(favoriten_radio_control)
-        #upButton.controlRight(favoriten_radio_control)
         upButton.controlUp(downButton)
         upButton.controlLeft(downButton)
-        #favoriten_radio_control.controlUp(upButton)
-        #favoriten_radio_control.controlLeft(upButton)
 
     def update(self):
+        if self.getFocusId() == 0:
+            self.setFocus(self.controls["slider"])
         if self.updater.get_status() != "UPDATE":
             new_device = self.client.get_device_by_id(self.device.get_device_id())
             if new_device.get_sync() != self.device.get_sync():
@@ -424,6 +487,13 @@ class DegreeWindow(DeviceWindow):
             new_device = self.client.get_device_by_id(self.device.get_device_id())
             if new_device.get_sync() != self.device.get_sync():
                 self.__update_name(new_device)
+                self.__update_icon(new_device)
+
+    def __update_icon(self, new_device):
+        icon = self.controls["icon"]
+        image = new_device.get_icon()
+        icon_img = os.path.join(_images, image)
+        icon.setImage(icon_img)
 
 
     def __update_position(self, new_device):
@@ -434,10 +504,7 @@ class DegreeWindow(DeviceWindow):
             self.device = new_device
             statusLabel = self.controls["status"]
             statusLabel.setLabel(new_device.get_display_value())
-            icon = self.controls["icon"]
-            image = new_device.get_icon()
-            icon_img = os.path.join(_images, image)
-            icon.setImage(icon_img)
+            self.__update_icon(new_device)
 
     def __update_name (self, new_device):
         if new_device.get_name() != self.device.get_name():
@@ -479,6 +546,15 @@ class DegreeWindow(DeviceWindow):
 
 
     def onAction(self, action):
-        if action == 13 or action == 10 or action == 160 or action == 21:
-            self.updater.set_is_running(False)
-        BaseWindow.onAction(self, action)
+        xbmc.log("action window: " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
+        if action == 92:
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.updater.set_is_running = False
+            self.close()
+        if action == 10:
+            self.updater.set_is_running = False
+            xbmc.log(" ------- device window close ----", xbmc.LOGNOTICE)
+            self.parent_window.shutdown()
+            xbmc.log("Stop thread", level=xbmc.LOGNOTICE)
+
+            self.close()

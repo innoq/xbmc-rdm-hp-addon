@@ -6,8 +6,10 @@ import json
 import xbmc
 from models import Device, Meter, Group, HomePilotBaseObject
 
-
+TIMEOUT = 2
 class HomepilotClient:
+
+
     """
     Implementation of a client for the HomePilot REST API
     
@@ -55,14 +57,14 @@ class HomepilotClient:
         """
         request a list of all devices from the homepilot
         """
-        response = requests.get(self._base_url + 'do=/devices', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices', timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
 
     def get_meters(self):
         """
         request a list of all meters from the homepilot
         """
-        response = requests.get(self._base_url + 'do=/meters', timeout=5)
+        response = requests.get(self._base_url + 'do=/meters', timeout=TIMEOUT)
         return self.__map_response_to_meters(response)
 
 
@@ -70,18 +72,18 @@ class HomepilotClient:
         """
         request a list of all devices for a specific devicegroup
         """
-        response = requests.get(self._base_url + 'do=/devices/devicegroup/' + str(group_id), timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/devicegroup/' + str(group_id), timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
 
     def get_favorite_devices(self):
         """
         request favorite devices
         """
-        response = requests.get(self._base_url + 'do=/devices/favorites/', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/favorites/', timeout=TIMEOUT)
         return self.__map_response_to_devices(response)
 
     def get_groups(self):
-        response = requests.get(self._base_url + 'do=/groups', timeout=5)
+        response = requests.get(self._base_url + 'do=/groups', timeout=TIMEOUT)
         return self.__map_response_to_groups(response)
 
 
@@ -89,7 +91,7 @@ class HomepilotClient:
         """
         request device by id
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id), timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id), timeout=TIMEOUT)
         data = json.loads(response.content)
         device = data['device']
         return Device(device)
@@ -99,7 +101,7 @@ class HomepilotClient:
         """
         request device by id
         """
-        response = requests.get(self._base_url + 'do=/meters/' + str(device_id), timeout=5)
+        response = requests.get(self._base_url + 'do=/meters/' + str(device_id), timeout=TIMEOUT)
         data = json.loads(response.content)
         device = data['meter']
         data = data['data']
@@ -113,7 +115,7 @@ class HomepilotClient:
         
         device_id -- the id of the device that should be switched on
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=10', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=10', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
@@ -125,7 +127,7 @@ class HomepilotClient:
         
         device_id -- the id of the device that should be switched off
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=11', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=11', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
@@ -142,7 +144,7 @@ class HomepilotClient:
         assert position >= 0 and position <= 100
         response = requests.get(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position)),
-            timeout=5)
+            timeout=TIMEOUT)
         xbmc.log("request an homepilot - move to position: " + str(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))),
                  level=xbmc.LOGNOTICE)
@@ -154,7 +156,7 @@ class HomepilotClient:
         assert position >= 30 and position <= 280
         response = requests.get(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position)),
-            timeout=5)
+            timeout=TIMEOUT)
         xbmc.log("request an homepilot: " + str(
             self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=9&pos=' + str(int(position))),
                  level=xbmc.LOGNOTICE)
@@ -169,7 +171,7 @@ class HomepilotClient:
 
         device_id -- the id of the device that should be pinged
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=12', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=12', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
@@ -178,10 +180,11 @@ class HomepilotClient:
         Pings the homepilot
         """
         try:
-            response = requests.get(self._base_url + 'do=/ping?var=1359030565', timeout=5)
+            response = requests.get(self._base_url + 'do=/ping?var=1359030565', timeout=TIMEOUT)
             data = json.loads(response.content)
             return data["status"].lower() in ["ok"]
-        except:
+        except Exception, e:
+            xbmc.log(str(e), level=xbmc.LOGWARNING)
             return False
 
 
@@ -193,7 +196,7 @@ class HomepilotClient:
 
         device_id -- the id of the device that should be favorized
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setFavored', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setFavored', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
@@ -205,18 +208,18 @@ class HomepilotClient:
 
         device_id -- the id of the device that should be favorized
         """
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=setUnfavored', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
 
     def move_up(self, device_id):
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=1', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
 
 
     def move_down(self, device_id):
-        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3', timeout=5)
+        response = requests.get(self._base_url + 'do=/devices/' + str(device_id) + '?do=use&cmd=3', timeout=TIMEOUT)
         data = json.loads(response.content)
         return data["status"].lower() in ["ok"]
