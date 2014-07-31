@@ -372,11 +372,8 @@ def add_device_to_automation_list(automation_list, automations, addon):
     xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
 def _add_device_item(automation_type, value, automation_list, addon):
-    if value == 1 or value == 2 or value == 0 or value == 3:
-        if value == 3:
-            label = _get_label_device(automation_type, 4, addon)
-        else:
-            label = _get_label_device(automation_type, value, addon)
+    if value == 1 or value == 2 or value == 0 or value == 4:
+        label = _get_label_device(automation_type, value, addon)
         item = xbmcgui.ListItem(label=label)
         image = os.path.join(_automation_images, icons_automation[automation_type] + str(value) + ".png")
         item.setIconImage(image)

@@ -158,9 +158,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
     def onAction(self, action):
         xbmc.log("onAction " + str(action.getButtonCode()), level=xbmc.LOGNOTICE)
-        xbmc.log("Focus " + str(self.getFocusId()), level=xbmc.LOGNOTICE)
         view = self.currentView.get_id()
-        xbmc.log("View " + str(view), level=xbmc.LOGNOTICE)
         is_geraeteview = self.__is_geraeteview(view)
         if action == 13 or action == 10 or action == 160 or action == 21:
             self.shutdown()
@@ -171,15 +169,14 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 self.setFocusId(94)
             elif self.getFocusId() == 257 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gerätetyptabelle
                 type_list = self.getControl(257)
-                position = type_list.getSelectedItem()
-                next_view = self.currentView.handle_click(position)
+                item = type_list.getSelectedItem()
+                next_view = self.currentView.handle_click(item)
                 self.currentView.remove_everything(self)
                 szenen_view = homepilot_views.SzenenListView(self.client, next_view)
                 menu_control = self.window.getControl(94)
                 szenen_view.visualize(self, __addon__)
                 self.currentView = szenen_view
                 self.status_updater.set_current_view(szenen_view, menu_control)
-                self.setFocusId(258)
             elif action == MOVE_RIGHT:
                 self.setFocusId(257)
         elif self.getFocusId() == 999 and action == 31:

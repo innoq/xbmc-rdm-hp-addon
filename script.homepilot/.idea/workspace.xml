@@ -23,21 +23,29 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="homepilot.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/skins/Default/720p/homepilot.xml">
+      <file leaf-file-name="homepilot_views.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_views.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="832" column="39" selection-start="40271" selection-end="40370" vertical-scroll-proportion="36.514286" vertical-offset="10645" max-vertical-offset="11324">
-              <folding>
-                <element signature="tag#coordinates#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#0;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#1;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#2;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#3;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#4;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#6;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#7;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#10;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-              </folding>
+            <state line="625" column="36" selection-start="26564" selection-end="26564" vertical-scroll-proportion="0.0" vertical-offset="11377" max-vertical-offset="12445">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scene_window.py" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/lib/scene_window.py">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="192" column="40" selection-start="7870" selection-end="7870" vertical-scroll-proportion="0.0" vertical-offset="3249" max-vertical-offset="4218">
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="scene_window.xml" pinned="false" current="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/resources/skins/Default/720p/scene_window.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="741" max-vertical-offset="7676">
+              <folding />
             </state>
           </provider>
         </entry>
@@ -45,7 +53,7 @@
       <file leaf-file-name="default.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/default.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="134" column="17" selection-start="5102" selection-end="5111" vertical-scroll-proportion="-6.457143" vertical-offset="2206" max-vertical-offset="8132">
+            <state line="173" column="33" selection-start="6892" selection-end="6892" vertical-scroll-proportion="-7.285714" vertical-offset="2918" max-vertical-offset="8075">
               <folding />
             </state>
           </provider>
@@ -54,76 +62,17 @@
       <file leaf-file-name="homepilot_client.py" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_client.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="104" column="0" selection-start="3431" selection-end="3438" vertical-scroll-proportion="-6.457143" vertical-offset="1693" max-vertical-offset="4978">
+            <state line="73" column="36" selection-start="2139" selection-end="2139" vertical-scroll-proportion="0.0" vertical-offset="1554" max-vertical-offset="4978">
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="settings.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/lib/settings.py">
+      <file leaf-file-name="addon.xml" pinned="false" current="true" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/addon.xml">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="532">
+            <state line="3" column="21" selection-start="141" selection-end="141" vertical-scroll-proportion="0.06418919" vertical-offset="0" max-vertical-offset="888">
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="homepilot_views.py" pinned="false" current="true" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_views.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="339" column="72" selection-start="14441" selection-end="14441" vertical-scroll-proportion="0.44771722" vertical-offset="5985" max-vertical-offset="10184">
-              <folding>
-                <element signature="e#47#61#0" expanded="true" />
-                <element signature="e#1141#1380#0" expanded="false" />
-                <element signature="e#18178#23015#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="homepilot_utils.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_utils.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="457" column="40" selection-start="15357" selection-end="15381" vertical-scroll-proportion="0.0" vertical-offset="3447" max-vertical-offset="4161">
-              <folding>
-                <element signature="e#1874#2208#0" expanded="false" />
-                <element signature="e#2260#2325#0" expanded="false" />
-                <element signature="e#2402#3486#0" expanded="false" />
-                <element signature="e#3537#3634#0" expanded="false" />
-                <element signature="e#3694#3791#0" expanded="false" />
-                <element signature="e#3843#4122#0" expanded="false" />
-                <element signature="e#4183#4462#0" expanded="false" />
-                <element signature="e#8401#10343#0" expanded="false" />
-                <element signature="e#10421#12417#0" expanded="false" />
-                <element signature="e#12493#12972#0" expanded="false" />
-                <element signature="e#13019#15045#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="local_favorites.py" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/lib/local_favorites.py">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="1167" max-vertical-offset="2394">
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="homepilot.xml" pinned="false" current="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/homepilot.xml">
-          <provider selected="true" editor-type-id="text-editor">
-            <state line="853" column="30" selection-start="41613" selection-end="41613" vertical-scroll-proportion="0.0" vertical-offset="12035" max-vertical-offset="12806">
-              <folding>
-                <element signature="tag#control#0;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#1;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#2;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#3;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#4;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-                <element signature="tag#control#8;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -144,16 +93,16 @@
         <option value="$PROJECT_DIR$/resources/skins/Default/720p/scene_window.xml" />
         <option value="$PROJECT_DIR$/resources/lib/device_windows.py" />
         <option value="$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/device_window.xml" />
-        <option value="$PROJECT_DIR$/resources/lib/scene_window.py" />
         <option value="$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/scene_window.xml" />
-        <option value="$PROJECT_DIR$/resources/lib/homepilot_utils.py" />
         <option value="$PROJECT_DIR$/resources/lib/models.py" />
-        <option value="$PROJECT_DIR$/resources/lib/homepilot_client.py" />
-        <option value="$PROJECT_DIR$/default.py" />
         <option value="$PROJECT_DIR$/resources/skins/Default/720p/homepilot.xml" />
         <option value="$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/homepilot.xml" />
-        <option value="$PROJECT_DIR$/addon.xml" />
+        <option value="$PROJECT_DIR$/resources/lib/homepilot_utils.py" />
+        <option value="$PROJECT_DIR$/resources/lib/homepilot_client.py" />
+        <option value="$PROJECT_DIR$/default.py" />
         <option value="$PROJECT_DIR$/resources/lib/homepilot_views.py" />
+        <option value="$PROJECT_DIR$/resources/lib/scene_window.py" />
+        <option value="$PROJECT_DIR$/addon.xml" />
       </list>
     </option>
   </component>
@@ -189,6 +138,7 @@
       <sortByType />
     </navigator>
     <panes>
+      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <PATH>
@@ -236,36 +186,6 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="skins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="skin.aeon.nox.5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rademacher_vm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="rademacher_vm" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="resources" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="skins" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="skin.aeon.nox.5" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="720p" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -335,9 +255,48 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rademacher_vm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rademacher_vm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="language" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rademacher_vm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="rademacher_vm" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="resources" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="language" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="English" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
         </subPane>
       </pane>
-      <pane id="Scope" />
     </panes>
   </component>
   <component name="PropertiesComponent">
@@ -507,10 +466,9 @@
     <editor active="true" />
     <layout>
       <window_info id="Changes" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14479166" sideWeight="0.8100437" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.14479166" sideWeight="0.76419216" order="0" side_tool="false" content_ui="combo" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.18995634" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -522,6 +480,7 @@
       <window_info id="Commander" active="false" anchor="right" auto_hide="false" internal_type="SLIDING" type="SLIDING" visible="false" weight="0.4" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
+      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.23580787" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
     </layout>
   </component>
@@ -537,142 +496,45 @@
     <breakpoint-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/resources/language/German/strings.po">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="297" column="92" selection-start="10299" selection-end="10305" vertical-scroll-proportion="-8.088235" vertical-offset="5368" max-vertical-offset="14003" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/language/English/strings.po">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="723" column="15" selection-start="26021" selection-end="26026" vertical-scroll-proportion="-17.058823" vertical-offset="13157" max-vertical-offset="13984" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/scene_window.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="174" column="30" selection-start="7046" selection-end="7046" vertical-scroll-proportion="0.0" vertical-offset="2565" max-vertical-offset="4161" />
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/scene_window.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="178" column="37" selection-start="7586" selection-end="7586" vertical-scroll-proportion="0.0" vertical-offset="3078" max-vertical-offset="6954">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/models.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="49" column="23" selection-start="1148" selection-end="1163" vertical-scroll-proportion="0.0" vertical-offset="513" max-vertical-offset="5681">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/Settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="5320">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/settings.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_client.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="104" column="0" selection-start="3431" selection-end="3438" vertical-scroll-proportion="-6.457143" vertical-offset="1693" max-vertical-offset="4978">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/local_favorites.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="2394">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/settings.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="714">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_utils.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="457" column="40" selection-start="15357" selection-end="15381" vertical-scroll-proportion="0.0" vertical-offset="3447" max-vertical-offset="4161">
-          <folding>
-            <element signature="e#1874#2208#0" expanded="false" />
-            <element signature="e#2260#2325#0" expanded="false" />
-            <element signature="e#2402#3486#0" expanded="false" />
-            <element signature="e#3537#3634#0" expanded="false" />
-            <element signature="e#3694#3791#0" expanded="false" />
-            <element signature="e#3843#4122#0" expanded="false" />
-            <element signature="e#4183#4462#0" expanded="false" />
-            <element signature="e#8401#10343#0" expanded="false" />
-            <element signature="e#10421#12417#0" expanded="false" />
-            <element signature="e#12493#12972#0" expanded="false" />
-            <element signature="e#13019#15045#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/default.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="134" column="17" selection-start="5102" selection-end="5111" vertical-scroll-proportion="-6.457143" vertical-offset="2206" max-vertical-offset="8132">
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/skins/Default/720p/homepilot.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="832" column="39" selection-start="40271" selection-end="40370" vertical-scroll-proportion="36.514286" vertical-offset="10645" max-vertical-offset="11324">
-          <folding>
-            <element signature="tag#coordinates#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#0;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#1;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#2;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#3;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#4;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#6;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#7;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#10;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/resources/skins/skin.aeon.nox.5/720p/homepilot.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="853" column="30" selection-start="41613" selection-end="41613" vertical-scroll-proportion="0.0" vertical-offset="12035" max-vertical-offset="12806">
-          <folding>
-            <element signature="tag#control#0;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#1;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#2;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#3;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#4;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-            <element signature="tag#control#8;tag#control#0;tag#controls#0;tag#window#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/addon.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state line="3" column="19" selection-start="139" selection-end="139" vertical-scroll-proportion="0.079831935" vertical-offset="0" max-vertical-offset="714">
+        <state line="173" column="33" selection-start="6892" selection-end="6892" vertical-scroll-proportion="-7.285714" vertical-offset="2918" max-vertical-offset="8075">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_views.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="339" column="72" selection-start="14441" selection-end="14441" vertical-scroll-proportion="0.44771722" vertical-offset="5985" max-vertical-offset="10184">
-          <folding>
-            <element signature="e#47#61#0" expanded="true" />
-            <element signature="e#1141#1380#0" expanded="false" />
-            <element signature="e#18178#23015#0" expanded="false" />
-          </folding>
+        <state line="625" column="36" selection-start="26564" selection-end="26564" vertical-scroll-proportion="0.0" vertical-offset="11377" max-vertical-offset="12445">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/skins/Default/720p/scene_window.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="0" column="0" selection-start="0" selection-end="0" vertical-scroll-proportion="0.0" vertical-offset="0" max-vertical-offset="7676">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lib/scene_window.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="192" column="40" selection-start="7870" selection-end="7870" vertical-scroll-proportion="0.0" vertical-offset="3249" max-vertical-offset="4218">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/resources/lib/homepilot_client.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="73" column="36" selection-start="2139" selection-end="2139" vertical-scroll-proportion="0.0" vertical-offset="1554" max-vertical-offset="4978">
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/addon.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state line="3" column="21" selection-start="141" selection-end="141" vertical-scroll-proportion="0.06418919" vertical-offset="0" max-vertical-offset="888">
+          <folding />
         </state>
       </provider>
     </entry>

@@ -178,16 +178,19 @@ class SzenenDetailWindow(xbmcgui.WindowXMLDialog):
 
 
     def onClick(self, controlId):
-        xbmc.log("onClick " + str(controlId), level=xbmc.LOGNOTICE)
+        xbmc.log("window onClick " + str(controlId), level=xbmc.LOGNOTICE)
         if controlId == 160:
+            xbmc.log("control is 160 ", level=xbmc.LOGNOTICE)
             aktiv_button = self.getControl(160)
             button_is_akiv = aktiv_button.isSelected()
             if self.scene.is_active() and not button_is_akiv:
+                xbmc.log("scene was active ", level=xbmc.LOGNOTICE)
                 self.client.set_scene_inactive(self.scene.get_id())
                 self.removeControl(self.imagecontrol)
                 self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img_deact)
                 self.addControl(self.imagecontrol)
             elif not self.scene.is_active() and button_is_akiv:
+                xbmc.log("scene was not active ", level=xbmc.LOGNOTICE)
                 self.client.set_scene_active(self.scene.get_id())
                 self.removeControl(self.imagecontrol)
                 self.imagecontrol = xbmcgui.ControlImage(400, 100, 64, 64, szene_img)

@@ -550,25 +550,29 @@ class SzenentypView(BaseView):
 
         self.manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32017))
         self.manuell_item.setIconImage(scene_manual)
+        self.manuell_item.setProperty("pid", "0")
         self.geraetetypen_list.addItem(self.manuell_item)
 
         self.nicht_manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32018))
         self.nicht_manuell_item.setIconImage(scene_non_manual)
+        self.nicht_manuell_item.setProperty("pid", "1")
         self.geraetetypen_list.addItem(self.nicht_manuell_item)
 
         self.alle_item = xbmcgui.ListItem(addon.getLocalizedString(32020))
+        self.alle_item.setProperty("pid", "2")
         self.geraetetypen_list.addItem(self.alle_item)
 
         self.geraetetypen_list.setVisible(True)
 
         return [self.title_control]
 
-    def handle_click (self, position):
-        if position == 0:
+    def handle_click (self, item):
+        position = item.getProperty("pid")
+        if position == "0":
             return SZENEN_MANUELL
-        elif position == 1:
+        elif position == "1":
             return SZENEN_NICHT_MANUELL
-        elif position == 2:
+        elif position == "2":
             return SZENEN_ALLE
         return ""
 
@@ -596,7 +600,7 @@ class SzenenListView(BaseView):
         scenes_list.reset()
 
         scenes = self.__get_scenes()
-        if len(scenes) > 0:
+        if scenes is not None and len(scenes) > 0:
             scenes_group = window.getControl(260)
             scenes_group.setPosition(350, 100)
             scenes_group.setVisible(True)
@@ -604,13 +608,14 @@ class SzenenListView(BaseView):
                 scene_item = xbmcgui.ListItem(label = scene.get_name())
                 scene_item.setIconImage(szene_img)
                 scene_item.setProperty("sid", str(scene.get_id()))
-
                 scenes_list.addItem(scene_item)
             self.errorcontrol = None
+            window.setFocusId(258)
         else:
             errorlabel = addon.getLocalizedString(32380)
             self.errorcontrol = xbmcgui.ControlLabel(450, 150, 600, 75, errorlabel)
             window.addControl(self.errorcontrol)
+            #window.setFocusId(94)
         scenes_list.setVisible(True)
         return [self.title_control]
 
