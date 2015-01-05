@@ -1,4 +1,4 @@
 <settings>
-    <setting id="homepilot_ip" type="text" label="32003" default="127.0.0.1" />
+    <setting id="homepilot_ip" type="ipaddress" label="32003" default="127.0.0.1" />
     <setting id="local_favorites" type="bool" label="32386" default="false"/>
 </settings>

@@ -10,6 +10,7 @@ SENSOREN = 32007
 SZENEN = 32005
 SZENENTYPEN = 32016
 GRUPPEN = 32015
+#GERAETE = 32021
 
 ROLLADEN = 32010
 SCHALTER = 32011
@@ -20,7 +21,7 @@ ALLE = 32020
 
 SZENEN_MANUELL = 32017
 SZENEN_NICHT_MANUELL = 32018
-SZENEN_ALLE = 32020
+SZENEN_ALLE = 32019
 
 SZENEN_DETAILS = 100
 FAVORITEN = 101
@@ -236,18 +237,13 @@ def add_scene_to_automation_list(automation_list, automations, addon):
     _add_scene_item("rain", rain, automation_list, addon)
 
     automation_list.setVisible(True)
-    xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
 def get_action_sensor_icon():
     return os.path.join(_images, "action_sensor.png")
 
 def _add_scene_item(automation_type, value, automation_list, addon):
-    if value == 1 or value == 2 or value == 0 or value == 3:
-        if value == 3:
-            label = _get_label_scene(automation_type, 4, addon)
-        else:
-            label = _get_label_scene(automation_type, value, addon)
-
+    if value == 1 or value == 2 or value == 0 or value == 4:
+        label = _get_label_scene(automation_type, value, addon)
         item = xbmcgui.ListItem(label=label)
         image = os.path.join(_automation_images, icons_automation[automation_type] + str(value) + ".png")
         item.setIconImage(image)
@@ -369,7 +365,6 @@ def add_device_to_automation_list(automation_list, automations, addon):
     _add_device_item("rain", rain, automation_list, addon)
 
     automation_list.setVisible(True)
-    xbmc.log("visualize automations " + str(automation_list.size()), level=xbmc.LOGNOTICE)
 
 def _add_device_item(automation_type, value, automation_list, addon):
     if value == 1 or value == 2 or value == 0 or value == 4:
@@ -382,8 +377,6 @@ def _add_device_item(automation_type, value, automation_list, addon):
         return None
 
 def _get_label_device(type, val, addon):
-    xbmc.log("auto type: " + str(type) + "  " + str(val), level=xbmc.LOGNOTICE)
-
     if val != 1 and val != 2 and val != 4 and val != 0:
         return "-"
     value = str(val)
@@ -450,7 +443,7 @@ def get_title_control(text_or_id, addon):
     '''
     use this method to make sure view titles are everywhere on the same position
     '''
-    xbmc.log("label: " + str(text_or_id), level=xbmc.LOGNOTICE)
+    #xbmc.log("label: " + str(text_or_id), level=xbmc.LOGNOTICE)
     if isinstance(text_or_id, int):
         label = addon.getLocalizedString(text_or_id)
     else:

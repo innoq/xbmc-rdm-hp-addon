@@ -242,8 +242,10 @@ class Action:
     def get_icon(self):
         if self._cmdId == 666:#Sensor
             return homepilot_utils.get_action_sensor_icon()
-        if self._param is not None:
+        elif self._param is not None:
             return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, self._param, type)
+        elif self._cmdId == 10 or self._cmdId == 2:
+            return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, 100, type)
         else:
             return homepilot_utils.get_icon(self._iconset, self._iconsetInverted, 0, type)
 
@@ -291,4 +293,10 @@ class Scene:
         return self._is_active == 1
 
     def is_favored(self):
-        return self._favored != 0
+        return self._favored > 0
+
+    def get_sync(self):
+        return self._sync
+
+    def get_description(self):
+        return self._description

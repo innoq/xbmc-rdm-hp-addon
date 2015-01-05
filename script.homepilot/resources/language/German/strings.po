@@ -33,18 +33,13 @@ msgstr "Favoriten lokal speichern"
 #######################################
 
 
-
-msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
-msgstr "HomePilot by Rademacher GmbH & Co. KG"
-
 msgctxt "#32380"
 msgid "No connection to HomePilot or no data available."
-msgstr "Es besteht keine Verbindung zum HomePilot oder es sind keine Daten verfügbar."
+msgstr "Es besteht keine Verbindung zum HomePilot oder es sind\nkeine Daten verfügbar."
 
 msgctxt "#32381"
 msgid "No data could be loaded. Please check your settings in the configuration and your internet connection, both of HomePilot and your smartphone. As soon as a connection to HomePilot is possible, this will be automatically re-connected."
-msgstr "Es konnten keine Daten geladen werden. Bitte überprüfen Sie Ihre Einstellungen in der Konfiguration und Ihre Internet-Verbindung, vom HomePilot und dem Smartphone. Sobald eine Verbindung zum HomePilot möglich ist, wird diese automatisch wieder hergestellt."
+msgstr "Es konnten keine Daten geladen werden. Bitte überprüfen\nSie Ihre Einstellungen in der Konfiguration und Ihre\nInternet-Verbindung, vom HomePilot und dem Smartphone.\nSobald eine Verbindung zum HomePilot möglich ist,\nwird diese automatisch wieder hergestellt."
 
 msgctxt "#32004"
 msgid "Favourites"
@@ -115,7 +110,7 @@ msgid "Current data"
 msgstr "Aktuelle Daten"
 
 msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
+msgid "HomePilot by Rademacher GmbH"
 msgstr "HomePilot"
 
 msgctxt "#32014"
@@ -670,6 +665,10 @@ msgctxt "#32364"
 msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Es ist ein Fehler aufgetreten! Bitte kontaktieren Sie den RADEMACHER Service."
 
+msgctxt "#32019"
+msgid "All"
+msgstr "Alle"
+
 msgctxt "#32020"
 msgid "All"
 msgstr "Alle"
@@ -726,6 +725,6 @@ msgctxt "#32379"
 msgid "Sensor"
 msgstr "Sensor"
 
-msgctxt "#32019"
+msgctxt "#32390"
 msgid "Cameras"
 msgstr "Kameras"

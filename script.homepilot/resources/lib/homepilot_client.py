@@ -90,16 +90,17 @@ class HomepilotClient:
 
     def get_scene_by_id(self, scene_id):
         response = requests.get(self._base_url + 'do=/scenes/' + str(scene_id), timeout=TIMEOUT)
-        xbmc.log("scenes url: " + str(self._base_url + 'do=/scenes/' + str(scene_id)), level=xbmc.LOGNOTICE)
         data = json.loads(response.content)
         scene = data['scene']
         return Scene(scene)
 
     def favorize_scene(self, scene_id):
+        xbmc.log("---home_client.py-- favorisiere Szene " +  str(scene_id), level=xbmc.LOGNOTICE)
         url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setFavored'
         return self._call_url(url)
 
     def unfavorize_scene(self, scene_id):
+        xbmc.log("---home_client.py-- unfavorisiere Szene " +  str(scene_id), level=xbmc.LOGNOTICE)
         url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setUnfavored'
         return self._call_url(url)
 
@@ -109,14 +110,17 @@ class HomepilotClient:
         return self.__map_response_to_scenes(data[u'scenes'])
 
     def execute_scene(self, scene_id):
+        xbmc.log("execute scene: " + str(scene_id), level=xbmc.LOGNOTICE)
         url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=use'
         return self._call_url(url)
 
     def set_scene_active(self, scene_id):
+        xbmc.log("set scene active: " + str(scene_id), level=xbmc.LOGNOTICE)
         url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setActive&state=1'
         return self._call_url(url)
 
     def set_scene_inactive(self, scene_id):
+        xbmc.log("set scene inactive: " + str(scene_id), level=xbmc.LOGNOTICE)
         url = self._base_url + 'do=/scenes/' + str(scene_id) + '?do=setActive&state=0'
         return self._call_url(url)
 

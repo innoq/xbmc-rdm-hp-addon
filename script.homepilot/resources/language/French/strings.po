@@ -17,18 +17,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 
-
-msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
-msgstr "HomePilot by Rademacher GmbH & Co. KG"
-
 msgctxt "#32380"
 msgid "No connection to HomePilot or no data available."
-msgstr "Il n'y a aucune connexion avec le HomePilot ou bien il n'existe aucune donnée."
+msgstr "Il n'y a aucune connexion avec le HomePilot\nou bien il n'existe aucune donnée."
 
 msgctxt "#32381"
 msgid "No data could be loaded. Please check your settings in the configuration and your internet connection, both of HomePilot and your smartphone. As soon as a connection to HomePilot is possible, this will be automatically re-connected."
-msgstr "Aucune donnée n'a pu être chargée. Veuillez vérifier votre paramétrage de la configuration et votre connexion Internet du HomePilot et du smartphone. Dès qu'une connexion au HomePilot sera à nouveau possible, elle sera établie automatiquement."
+msgstr "Aucune donnée n'a pu être chargée.\nVeuillez vérifier votre paramétrage de l\nconfiguration et votre connexion Internet du\nHomePilot et du smartphone.\nDès qu'une connexion au HomePilot sera à nouveau possible,\nelle sera établie automatiquement."
 
 msgctxt "#32004"
 msgid "Favourites"
@@ -99,7 +94,7 @@ msgid "Current data"
 msgstr "Données mises à jour"
 
 msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
+msgid "HomePilot by Rademacher GmbH"
 msgstr "HomePilot"
 
 msgctxt "#32014"
@@ -654,6 +649,10 @@ msgctxt "#32364"
 msgid "An error has occurred! Please contact RADEMACHER Service."
 msgstr "Une erreur s'est produite ! Veuillez contacter le service clients de RADEMACHER."
 
+msgctxt "#32019"
+msgid "All"
+msgstr "All"
+
 msgctxt "#32020"
 msgid "All"
 msgstr "Tous"
@@ -710,6 +709,6 @@ msgctxt "#32379"
 msgid "Sensor"
 msgstr "Sonde"
 
-msgctxt "#32019"
+msgctxt "#32390"
 msgid "Cameras"
 msgstr "Caméras"

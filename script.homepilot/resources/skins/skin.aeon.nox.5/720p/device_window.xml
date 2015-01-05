@@ -41,8 +41,8 @@
                 <height>25</height>
                 <focusedcolor>white</focusedcolor>
 		        <disabledcolor>grey4</disabledcolor>
-                <texturenofocus>android/numberpicker_down_normal_holo_dark.png</texturenofocus>
-		        <texturefocus>android/numberpicker_down_longpressed_holo_dark.png</texturefocus>
+                <texturenofocus>android/numberpicker_up_normal_holo_dark.png</texturenofocus>
+		        <texturefocus>android/numberpicker_up_longpressed_holo_dark.png</texturefocus>
             </control>
             <control type="button" id="1121">
                 <posx>125</posx>
@@ -51,8 +51,8 @@
                 <height>25</height>
                 <focusedcolor>white</focusedcolor>
 		        <disabledcolor>grey4</disabledcolor>
-                <texturenofocus>android/numberpicker_up_normal_holo_dark.png</texturenofocus>
-		        <texturefocus>android/numberpicker_up_longpressed_holo_dark.png</texturefocus>
+                <texturenofocus>android/numberpicker_down_normal_holo_dark.png</texturenofocus>
+		        <texturefocus>android/numberpicker_down_longpressed_holo_dark.png</texturefocus>
             </control>
         </control>
         <!--end up-down buttons -->

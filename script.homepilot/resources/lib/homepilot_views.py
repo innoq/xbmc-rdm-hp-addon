@@ -204,7 +204,7 @@ class ParametrizedGeraeteView(BaseView):
 
 class FavoritenView(BaseView):
 
-    def __init__(self, home_pilot_client, device_type, group=None):
+    def __init__(self, home_pilot_client, device_type, menu_control, group=None):
         self.client = home_pilot_client
         self.total = 0
         self.controldict = {}
@@ -212,7 +212,9 @@ class FavoritenView(BaseView):
         self.list_item_dict = {}
         self.hp_error = False
         self.errorcontrol = None
+        self.errorcontrol2 = None
         self.group = group
+        self.menu_control = menu_control
 
     def get_id(self):
         return str(self.type) + "_view"
@@ -226,7 +228,7 @@ class FavoritenView(BaseView):
         self.szenen_control = xbmcgui.ControlLabel(400, 380, 600, 75, label, font="font16")
         window.addControls([self.title_control, self.szenen_control])
         homepilot_is_reachable = self.client.ping()
-        xbmc.log("reachable " + str(homepilot_is_reachable), level=xbmc.LOGNOTICE)
+#        xbmc.log("reachable " + str(homepilot_is_reachable), level=xbmc.LOGNOTICE)
         self.scene_group = window.getControl(262)
         self.geraete_group = window.getControl(254)
         if not homepilot_is_reachable:
@@ -240,7 +242,7 @@ class FavoritenView(BaseView):
         else:
             self.hp_error = False
             self.__visualize_devices(window, addon)
-            xbmc.log("visualize_devices ", level=xbmc.LOGNOTICE)
+ #           xbmc.log("visualize_devices ", level=xbmc.LOGNOTICE)
 
 
     def __visualize_devices(self, window, addon):
@@ -250,33 +252,20 @@ class FavoritenView(BaseView):
                 self.geraete_list = window.getControl(255)
                 self.geraete_list.reset()
                 self.__add_listitems(devices)
-
-
                 self.geraete_group.setVisible(True)
-            else:
-                pass
-
 
             scenes = self.__get_scenes()
             if len(scenes) > 0:
                 self.scene_list = window.getControl(264)
                 self.scene_list.reset()
                 self.__add_scene_item(scenes)
-
-
                 self.scene_group.setVisible(True)
-            else:
-                pass
-                errorlabel = ""
-                #self.hp_error = True
-                #if self.type == SENSOREN:
-                #    errorlabel = unicode("<keine Sensoren vorhanden>", "utf-8")
-                #elif self.type == FAVORITEN_LOKAL or self.type == FAVORITEN:
-                #    errorlabel = unicode("<keine Favoriten vorhanden>", "utf-8")
-                #else:
-                #    errorlabel = unicode("<keine Geräte vorhanden>", "utf-8")
-                #self.errorcontrol = xbmcgui.ControlLabel(400, 250, 600, 75, errorlabel)
-                #window.addControl(self.errorcontrol)
+
+            if len(devices) > 0:
+                self.menu_control.controlRight(self.geraete_list)
+            elif len(scenes) > 0:
+                self.menu_control.controlRight(self.scene_list)
+
         except Exception as inst:
             self.hp_error = True
             errorlabel = self.get_communication_error_label()
@@ -301,6 +290,7 @@ class FavoritenView(BaseView):
             scene_item = xbmcgui.ListItem(label = scene.get_name())
             scene_item.setIconImage(szene_img)
             scene_item.setProperty("sid", str(scene.get_id()))
+            scene_item.setProperty("description", scene.get_description())
             self.scene_list.addItem(scene_item)
 
     def __get_devices(self):
@@ -331,18 +321,25 @@ class FavoritenView(BaseView):
         all_scenes = self.client.get_scenes()
         favorite_scenes = []
         for scene in all_scenes:
-            if scene.get_scene_id() in scene_ids:
+            if scene.get_id() in scene_ids:
                 favorite_scenes.append(scene)
         return favorite_scenes
 
     def remove_everything(self, window):
-        if self.hp_error and self.errorcontrol is not None:
+        #FIXME this section is still causing trouble -> clean up displaying of error messages
+        if self.hp_error and self.errorcontrol is not None and self.errorcontrol2 is not None:
             window.removeControls([self.errorcontrol, self.errorcontrol2, self.title_control, self.szenen_control])
             self.errorcontrol = None
             self.errorcontrol2 = None
+        elif self.hp_error and self.errorcontrol is not None:
+            window.removeControls([self.errorcontrol, self.title_control, self.szenen_control])
+            self.errorcontrol = None
+        elif self.hp_error:
+            pass
         else:
             controls_to_remove = [self.title_control, self.szenen_control]
             window.removeControls(controls_to_remove)
+
         self.scene_group.setVisible(False)
         self.geraete_group.setVisible(False)
 
@@ -506,8 +503,6 @@ class GeraetetypView(BaseView):
         return set(device_groups)
 
     def handle_click(self, position):
-        xbmc.log("handle click ", level=xbmc.LOGNOTICE)
-        xbmc.log("type: " + position.getProperty("type"), level=xbmc.LOGNOTICE)
         if position.getProperty("type") == str(ALLE):
             return ALLE
         elif position.getProperty("type") == str(ROLLADEN):
@@ -538,31 +533,31 @@ class SzenentypView(BaseView):
         return str(SZENENTYPEN) + "_view"
 
     def remove_everything(self, window):
-        self.geraetetypen_list.setVisible(False)
+        self.scenes_list.setVisible(False)
         window.removeControls([self.title_control])
 
 
     def visualize(self, window, addon):
         self.title_control = homepilot_utils.get_title_control(32016, addon)
         window.addControl(self.title_control)
-        self.geraetetypen_list = window.getControl(257)
-        self.geraetetypen_list.reset()
+        self.scenes_list = window.getControl(257)
+        self.scenes_list.reset()
 
         self.manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32017))
         self.manuell_item.setIconImage(scene_manual)
         self.manuell_item.setProperty("pid", "0")
-        self.geraetetypen_list.addItem(self.manuell_item)
+        self.scenes_list.addItem(self.manuell_item)
 
         self.nicht_manuell_item = xbmcgui.ListItem(addon.getLocalizedString(32018))
         self.nicht_manuell_item.setIconImage(scene_non_manual)
         self.nicht_manuell_item.setProperty("pid", "1")
-        self.geraetetypen_list.addItem(self.nicht_manuell_item)
+        self.scenes_list.addItem(self.nicht_manuell_item)
 
         self.alle_item = xbmcgui.ListItem(addon.getLocalizedString(32020))
         self.alle_item.setProperty("pid", "2")
-        self.geraetetypen_list.addItem(self.alle_item)
+        self.scenes_list.addItem(self.alle_item)
 
-        self.geraetetypen_list.setVisible(True)
+        self.scenes_list.setVisible(True)
 
         return [self.title_control]
 
@@ -575,6 +570,15 @@ class SzenentypView(BaseView):
         elif position == "2":
             return SZENEN_ALLE
         return ""
+
+    def focus_list_item(self, view_id, window):
+        window.setFocusId(257)
+        if view_id == str(SZENEN_MANUELL) + "_view":
+            self.scenes_list.selectItem(0)
+        elif view_id == str(SZENEN_NICHT_MANUELL) + "_view":
+            self.scenes_list.selectItem(1)
+        elif view_id == str(SZENEN_ALLE) + "_view":
+            self.scenes_list.selectItem(2)
 
 
 class SzenenListView(BaseView):
@@ -606,8 +610,12 @@ class SzenenListView(BaseView):
             scenes_group.setVisible(True)
             for scene in scenes:
                 scene_item = xbmcgui.ListItem(label = scene.get_name())
-                scene_item.setIconImage(szene_img)
+                if scene.is_active():
+                    scene_item.setIconImage(szene_img)
+                else:
+                    scene_item.setIconImage(szene_img_deact)
                 scene_item.setProperty("sid", str(scene.get_id()))
+                scene_item.setProperty("description", scene.get_description())
                 scenes_list.addItem(scene_item)
             self.errorcontrol = None
             window.setFocusId(258)

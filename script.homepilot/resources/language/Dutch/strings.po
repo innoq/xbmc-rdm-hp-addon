@@ -17,18 +17,13 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 
-
-msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
-msgstr "HomePilot by Rademacher GmbH & Co. KG"
-
 msgctxt "#32380"
 msgid "No connection to HomePilot or no data available."
-msgstr "Er is geen verbinding met de HomePilot of er zijn geen gegevens beschikbaar."
+msgstr "Er is geen verbinding met de HomePilot\nof er zijn geen gegevens beschikbaar."
 
 msgctxt "#32381"
 msgid "No data could be loaded. Please check your settings in the configuration and your internet connection, both of HomePilot and your smartphone. As soon as a connection to HomePilot is possible, this will be automatically re-connected."
-msgstr "Er konden geen gegevens worden geladen. Controleer a.u.b. uw instellingen in de configuratie en uw internetverbinding, van HomePilot en de smartphone. Zodra een verbinding met HomePilot mogelijk is, wordt deze automatisch weer tot stand gebracht."
+msgstr "Er konden geen gegevens worden geladen.\nControleer a.u.b. uw instellingen in de\nconfiguratie en uw internetverbinding, van HomePilot en de smartphone.\nZodra een verbinding met HomePilot mogelijk is,\nwordt deze automatisch weer tot stand gebracht."
 
 msgctxt "#32004"
 msgid "Favourites"
@@ -99,7 +94,7 @@ msgid "Current data"
 msgstr "Actuele gegevens"
 
 msgctxt "#32383"
-msgid "HomePilot by Rademacher GmbH & Co. KG"
+msgid "HomePilot by Rademacher GmbH"
 msgstr "HomePilot"
 
 msgctxt "#32014"
@@ -658,6 +653,10 @@ msgctxt "#32020"
 msgid "All"
 msgstr "Alle"
 
+msgctxt "#32019"
+msgid "All"
+msgstr "Alle"
+
 msgctxt "#32017"
 msgid "Can be run manually"
 msgstr "Handmatig uitvoerbaar"
@@ -710,6 +709,6 @@ msgctxt "#32379"
 msgid "Sensor"
 msgstr "Sensor"
 
-msgctxt "#32019"
+msgctxt "#32390"
 msgid "Cameras"
 msgstr "Camera&#39;s"

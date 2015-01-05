@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <addon id="script.homepilot"
-       name="Rademacher HomePilot"
-       version="0.9.5"
-       provider-name="Rademacher">
+       name="HomePilot"
+       version="0.9.14.4"
+       provider-name="Rademacher Geräte-Elektronik GmbH">
   <requires>
     <import addon="xbmc.python" version="2.1.0"/>
   </requires>
@@ -12,13 +12,18 @@
   <extension point="xbmc.addon.metadata">
     <platform>all</platform>
     <summary>Rademacher HomePilot</summary>
-    <description>
-      A client application for home automatization.
+    <description lang="de">
+      Die mobile Haussteuerungslösung HomePilot® vernetzt neben Rollläden, Jalousien und Licht noch bis zu 100 weitere elektrische Geräte miteinander. Per Smartphone, Laptop oder Tablet-PC können Rollläden, Jalousien, die Markise und Lampen bequem von der Couch aus oder auch von unterwegs gesteuert werden.
+	  Mehr auf www.homepilot.de
+    </description>
+	<description lang="en">
+	The mobile home control solution HomePilot® conects shutters, blinds and light for up to 100 additional electrical devices with each other. Via smartphone, laptop or tablet PC shutters, blinds, awning and lamps can be easily controlled from the couch, or while traveling. 
+	More on www.homepilot.de
     </description>
     <language>en de</language>
     <license></license>
     <source></source>
     <forum></forum>
-    <website>http://www.rademacher.de</website>
+    <website>http://www.homepilot.de</website>
   </extension>
 </addon>

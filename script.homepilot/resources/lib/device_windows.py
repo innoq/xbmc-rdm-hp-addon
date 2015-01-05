@@ -11,6 +11,7 @@ import threading
 import os
 import xbmcaddon
 import homepilot_utils
+import local_favorites
 __addon__ = xbmcaddon.Addon(id='script.homepilot')
 __addon_path__        = __addon__.getAddonInfo('path').decode("utf-8")
 _images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'devices')
@@ -21,7 +22,7 @@ class BaseWindow(xbmcgui.WindowXMLDialog):
     def onAction(self, action):
         if action == 92 or action == 160 or action == 21:
             self.close()
-        if action == 10 or action == 13:
+        if action == 10:
             self.parent_window.shutdown()
             self.close()
 
@@ -47,42 +48,52 @@ class MeterWindow(BaseWindow):
 
     def __init__( self, *args, **kwargs ):
         xbmcgui.WindowXMLDialog.__init__( self )
-        client = kwargs["client"]
-        did = kwargs["did"]
+        self.client = kwargs["client"]
+        self.did = kwargs["did"]
         self.parent_window = kwargs["parent"]
-        try:
-            self.meter = client.get_meter_by_id(did)
-        except Exception, e:
-            xbmc.log(str(e), level=xbmc.LOGWARNING)
-            self.meter = None
 
     def onInit(self):
-        controls = []
+        self.controls = []
         self.__disable_favorite_and_automatik_control()
         self.__resize_window()
-        if self.meter is not None:
-            icon = self.meter.get_icon()
-            icon_img = os.path.join(_images, icon)
-            image_control = xbmcgui.ControlImage(260, 55, 40,40, icon_img)
-            controls.append(image_control)
-            title = self.meter.get_name()
-            data = self.meter.get_data()
-            title_control = xbmcgui.ControlLabel(310, 55, 600, 75, title, font="font16", textColor="white")
-            controls.append(title_control)
-            label = __addon__.getLocalizedString(32389)
-            aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, label, font="font12", textColor="white")
-            controls.append(aktuell_control)
-
-            y = 150
-            for data_dict in data:
-                for d in data_dict:
-                    label = d + ": " + data_dict[d]
-                    data_control = xbmcgui.ControlLabel(300, y, 600, 75, label, font="font12", textColor="white")
-                    y += 35
-                    controls.append(data_control)
-            self.addControls(controls)
-        else:
+        try:
+            self.meter = self.client.get_meter_by_id(self.did)
+            self.__add__controls()
+            self.errorcontrol = None
+        except Exception, e:
+            xbmc.log(str(e), level=xbmc.LOGWARNING)
             self.add_error_control()
+
+
+    def __add__controls(self):
+        icon = self.meter.get_icon()
+        icon_img = os.path.join(_images, icon)
+        image_control = xbmcgui.ControlImage(260, 55, 40,40, icon_img)
+        self.controls.append(image_control)
+        title = self.meter.get_name()
+        data = self.meter.get_data()
+        title_control = xbmcgui.ControlLabel(310, 55, 600, 75, title, font="font16", textColor="white")
+        self.controls.append(title_control)
+        label = __addon__.getLocalizedString(32389)
+        aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, label, font="font12", textColor="white")
+        self.controls.append(aktuell_control)
+        y = 150
+        for data_dict in data:
+            for d in data_dict:
+                label = d + ": " + data_dict[d]
+                data_control = xbmcgui.ControlLabel(300, y, 600, 75, label, font="font12", textColor="white")
+                y += 35
+                self.controls.append(data_control)
+        self.addControls(self.controls)
+
+
+    def update(self):
+        try:
+            new_meter = self.client.get_meter_by_id(self.did)
+            #self.errorcontrol = None
+        except Exception, e:
+            xbmc.log(str(e), level=xbmc.LOGWARNING)
+            #self.add_error_control()
 
     def __disable_favorite_and_automatik_control(self):
         automation_control = self.getControl(138)
@@ -98,6 +109,8 @@ class MeterWindow(BaseWindow):
         separator = self.getControl(1004)
         if xbmc.getSkinDir() == "skin.confluence":
             separator.setWidth(620)
+            close_icon = self.getControl(1003)
+            close_icon.setPosition(780, close_icon.getY())
         else:
             separator.setWidth(540)
 
@@ -161,8 +174,6 @@ class SliderUpdater (threading.Thread):
                             count += 1
             time.sleep(0.3)
 
-
-
 class DeviceWindow(BaseWindow):
     '''
     Parent class for all types of devices (Thermostat, Schalter, Dimmer, Tor, ...)
@@ -186,7 +197,14 @@ class DeviceWindow(BaseWindow):
         auto_control.setSelected(device.is_automated())
         control_dict["auto"] = auto_control
         fav_control = self.getControl(136)
-        fav_control.setSelected(device.is_favored())
+        if self.use_local_favorites:
+            favored_devices = local_favorites.get_devices_as_set()
+            if device.get_device_id() in favored_devices:
+                fav_control.setSelected(True)
+            else:
+                fav_control.setSelected(False)
+        else:
+            fav_control.setSelected(device.is_favored())
         control_dict["favoriten"] = fav_control
         return control_dict
 
@@ -208,8 +226,12 @@ class DeviceWindow(BaseWindow):
             self.client.set_device_automation_off(deviceId)
 
     def handle_favorit(self, deviceId, is_selected, is_favorited, use_local_favorites):
+        favored_devices = local_favorites.get_devices_as_set()
         if use_local_favorites:
-            pass
+            if is_selected and not deviceId in favored_devices:
+                local_favorites.add_device(deviceId)
+            elif not is_selected and deviceId in favored_devices:
+                local_favorites.remove_device(deviceId)
         else:
             if is_selected and not is_favorited:
                 self.client.favorize_device(deviceId)
@@ -238,7 +260,6 @@ class DeviceWindow(BaseWindow):
         automation_list.reset()
         automations = device.get_automationen()
         homepilot_utils.add_device_to_automation_list(automation_list, automations, __addon__)
-
 
 class PercentageWindow(DeviceWindow):
 
@@ -292,7 +313,8 @@ class PercentageWindow(DeviceWindow):
 
     def update(self):
         if self.getFocusId() == 0:
-            self.setFocus(self.controls.get("slider"))
+            if self.controls.get("slider") is not None:
+                self.setFocus(self.controls.get("slider"))
         if self.updater.get_status() != "UPDATE":
             #xbmc.log("-- update -- no status update awaiting", xbmc.LOGNOTICE)
             try:
