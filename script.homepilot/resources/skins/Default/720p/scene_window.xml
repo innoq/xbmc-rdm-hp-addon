@@ -113,8 +113,8 @@
                 <width>760</width>
                 <height>180</height>
                 <onright>150</onright>
+                <ondown>138</ondown>
                 <onup>136</onup>
-                <ondown>142</ondown>
                 <pagecontrol>150</pagecontrol>
                 <visible>true</visible>
                 <!--scrolltime>0</scrolltime-->
@@ -283,7 +283,7 @@
                 <textureslidernibfocus>ScrollBarNib.png</textureslidernibfocus>
             </control>
         </control>
-        <!-- Ende Geräteliste Automationen -->
+        <!-- Ende Geräteliste -->
 
 
         <!--Automationen -->
@@ -306,15 +306,15 @@
             <control type="list" id="142">
                 <posx>20</posx>
                 <posy>50</posy>
-                <width>550</width>
+                <width>600</width>
                 <height>125</height>
                 <onright>144</onright>
                 <onup>146</onup>
                 <pagecontrol>144</pagecontrol>
-                <itemlayout height="60" width="540">
+                <itemlayout height="60" width="630">
                     <control type="image">
                         <posx>0</posx>
-                        <posy>5</posy>
+                        <posy>12</posy>
                         <width>24</width>
                         <height>24</height>
                         <info>ListItem.Icon</info>
@@ -332,7 +332,7 @@
                         <label>$INFO[ListItem.Label]</label>
                     </control>
                 </itemlayout>
-                <focusedlayout height="60" width="540">
+                <focusedlayout height="60" width="630">
                     <control type="image">
                         <posx>0</posx>
                         <posy>0</posy>

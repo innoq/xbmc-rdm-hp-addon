@@ -8,7 +8,7 @@ class SettingsDialogManager (object):
         ip_address = addon.getSetting("homepilot_ip")
         ip_set = addon.getSetting("homepilot_ip_set")
         if not ip_address or not ip_set: 
-            addon.openSettings()
+            #addon.openSettings()
             ip_address = addon.getSetting("homepilot_ip")
             addon.setSetting("homepilot_ip_set", "true")
         return ip_address

@@ -24,9 +24,9 @@
             <height>640</height>
             <texture border="15">ContentPanel2.png</texture>
         </control>
-        <control type="button">
+        <control type="button" id="1003">
             <description>Close Window button</description>
-            <posx>780</posx>
+            <posx>580</posx>
             <posy>50</posy>
             <width>64</width>
             <height>32</height>

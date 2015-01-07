@@ -83,8 +83,8 @@
                 <width>760</width>
                 <height>185</height>
                 <onright>150</onright>
+                <ondown>138</ondown>
                 <onup>136</onup>
-                <ondown>142</ondown>
                 <pagecontrol>150</pagecontrol>
                 <visible>true</visible>
                 <itemlayout height="60" width="600">

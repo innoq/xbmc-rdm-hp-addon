@@ -7,7 +7,80 @@
         <posy>0</posy>
     </coordinates>
     <controls>
-		<include>CommonBackground</include>
+        <control type="image">
+            <description>Normal Default Background Image</description>
+            <left>0</left>
+            <top>0</top>
+            <width>1280</width>
+            <height>720</height>
+            <aspectratio>scale</aspectratio>
+            <texture fallback="special://skin/backgrounds/SKINDEFAULT.jpg">$INFO[Skin.CurrentTheme,special://skin/backgrounds/,.jpg]</texture>
+            <visible>![Skin.HasSetting(UseCustomBackground) + !IsEmpty(Skin.String(CustomBackgroundPath))]</visible>
+            <include>VisibleFadeEffect</include>
+        </control>
+        <control type="image">
+           <description>User Set Background Image</description>
+           <left>0</left>
+           <top>0</top>
+           <width>1280</width>
+           <height>720</height>
+           <aspectratio>scale</aspectratio>
+           <texture>$INFO[Skin.String(CustomBackgroundPath)]</texture>
+           <visible>Skin.HasSetting(UseCustomBackground) + !IsEmpty(Skin.String(CustomBackgroundPath))</visible>
+           <include>VisibleFadeEffect</include>
+        </control>
+        <control type="image">
+           <left>0</left>
+           <top>0</top>
+           <width>1280</width>
+           <height>720</height>
+           <aspectratio>scale</aspectratio>
+           <texture background="true">$INFO[ListItem.Art(fanart)]</texture>
+           <include>backgroundfade</include>
+           <fadetime>FanartCrossfadeTime</fadetime>
+           <visible>!Skin.HasSetting(HideBackGroundFanart) + !IsEmpty(ListItem.Property(Fanart_Image))</visible>
+           <include>Window_OpenClose_Animation</include>
+           <visible>![Player.HasVideo + !Skin.HasSetting(ShowBackgroundVideo)]</visible>
+	</control>
+	<control type="image">
+           <left>0</left>
+           <top>0</top>
+           <width>1280</width>
+           <height>720</height>
+           <texture>special://skin/backgrounds/media-overlay.jpg</texture>
+           <visible>[Player.HasVideo + !Skin.HasSetting(ShowBackgroundVideo)] + !Window.IsVisible(TVChannels) + !Window.IsVisible(RadioChannels)</visible>
+           <include>VisibleFadeEffect</include>
+	</control>
+	<control type="videowindow">
+           <left>0</left>
+           <top>0</top>
+           <width>1280</width>
+           <height>720</height>
+           <visible>Player.HasVideo + !Skin.HasSetting(ShowBackgroundVideo) + !Window.IsVisible(TVChannels) + !Window.IsVisible(RadioChannels)</visible>
+	</control>
+	<control type="image">
+           <left>0</left>
+           <top>-40</top>
+           <width>1280</width>
+           <height>120</height>
+           <texture flipy="true" border="1">HomeNowPlayingBack.png</texture>
+           <visible>[Player.HasVideo + !Skin.HasSetting(ShowBackgroundVideo)] | [Player.HasAudio + ![Skin.HasSetting(ShowBackgroundVis) | SubString(Window(videolibrary).Property(TvTunesIsAlive),True)]] | [!Skin.HasSetting(HideBackGroundFanart) + !IsEmpty(ListItem.Property(Fanart_Image))]</visible>
+           <include>VisibleFadeEffect</include>
+	</control>
+        <include>ContentPanelBackgrounds</include>
+        <!-- might be used later for error messages with wrapped lines -->
+        <!--control type="textbox" id="222">
+            <posx>50</posx>
+            <posy>0</posy>
+            <width>490</width>
+            <height>60</height>
+            <wrapmultiline>true</wrapmultiline>
+            <font>font12</font>
+            <textcolor>grey2</textcolor>
+            <selectedcolor>selected</selectedcolor>
+            <align>left</align>
+            <label>$INFO[ListItem.Label]</label>
+        </control-->
         <control type="group" id="250">
             <control type="image">
                 <posx>310</posx>
@@ -62,25 +135,10 @@
                     <font>Font_Reg26</font>
                     <textcolor>grey2</textcolor>
                     <focusedcolor>white</focusedcolor>
-                    <onright>255</onright>
                     <texturefocus border="5">listselect_fo.png</texturefocus>
                     <texturenofocus border="5">separator2.png</texturenofocus>
                     <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                     <label>$ADDON[script.homepilot 32004]</label>
-                </control>
-                <control type="button" id="94">
-                    <description>Button Szenen</description>
-                    <height>60</height>
-                    <width>195</width>
-                    <textoffsetx>10</textoffsetx>
-                    <aligny>center</aligny>
-                    <font>Font_Reg26</font>
-                    <textcolor>grey2</textcolor>
-                    <focusedcolor>white</focusedcolor>
-                    <texturefocus border="5">listselect_fo.png</texturefocus>
-                    <texturenofocus border="5">separator2.png</texturenofocus>
-                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
-                    <label>$ADDON[script.homepilot 32005]</label>
                 </control>
                 <control type="button" id="96">
                     <description>Button Geräte</description>
@@ -95,6 +153,20 @@
                     <texturenofocus border="5">separator2.png</texturenofocus>
                     <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
                     <label>$ADDON[script.homepilot 32006]</label>
+                </control>
+                <control type="button" id="94">
+                    <description>Button Szenen</description>
+                    <height>60</height>
+                    <width>195</width>
+                    <textoffsetx>10</textoffsetx>
+                    <aligny>center</aligny>
+                    <font>Font_Reg26</font>
+                    <textcolor>grey2</textcolor>
+                    <focusedcolor>white</focusedcolor>
+                    <texturefocus border="5">listselect_fo.png</texturefocus>
+                    <texturenofocus border="5">separator2.png</texturenofocus>
+                    <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
+                    <label>$ADDON[script.homepilot 32005]</label>
                 </control>
                 <control type="button" id="97">
                     <description>Button Sensoren</description>
@@ -678,12 +750,12 @@
                     <ondown>258</ondown>
                     <pagecontrol>259</pagecontrol>
                     <!--scrolltime>0</scrolltime-->
-                    <itemlayout height="42" width="600">
+                    <itemlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>5</posy>
-                            <width>32</width>
-                            <height>32</height>
+                            <posy>10</posy>
+                            <width>36</width>
+                            <height>36</height>
                             <info>ListItem.Icon</info>
                         </control>
                         <control type="label">
@@ -698,20 +770,32 @@
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
                     </itemlayout>
-                    <focusedlayout height="42" width="600">
+                    <focusedlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>5</posy>
-                            <width>32</width>
-                            <height>32</height>
+                            <posy>10</posy>
+                            <width>36</width>
+                            <height>36</height>
                             <info>ListItem.Icon</info>
                         </control>
                         <control type="image">
                             <posx>0</posx>
                             <posy>0</posy>
                             <width>750</width>
-                            <height>41</height>
+                            <height>61</height>
                             <texture border="8">listselect_fo.png</texture>
                             <visible>Control.HasFocus(258)</visible>
                             <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -731,6 +815,19 @@
                         </control>
                         <control type="label">
                             <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>white</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                            <visible>Control.HasFocus(258)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
                             <posy>0</posy>
                             <width>510</width>
                             <height>40</height>
@@ -740,6 +837,19 @@
                             <align>left</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
+                            <visible>!Control.HasFocus(258)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
                             <visible>!Control.HasFocus(258)</visible>
                         </control>
                     </focusedlayout>
@@ -780,10 +890,10 @@
                     <onleft>95</onleft>
                     <pagecontrol>266</pagecontrol>
                     <!--scrolltime>0</scrolltime-->
-                    <itemlayout height="42" width="600">
+                    <itemlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>5</posy>
+                            <posy>10</posy>
                             <width>32</width>
                             <height>32</height>
                             <info>ListItem.Icon</info>
@@ -800,11 +910,23 @@
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
                         </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
+                        </control>
                     </itemlayout>
-                    <focusedlayout height="42" width="600">
+                    <focusedlayout height="60" width="600">
                         <control type="image">
                             <posx>20</posx>
-                            <posy>5</posy>
+                            <posy>10</posy>
                             <width>32</width>
                             <height>32</height>
                             <info>ListItem.Icon</info>
@@ -813,7 +935,7 @@
                             <posx>0</posx>
                             <posy>0</posy>
                             <width>750</width>
-                            <height>41</height>
+                            <height>61</height>
                             <texture border="8">listselect_fo.png</texture>
                             <visible>Control.HasFocus(264)</visible>
                             <colordiffuse>$VAR[FocusTextureColorVar]</colordiffuse>
@@ -842,6 +964,19 @@
                             <align>left</align>
                             <aligny>center</aligny>
                             <label>$INFO[ListItem.Label]</label>
+                            <visible>!Control.HasFocus(264)</visible>
+                        </control>
+                        <control type="label">
+                            <posx>80</posx>
+                            <posy>20</posy>
+                            <width>500</width>
+                            <height>40</height>
+                            <font>Font_Reg17</font>
+                            <textcolor>grey2</textcolor>
+                            <selectedcolor>selected</selectedcolor>
+                            <align>left</align>
+                            <aligny>center</aligny>
+                            <label>$INFO[ListItem.Property(description)]</label>
                             <visible>!Control.HasFocus(264)</visible>
                         </control>
                     </focusedlayout>
