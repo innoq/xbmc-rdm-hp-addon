@@ -248,14 +248,10 @@ class SzenenDetailWindow(xbmcgui.WindowXMLDialog):
     def onAction(self, action):
         if action == 92 or action == 160 or action == 21:
             self.close()
-            self.is_closed = True
         if action == 10:
             self.parent_window.shutdown()
             self.close()
-            self.is_closed = True
 
-    def is_closed(self):
-        return self.is_closed
 
     def update(self):
         xbmc.log("---scene_window.py-- update scene" + str(self.getFocusId()), level=xbmc.LOGNOTICE)
