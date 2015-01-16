@@ -135,7 +135,7 @@ class StatusUpdater (threading.Thread):
         while self.is_running:
             time.sleep(1.5)
             #xbmc.log("---default.py-- run", level=xbmc.LOGNOTICE)
-            if self.current_window is not None and not self.current_window.is_closed():
+            if self.current_window is not None:
                 self.current_window.update()
             v_id = self.currentView.get_id()
             if v_id == FAVORITEN_VIEW or v_id == FAVORITEN_LOKAL_VIEW or v_id == DEVICE_ROLLADEN_VIEW or v_id == DEVICE_SCHALTER_VIEW \
@@ -409,13 +409,9 @@ class GuiController(xbmcgui.WindowXMLDialog):
         elif view == SZENEN_MANUELL_VIEW:
             if self.isActionBack(action.getId()):
                 self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
         elif view == SZENEN_NICHT_MANUELL_VIEW:
             if self.isActionBack(action.getId()):
                 self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
         elif view == SZENEN_ALLE_VIEW:
             if self.isActionBack(action.getId()):
                 self.setFocusId(FOCUS_LIST_SCENES)
