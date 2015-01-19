@@ -354,7 +354,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
         #Favoriten
         if view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW:
             if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_FAV)
+                self.setFocusId(FOCUS_LIST_FAV)
         elif view == GERAETETYP_VIEW:
             if not self.isActionBack(action.getId()):
                 if focusid == FOCUS_LIST_DEVICES:
