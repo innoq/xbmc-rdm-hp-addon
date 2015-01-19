@@ -406,17 +406,9 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 szenen_view.visualize(self, __addon__)
                 self.currentView = szenen_view
                 self.status_updater.set_current_view(szenen_view, menu_control)
-        elif view == SZENEN_MANUELL_VIEW:
+        elif view == SZENEN_MANUELL_VIEW or view == SZENEN_NICHT_MANUELL_VIEW or view == SZENEN_ALLE_VIEW:
             if self.isActionBack(action.getId()):
                 self.setFocusId(FOCUS_LIST_SCENES)
-        elif view == SZENEN_NICHT_MANUELL_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-        elif view == SZENEN_ALLE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
         #Sensoren
         elif view == SENSOREN_VIEW:
             if self.isActionBack(action.getId()):
