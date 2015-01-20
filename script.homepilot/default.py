@@ -136,9 +136,6 @@ class StatusUpdater (threading.Thread):
             time.sleep(1.5)
             #xbmc.log("---default.py-- run", level=xbmc.LOGNOTICE)
             if self.current_window is not None:
-                #this is a pretty sloppy implementation, as the window is updated even when it isn't display anymore
-                #I've choosen this way as I didn't find a method for getting the current state of a xbmcgui.WindowXMLDialog
-                #and the possible alternatives(e.g. passing references of this class around) looked more error prone
                 self.current_window.update()
             v_id = self.currentView.get_id()
             if v_id == FAVORITEN_VIEW or v_id == FAVORITEN_LOKAL_VIEW or v_id == DEVICE_ROLLADEN_VIEW or v_id == DEVICE_SCHALTER_VIEW \
@@ -409,21 +406,9 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 szenen_view.visualize(self, __addon__)
                 self.currentView = szenen_view
                 self.status_updater.set_current_view(szenen_view, menu_control)
-        elif view == SZENEN_MANUELL_VIEW:
+        elif view == SZENEN_MANUELL_VIEW or view == SZENEN_NICHT_MANUELL_VIEW or view == SZENEN_ALLE_VIEW:
             if self.isActionBack(action.getId()):
                 self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
-        elif view == SZENEN_NICHT_MANUELL_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
-        elif view == SZENEN_ALLE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSORLIST)
         #Sensoren
         elif view == SENSOREN_VIEW:
             if self.isActionBack(action.getId()):
