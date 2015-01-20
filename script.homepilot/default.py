@@ -135,7 +135,7 @@ class StatusUpdater (threading.Thread):
         while self.is_running:
             time.sleep(1.5)
             #xbmc.log("---default.py-- run", level=xbmc.LOGNOTICE)
-            if self.current_window is not None:
+            if self.current_window is not None and not self.current_window.is_closed():
                 self.current_window.update()
             v_id = self.currentView.get_id()
             if v_id == FAVORITEN_VIEW or v_id == FAVORITEN_LOKAL_VIEW or v_id == DEVICE_ROLLADEN_VIEW or v_id == DEVICE_SCHALTER_VIEW \

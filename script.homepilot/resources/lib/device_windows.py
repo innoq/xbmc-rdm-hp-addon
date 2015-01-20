@@ -19,12 +19,17 @@ _control_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 
 
 class BaseWindow(xbmcgui.WindowXMLDialog):
 
+	def is_closed(self):
+		return self.is_closed
+
     def onAction(self, action):
         if action == 92 or action == 160 or action == 21:
             self.close()
+			self.is_closed = True
         if action == 10:
             self.parent_window.shutdown()
             self.close()
+			self.is_closed = True
 
     def add_error_control(self):
         label = __addon__.getLocalizedString(32381)
