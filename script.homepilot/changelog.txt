@@ -1,27 +1,7 @@
-0.9.14.4
-- Verkürzte Texte mit Zeilenumbruch erweitert
-- Firmenform auf GmbH geändert
-- Musik-Stopp Bug für Aeon Nox gefixt
-0.9.14.3
-- Musik-Stopp Bug für Confluence gefixt
-0.9.13
-- Navigation über Remote Smartphone App ermöglicht
-0.9.12
-- Test Version für Updateprozess
-0.9.11
-- Fehler in Navigation von Geräten und Szenen behoben
-0.9.10.10
-- Quellcode zusammengefasst
-- Unnötige Komentare aus Quellcode entfernt
-0.9.10
-- Navigation überarbeitet
-- Beim Ersten Start wird Einstellungsdialog nicht automatisch gestartet
-- TastenHandling überarbeitet
-- Anpassung Addon.xml
-  - Bezeichnungen angepasst
-  - Beschreibung angepasst
-  - icon.png angepasst
-  - fanart.png angepasst
+0.9.14.5
+- Add new fanart
+- Add License file
+- Clean up changelog
 
 
 
