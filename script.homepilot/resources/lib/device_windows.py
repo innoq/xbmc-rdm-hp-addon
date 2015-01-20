@@ -53,7 +53,7 @@ class MeterWindow(BaseWindow):
         self.parent_window = kwargs["parent"]
 
     def onInit(self):
-        self.controls = []
+
         self.__disable_favorite_and_automatik_control()
         self.__resize_window()
         try:
@@ -66,34 +66,54 @@ class MeterWindow(BaseWindow):
 
 
     def __add__controls(self):
+        controls = []
+        self.icon_control = self.__get_icon_control()
+        controls.append(self.icon_control)
+        title = self.meter.get_name()
+        self.title_control = xbmcgui.ControlLabel(310, 55, 600, 75, title, font="font16", textColor="white")
+        controls.append(self.title_control)
+        label = __addon__.getLocalizedString(32389)
+        aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, label, font="font12", textColor="white")
+        controls.append(aktuell_control)
+        self.data_controls = self.__get_data_controls()
+        controls.extend(self.data_controls)
+        self.addControls(controls)
+
+    def __get_icon_control(self):
         icon = self.meter.get_icon()
         icon_img = os.path.join(_images, icon)
         image_control = xbmcgui.ControlImage(260, 55, 40,40, icon_img)
-        self.controls.append(image_control)
-        title = self.meter.get_name()
+        return image_control
+
+    def __get_data_controls(self):
         data = self.meter.get_data()
-        title_control = xbmcgui.ControlLabel(310, 55, 600, 75, title, font="font16", textColor="white")
-        self.controls.append(title_control)
-        label = __addon__.getLocalizedString(32389)
-        aktuell_control = xbmcgui.ControlLabel(300, 110, 600, 75, label, font="font12", textColor="white")
-        self.controls.append(aktuell_control)
         y = 150
+        data_controls = []
         for data_dict in data:
             for d in data_dict:
                 label = d + ": " + data_dict[d]
                 data_control = xbmcgui.ControlLabel(300, y, 600, 75, label, font="font12", textColor="white")
                 y += 35
-                self.controls.append(data_control)
-        self.addControls(self.controls)
-
+                data_controls.append(data_control)
+        return data_controls
 
     def update(self):
         try:
             new_meter = self.client.get_meter_by_id(self.did)
-            #self.errorcontrol = None
+            if new_meter.get_sync() != self.meter.get_sync():
+                if new_meter.get_name() != self.meter.get_name():
+                    xbmc.log("-- name has changed ", level=xbmc.LOGNOTICE)
+                    self.title_control.setLabel(new_meter.get_name())
+                if new_meter.get_icon() != self.meter.get_icon():
+                    self.removeControl(self.icon_control)
+                    self.icon_control = self.__get_icon_control()
+                    self.addControl(self.icon_control)
+                self.removeControls(self.data_controls)
+                self.data_controls = self.__get_data_controls()
+                self.addControls(self.data_controls)
+                self.meter = new_meter
         except Exception, e:
             xbmc.log(str(e), level=xbmc.LOGWARNING)
-            #self.add_error_control()
 
     def __disable_favorite_and_automatik_control(self):
         automation_control = self.getControl(138)
@@ -117,6 +137,7 @@ class MeterWindow(BaseWindow):
 
     def onAction(self, action):
         BaseWindow.onAction(self, action)
+
 
 
 sliderbarImg = os.path.join(_control_images, 'slider.png')
