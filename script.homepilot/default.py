@@ -134,7 +134,6 @@ class StatusUpdater (threading.Thread):
         self.currentView.visualize (self.window, __addon__, self.title)
         while self.is_running:
             time.sleep(1.5)
-            #xbmc.log("---default.py-- run", level=xbmc.LOGNOTICE)
             if self.current_window is not None and not self.current_window.is_closed():
                 self.current_window.update()
             v_id = self.currentView.get_id()
@@ -513,8 +512,8 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 list_item = geraete_listcontrol.getSelectedItem()
                 did = list_item.getProperty("did")
                 meter_window = MeterWindow('device_window.xml', __cwd__, client=self.client, did=did, parent=self)
-                meter_window.doModal()
                 self.status_updater.set_current_window(meter_window)
+                meter_window.doModal()
             elif view_id == DEVICE_ALLE_VIEW or view_id == DEVICE_ROLLADEN_VIEW or view_id == DEVICE_SCHALTER_VIEW or view_id == DEVICE_DIMMER_VIEW \
                 or view_id == DEVICE_THERMOSTATE_VIEW or view_id == DEVICE_TORE_VIEW:
                 geraete_listcontrol = self.getControl(FOCUS_LIST_SENSORLIST)

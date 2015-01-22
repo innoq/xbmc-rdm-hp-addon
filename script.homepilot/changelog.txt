@@ -1,3 +1,6 @@
+0.9.14.10
+- fix update call for sensor windows
+- ck-innoq 	update values on sensor window
 0.9.14.9
 - fix navigation for favorites
 0.9.14.8
