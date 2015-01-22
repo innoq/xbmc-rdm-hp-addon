@@ -138,7 +138,7 @@ class StatusUpdater (threading.Thread):
                 self.current_window.update()
             v_id = self.currentView.get_id()
             if v_id == FAVORITEN_VIEW or v_id == FAVORITEN_LOKAL_VIEW or v_id == DEVICE_ROLLADEN_VIEW or v_id == DEVICE_SCHALTER_VIEW \
-                    or v_id == DEVICE_DIMMER_VIEW or v_id == DEVICE_THERMOSTATE_VIEW or v_id == DEVICE_TORE_VIEW:
+                    or v_id == DEVICE_DIMMER_VIEW or v_id == DEVICE_THERMOSTATE_VIEW or v_id == DEVICE_TORE_VIEW or v_id == SENSOREN_VIEW:
                 self.currentView.update(self.window, __addon__, self.menuControl)
 
 
