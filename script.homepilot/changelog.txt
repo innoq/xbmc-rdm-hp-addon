@@ -1,3 +1,5 @@
+0.9.14.11
+- auto update for sensors overview
 0.9.14.10
 - fix update call for sensor windows
 - ck-innoq 	update values on sensor window
@@ -11,6 +13,3 @@
 - Add new fanart
 - Add License file
 - Clean up changelog
-
-
-
