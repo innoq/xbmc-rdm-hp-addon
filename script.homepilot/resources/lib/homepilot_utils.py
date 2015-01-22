@@ -122,7 +122,7 @@ def __get_icon_switch(position, base_icon):
 
 
 def __get_icon_switch_inverted(position, base_icon):
-    if position != 0:
+    if position == 0:
         return base_icon + "1.png"
     else:
         return base_icon + "0.png"
