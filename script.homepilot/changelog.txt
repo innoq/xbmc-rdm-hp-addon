@@ -1,3 +1,5 @@
+0.9.14.8
+- fix inverted icons for switches
 0.9.14.6
 - Fix scene navigation
 0.9.14.5
