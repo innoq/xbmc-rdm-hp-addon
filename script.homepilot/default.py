@@ -106,7 +106,7 @@ FOCUS_SCROLL_DEVGROUP = 998
 FOCUS_SCROLL_DEVLIST = 999
 FOCUS_SCROLL_SCENELIST = 259
 
-# tail -f /home/root/.xbmc/temp/xbmc.log | grep PMM---
+# tail -f /home/root/.xbmc/temp/xbmc.log
 # ps aux | grep xbmc.bin
 
 class StatusUpdater (threading.Thread):
@@ -165,6 +165,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
         """
         initializes the window
         """
+        self.window = xbmcgui.Window(xbmcgui.getCurrentWindowDialogId())
         self.setProperty('windowLabel', __addon__.getLocalizedString(32383))
         menu_control = self.getControl(95)
         uselocalfavorites = self.settings_dialog_manager.use_local_favorites(__addon__)
@@ -194,78 +195,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
         else:
             label += " (" + __addon__.getLocalizedString(32382) + ")"
         return label
-            
-
-    # Helper Funktion für Debugging
-    def getButtonCodestring(self, button):
-        if button == HP_VK_DOWN:
-            return "VK Down"
-        elif button == HP_VK_UP:
-            return "VK Up"
-        elif button == HP_VK_LEFT:
-            return "VK Left"
-        elif button == HP_VK_RIGHT:
-            return "VK Right"
-        elif button == HP_VK_ENTER:
-            return "VK Enter"
-        elif button == HP_VK_BACK:
-            return "VK Back"
-        elif button == HP_VK_ESC:
-            return "VK ESC"
-        elif button == HP_CEC_DOWN:
-            return "CEC Down"
-        elif button == HP_CEC_UP:
-            return "CEC Up"
-        elif button == HP_CEC_LEFT:
-            return "CEC Left"
-        elif button == HP_CEC_RIGHT:
-            return "CEC Right"
-        elif button == HP_CEC_ENTER:
-            return "CEC Ok"
-        elif button == HP_CEC_BACK:
-            return "CEC Exit"
-        else:
-            return "unbekannt:" + str(button)
-            
-    # Helper Funktion für Debugging
-    def getActionIDstring(self, actionid):            
-        if actionid == AID_DOWN:
-            return "Down"
-        elif actionid == AID_UP:
-            return "Up"
-        elif actionid == AID_LEFT:
-            return "Left"
-        elif actionid == AID_RIGHT:
-            return "Right"
-        elif actionid == AID_ENTER:
-            return "Enter"
-        elif actionid == AID_BACK:
-            return "Back"
-        elif actionid == AID_ESC:
-            return "ESC"
-        else:
-            return "unbekannt:" + str(actionid)
-    
-            
-    # Helper Funktion um Quellcode besser lesen zu können
-    def switchDevicetypeBack(self, view, focusid):
-        self.__show_geraetetyp_view()
-        self.__set_geraetetyp_list_focus(view)
-        self.setFocusId(focusid)
-            
-    # Helper Funktion um Quellcode besser lesen zu können
-    def isKeyBackbutton(self, button):
-        return button == HP_VK_BACK or button == HP_VK_LEFT or button == HP_CEC_BACK or button == HP_CEC_LEFT
-        
-    def isActionBack(self, actionid):
-        return actionid == AID_LEFT or actionid == AID_BACK
-        
-    # Helper Funktion um Quellcode besser lesen zu können
-    def isKeyEnterbutton(self, button):
-        return button == HP_CEC_ENTER or button == MOUSE_LEFT_CLICK or button == HP_VK_ENTER
-
-    def isActionEnter(self, actionid):
-        return actionid == AID_ENTER
 
     def __is_geraeteview (self, view):
         return view == DEVICE_ALLE_VIEW or view == DEVICE_ROLLADEN_VIEW or view == DEVICE_SCHALTER_VIEW or view == DEVICE_DIMMER_VIEW or \
@@ -453,15 +382,15 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
 
     def __set_gruppen_list_focus (self, gruppen_id):
-        list_control = self.getControl(4)
+        list_control = self.window.getControl(4)
         i = 0
         while True:
             try:
                 item = list_control.getListItem(i)
                 gid = item.getProperty("gid")
-                xbmc.log("gruppenlist  " + str(gid), level=xbmc.LOGWARNING)
                 if gid == str(gruppen_id):
                     list_control.selectItem(i)
+                    self.setFocusId(4)
                     return
             except RuntimeError:
                 self.setFocusId(4)
