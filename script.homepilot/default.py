@@ -194,29 +194,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
         else:
             label += " (" + __addon__.getLocalizedString(32382) + ")"
         return label
-        
-    # Helper Funktion für Debugging
-    def getViewstring(self, view):
-        if view == FAVORITEN_VIEW:
-            return "Favoriten View"
-        elif view == FAVORITEN_LOKAL_VIEW:
-            return "Favoriten Lokal View"
-        elif view == GERAETETYP_VIEW:
-            return "Geraetetyp View"
-        elif view == SZENENTYP_VIEW:
-           return "Szenentyp View"
-        elif view == SZENEN_MANUELL_VIEW:
-            return "Szenen Manu View"
-        elif view == SZENEN_NICHT_MANUELL_VIEW:
-            return "Szenen nicht Manu View"
-        elif view == SZENEN_ALLE_VIEW:
-            return "Szenen alle View"
-        elif view == SENSOREN_VIEW:
-            return "Sensoren View"
-        elif view == EMPTY_VIEW:
-            return "Einstellungen View"
-        else:
-            return "unbekannt:" + str(view)
             
     # Helper Funktion für Debugging    
     def getFocusIdstring(self, id):
@@ -334,7 +311,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
         focusid = self.getFocusId()
         
         # Debug Log Start Event Handling
-        xbmc.log("PMM---default.py-- START View: " + self.getViewstring(view) + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
+        xbmc.log("PMM---default.py-- START View: " + view + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
             
         #Shutdown ermöglichen, wenn in oberer Schicht
         if focusid == FOCUS_LIST_FAV or focusid == FOCUS_LIST_DEVICES or focusid == FOCUS_LIST_SCENES or focusid == FOCUS_LIST_SENSOR or focusid == FOCUS_LIST_CONFIG:
@@ -367,24 +344,9 @@ class GuiController(xbmcgui.WindowXMLDialog):
                     self.__on_action_geraetetypview(action)
                 else:
                     xbmc.log("PMM--- Enter hilfe Quellcode schauen", level=xbmc.LOGNOTICE)
-        elif view == DEVICE_ROLLADEN_VIEW:
+        elif view == DEVICE_ROLLADEN_VIEW or view == DEVICE_SCHALTER_VIEW or view == DEVICE_DIMMER_VIEW or view == DEVICE_THERMOSTATE_VIEW or view == DEVICE_TORE_VIEW or view == DEVICE_ALLE_VIEW:
             if self.isActionBack(action.getId()):
                 self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_SCHALTER_VIEW:
-            if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_DIMMER_VIEW:
-            if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_THERMOSTATE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_TORE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_ALLE_VIEW:
-            if self.isActionBack(action.getId()):
-               self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
         elif view == DEVICE_GRUPPEN_VIEW:
             if self.isActionBack(action.getId()):
                 group_id = self.currentView.get_group()
@@ -427,13 +389,10 @@ class GuiController(xbmcgui.WindowXMLDialog):
             else:
                 self.setFocusId(95)
         
-        # Debug Log END Event Handling
-        xbmc.log("PMM---default.py-- ENDE View: " + self.getViewstring(view) + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
-        #xbmc.log("PMM---default.py-- ENDE View: " + self.getViewstring(view) + " - Action: " + self.getActionIDstring(action.getId()) + " - Key: " + self.getButtonCodestring(action.getButtonCode()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
+        xbmc.log("PMM---default.py-- ENDE View: " + view + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
 
     def __on_action_geraetetypview (self, action):
         if self.getFocusId() == FOCUS_LIST_DEVICE_TYP:
-            # Einmal tiefer ins Menü
             if self.isActionEnter(action.getId()):#Gerätetyptabelle
                 gruppen_list = self.getControl(FOCUS_LIST_DEVICE_TYP)
                 position = gruppen_list.getSelectedItem()
@@ -446,7 +405,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
                     self.currentView = geraete_view
                     self.status_updater.set_current_view(geraete_view, menu_control)
         elif self.getFocusId() == FOCUS_LIST_DEVICE_GROUP:
-            # Einmal tiefer ins Menü
             if self.isActionEnter(action.getId()):#Gruppentabelle
                 gruppen_list = self.getControl(FOCUS_LIST_DEVICE_GROUP)
                 position = gruppen_list.getSelectedPosition()
@@ -462,7 +420,6 @@ class GuiController(xbmcgui.WindowXMLDialog):
     
     def __on_action_scenetypview (self, action):
         if self.getFocusId() == FOCUS_LIST_DEVICE_TYP:
-            # Einmal tiefer ins Menü
             if self.isActionEnter(action.getId()):#Gerätetyptabelle
                 gruppen_list = self.getControl(FOCUS_LIST_DEVICE_TYP)
                 position = gruppen_list.getSelectedItem()
