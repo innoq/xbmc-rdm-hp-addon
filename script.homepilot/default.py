@@ -195,45 +195,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
             label += " (" + __addon__.getLocalizedString(32382) + ")"
         return label
             
-    # Helper Funktion für Debugging    
-    def getFocusIdstring(self, id):
-        if id == FOCUS_LIST_FAV:
-            return "FavMenü"
-        elif id == FOCUS_LIST_DEVICES:
-            return "GeraeteMenu"
-        elif id == FOCUS_LIST_DEVICE_TYP:
-            return "Geraetetypen"
-        elif id == FOCUS_LIST_DEVICE_GROUP:
-            return "GeraeteGruppen"
-        elif id == FOCUS_LIST_SCENES:
-            return "SzenenMenü"
-        elif id == FOCUS_LIST_SENSOR:
-            return "SensorMenue"
-        elif id == FOCUS_LIST_CONFIG:
-            return "ConfigMenue"
-        elif id == FOCUS_LIST_SENSORLIST:
-            return "Sensorliste"
-        elif id == FOCUS_LIST_FAVLIST_AKTOREN:
-            return "FavAktorenliste"
-        elif id == FOCUS_LIST_FAVLIST_SZENEN:
-            return "FavSzenenliste"
-        elif id == FOCUS_LIST_SCENE_LIST:
-            return "SzenenTypliste"
-        elif id == FOCUS_SCROLL_FAVLIST_DEV:
-            return "Scrollbar FavList Aktoren"
-        elif id == FOCUS_SCROLL_FAVLIST_SCN:
-            return "Scrollbar FavList Szenen"
-        elif id == FOCUS_SCROLL_DEVGROUP:
-            return "Scrollbar Geraetetyp Aktoren"
-        elif id == FOCUS_SCROLL_DEVLIST:
-            return "Scrollbar Aktoren,Sensoren"
-        elif id == FOCUS_SCROLL_SCENELIST:
-            return "Scrollbar Szenen"
-        #elif id == FOCUS_SCROLL_DEVTYP:
-        #    return "SzenenTypliste"
-        else:
-            return "unbekannt:" + str(id)
-    
+
     # Helper Funktion für Debugging
     def getButtonCodestring(self, button):
         if button == HP_VK_DOWN:
@@ -304,83 +266,47 @@ class GuiController(xbmcgui.WindowXMLDialog):
 
     def isActionEnter(self, actionid):
         return actionid == AID_ENTER
+
+    def __is_geraeteview (self, view):
+        return view == DEVICE_ALLE_VIEW or view == DEVICE_ROLLADEN_VIEW or view == DEVICE_SCHALTER_VIEW or view == DEVICE_DIMMER_VIEW or \
+                         view == DEVICE_THERMOSTATE_VIEW or view == DEVICE_TORE_VIEW
         
     # Eventhandling
     def onAction(self, action):
         view = self.currentView.get_id()
-        focusid = self.getFocusId()
-        
-        # Debug Log Start Event Handling
-        xbmc.log("PMM---default.py-- START View: " + view + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
-            
-        #Shutdown ermöglichen, wenn in oberer Schicht
-        if focusid == FOCUS_LIST_FAV or focusid == FOCUS_LIST_DEVICES or focusid == FOCUS_LIST_SCENES or focusid == FOCUS_LIST_SENSOR or focusid == FOCUS_LIST_CONFIG:
-            if action.getId() == AID_BACK:
-                xbmc.log("PMM---default.py-- shutdown via FocusID", level=xbmc.LOGNOTICE)
-                self.shutdown()
-        # Mit ESC wird Addon komplett geschlossen
-        if action.getId() == AID_ESC:
-            xbmc.log("PMM---default.py-- shutdown via ESC", level=xbmc.LOGNOTICE)
+        is_geraeteview = self.__is_geraeteview(view)
+        if action == 10 or action == 160 or action == 21:
             self.shutdown()
-    
-        #Menüsteuerung
-        #Favoriten
-        if view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_FAV)
         elif view == GERAETETYP_VIEW:
-            if not self.isActionBack(action.getId()):
-                if focusid == FOCUS_LIST_DEVICES:
-                    self._isScene = False
-                elif focusid == FOCUS_LIST_SCENES:
-                    self._isScene = True
-            if self.isActionBack(action.getId()):
-                if self._isScene == False:
-                    self.setFocusId(FOCUS_LIST_DEVICES)
-                else:
-                    self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.isActionEnter(action.getId()):
-                if self._isScene == False:
-                    self.__on_action_geraetetypview(action)
-                else:
-                    xbmc.log("PMM--- Enter hilfe Quellcode schauen", level=xbmc.LOGNOTICE)
-        elif view == DEVICE_ROLLADEN_VIEW or view == DEVICE_SCHALTER_VIEW or view == DEVICE_DIMMER_VIEW or view == DEVICE_THERMOSTATE_VIEW or view == DEVICE_TORE_VIEW or view == DEVICE_ALLE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.switchDevicetypeBack(view, FOCUS_LIST_DEVICE_TYP)
-        elif view == DEVICE_GRUPPEN_VIEW:
-            if self.isActionBack(action.getId()):
-                group_id = self.currentView.get_group()
-                self.__show_geraetetyp_view()
-                self.__set_gruppen_list_focus(group_id)
-        #Szenen
+            self.__on_action_geraetetypview(action)
         elif view == SZENENTYP_VIEW:
-            self._isScene = True
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-            elif self.getFocusId() == FOCUS_LIST_DEVICE_TYP and self.isActionEnter(action.getId()):#Gerätetyptabelle
-                type_list = self.getControl(FOCUS_LIST_DEVICE_TYP)
+            if action == ACTION_BACKSPACE or action == ACTION_MOVE_LEFT:
+                self.setFocusId(94)
+            elif self.getFocusId() == 257 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gerätetyptabelle
+                type_list = self.getControl(257)
                 item = type_list.getSelectedItem()
                 next_view = self.currentView.handle_click(item)
                 self.currentView.remove_everything(self)
                 szenen_view = homepilot_views.SzenenListView(self.client, next_view)
-                menu_control = self.getControl(FOCUS_LIST_SCENES)
+                menu_control = self.getControl(94)
                 szenen_view.visualize(self, __addon__)
                 self.currentView = szenen_view
                 self.status_updater.set_current_view(szenen_view, menu_control)
-        elif view == SZENEN_MANUELL_VIEW or view == SZENEN_NICHT_MANUELL_VIEW or view == SZENEN_ALLE_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SCENES)
-        #Sensoren
-        elif view == SENSOREN_VIEW:
-            if self.isActionBack(action.getId()):
-                self.setFocusId(FOCUS_LIST_SENSOR)
-        #Einstellungen
-        #elif view == EMPTY_VIEW:
- 
-        #XBMC has lost focus, set a new one
+            elif action == MOVE_RIGHT:
+                self.setFocusId(257)
+        elif self.getFocusId() == 999 and action == 31:
+            self.setFocusId(5)
+        elif action == ACTION_NAV_BACK and (view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW):
+            self.setFocusId(95)
+        elif action == ACTION_NAV_BACK and view == SENSOREN_VIEW:
+            self.setFocusId(97)
+        elif action == MOVE_RIGHT and view == SENSOREN_VIEW and self.getFocusId() != 999:
+            self.setFocusId(5)
+        elif action == ACTION_BACKSPACE or action == ACTION_MOVE_LEFT or action == ACTION_NAV_BACK:
+            self.__handle_back_action_on_nested_sites(view, is_geraeteview)
+        # XBMC has lost focus, set a new one
         if self.getFocusId() == 0 and action.getButtonCode() != 0:
-            xbmc.log("PMM---default.py-- focus lost", level=xbmc.LOGNOTICE)
-            if view == SENSOREN_VIEW:
+            if view == SENSOREN_VIEW or is_geraeteview:
                 self.setFocusId(5)
             elif view == FAVORITEN_VIEW or view == FAVORITEN_LOKAL_VIEW:
                 self.setFocusId(255)
@@ -388,49 +314,49 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 self.setFocusId(257)
             else:
                 self.setFocusId(95)
-        
-        xbmc.log("PMM---default.py-- ENDE View: " + view + " - Action: " + self.getActionIDstring(action.getId()) + " - FocusId: " +  self.getFocusIdstring(focusid) + " - Szene: " + str(self._isScene), level=xbmc.LOGNOTICE)
+
 
     def __on_action_geraetetypview (self, action):
-        if self.getFocusId() == FOCUS_LIST_DEVICE_TYP:
-            if self.isActionEnter(action.getId()):#Gerätetyptabelle
-                gruppen_list = self.getControl(FOCUS_LIST_DEVICE_TYP)
-                position = gruppen_list.getSelectedItem()
-                next_view = self.currentView.handle_click(position)
-                if next_view is not None:
-                    self.currentView.remove_everything(self)
-                    geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, next_view)
-                    menu_control = self.getControl(FOCUS_LIST_DEVICES)
-                    geraete_view.visualize(self, __addon__)
-                    self.currentView = geraete_view
-                    self.status_updater.set_current_view(geraete_view, menu_control)
-        elif self.getFocusId() == FOCUS_LIST_DEVICE_GROUP:
-            if self.isActionEnter(action.getId()):#Gruppentabelle
-                gruppen_list = self.getControl(FOCUS_LIST_DEVICE_GROUP)
-                position = gruppen_list.getSelectedPosition()
-                list_item = gruppen_list.getListItem(position)
-                gruppen_id = list_item.getProperty("gid")
-                gruppen_name = list_item.getLabel()
+        if self.getFocusId() == 257 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gerätetyptabelle
+            gruppen_list = self.getControl(257)
+            position = gruppen_list.getSelectedItem()
+            next_view = self.currentView.handle_click(position)
+            if next_view is not None:
                 self.currentView.remove_everything(self)
-                geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, GRUPPEN, gruppen_id)
-                menu_control = self.getControl(FOCUS_LIST_DEVICES)
-                geraete_view.visualize(self, __addon__, gruppen_name)
+                geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, next_view)
+                menu_control = self.getControl(96)
+                geraete_view.visualize(self, __addon__)
                 self.currentView = geraete_view
                 self.status_updater.set_current_view(geraete_view, menu_control)
-    
-    def __on_action_scenetypview (self, action):
-        if self.getFocusId() == FOCUS_LIST_DEVICE_TYP:
-            if self.isActionEnter(action.getId()):#Gerätetyptabelle
-                gruppen_list = self.getControl(FOCUS_LIST_DEVICE_TYP)
-                position = gruppen_list.getSelectedItem()
-                next_view = self.currentView.handle_click(position)
-                if next_view is not None:
-                    self.currentView.remove_everything(self)
-                    geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, next_view)
-                    menu_control = self.getControl(FOCUS_LIST_DEVICES)
-                    geraete_view.visualize(self, __addon__)
-                    self.currentView = geraete_view
-                    self.status_updater.set_current_view(geraete_view, menu_control)
+        elif self.getFocusId() == 4 and (action.getButtonCode() == 61453 or action == MOUSE_LEFT_CLICK or action == ENTER):#Gruppentabelle
+            gruppen_list = self.getControl(4)
+            position = gruppen_list.getSelectedPosition()
+            list_item = gruppen_list.getListItem(position)
+            gruppen_id = list_item.getProperty("gid")
+            gruppen_name = list_item.getLabel()
+            self.currentView.remove_everything(self)
+            geraete_view = homepilot_views.ParametrizedGeraeteView(self.client, GRUPPEN, gruppen_id)
+            menu_control = self.getControl(96)
+            geraete_view.visualize(self, __addon__, gruppen_name)
+            self.currentView = geraete_view
+            self.status_updater.set_current_view(geraete_view, menu_control)
+        elif action == ACTION_NAV_BACK:
+            self.setFocusId(96)
+
+
+    def __handle_back_action_on_nested_sites (self, view, is_geraeteview):
+        if is_geraeteview and self.getFocusId() != 999:
+            self.__show_geraetetyp_view()
+            self.__set_geraetetyp_list_focus(view)
+            self.setFocusId(257)
+        elif view == DEVICE_GRUPPEN_VIEW and self.getFocusId() != 999:
+            group_id = self.currentView.get_group()
+            self.__show_geraetetyp_view()
+            self.__set_gruppen_list_focus(group_id)
+        elif view == SZENEN_NICHT_MANUELL_VIEW or view == SZENEN_MANUELL_VIEW or view == SZENEN_ALLE_VIEW:
+            self.__show_szenentyp_view()
+            # set the focus in the szenetyp list
+            self.currentView.focus_list_item(view, self)
 
     def onFocus(self, control):
         if not self._wait_for_visualization:
