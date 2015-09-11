@@ -327,7 +327,7 @@ class GuiController(xbmcgui.WindowXMLDialog):
                 self.status_updater.set_current_window(meter_window)
                 meter_window.doModal()
             elif view_id == DEVICE_ALLE_VIEW or view_id == DEVICE_ROLLADEN_VIEW or view_id == DEVICE_SCHALTER_VIEW or view_id == DEVICE_DIMMER_VIEW \
-                or view_id == DEVICE_THERMOSTATE_VIEW or view_id == DEVICE_TORE_VIEW:
+                or view_id == DEVICE_THERMOSTATE_VIEW or view_id == DEVICE_TORE_VIEW or view_id == DEVICE_GRUPPEN_VIEW:
                 geraete_listcontrol = self.getControl(FOCUS_LIST_SENSORLIST)
                 list_item = geraete_listcontrol.getSelectedItem()
                 did = list_item.getProperty("did")
