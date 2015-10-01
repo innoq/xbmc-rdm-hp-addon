@@ -5,6 +5,7 @@ import xbmcgui
 import xbmc
 import os
 import xbmcaddon
+import requests.exceptions
 __addon__ = xbmcaddon.Addon(id='script.homepilot')
 __addon_path__ = __addon__.getAddonInfo('path').decode("utf-8")
 _images_device = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'devices')
@@ -139,7 +140,7 @@ class ParametrizedGeraeteView(BaseView):
         return devices
 
     def remove_everything(self, window):
-        if self.hp_error and self.errorcontrol is not None:
+        if self.hp_error and self.errorcontrol is not None and self.title_control is not None:
             window.removeControls([self.errorcontrol, self.title_control])
             self.errorcontrol = None
         else:
@@ -338,7 +339,8 @@ class FavoritenView(BaseView):
             pass
         else:
             controls_to_remove = [self.title_control, self.szenen_control]
-            window.removeControls(controls_to_remove)
+            if self.title_control is not None and self.szenen_control is not None:
+                window.removeControls(controls_to_remove)
 
         self.scene_group.setVisible(False)
         self.geraete_group.setVisible(False)
@@ -498,9 +500,13 @@ class GeraetetypView(BaseView):
             window.addControl(self.errorcontrol)
 
     def __get_device_groups(self):
-        devices = self.client.get_devices()
-        device_groups = map(lambda x: x.get_devicegroup(), devices)
-        return set(device_groups)
+        try:
+            devices = self.client.get_devices()
+            device_groups = map(lambda x: x.get_devicegroup(), devices)
+            return set(device_groups)
+        except requests.exceptions.ConnectionError, e:
+            return {}
+
 
     def handle_click(self, position):
         if position.getProperty("type") == str(ALLE):
