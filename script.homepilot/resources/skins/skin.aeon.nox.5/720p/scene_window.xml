@@ -16,7 +16,7 @@
             <texture border="40">dialog_back3.png</texture>
         </control>
 
-        <!--radio button bliock -->
+        <!--radio button block -->
         <control type="group" id="134">
             <visible>true</visible>
             <posx>400</posx>

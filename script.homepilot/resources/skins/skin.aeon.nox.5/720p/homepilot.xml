@@ -206,8 +206,8 @@
                 <width>760</width>
                 <height>320</height>
                 <onup>251</onup>
-                <ondown>4</ondown>
-                <onright>Action(enter)</onright>
+                <!--<ondown>4</ondown>
+                <onright>Action(enter)</onright>-->
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
                 <itemlayout height="42" width="600">
@@ -369,7 +369,7 @@
                     <posy>20</posy>
                     <width>12</width>
                     <height>200</height>
-                    <onleft>SetFocus(4)</onleft>
+                    <onleft>4</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -545,7 +545,7 @@
                     <posy>0</posy>
                     <width>8</width>
                     <height>540</height>
-                    <onleft>Action(zoomin)</onleft>
+                    <!--<onleft>Action(zoomin)</onleft>-->
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -747,7 +747,8 @@
                     <width>760</width>
                     <height>500</height>
                     <onup>258</onup>
-                    <ondown>258</ondown>
+                    <ondown>259</ondown>
+                    <onleft>257</onleft>
                     <pagecontrol>259</pagecontrol>
                     <!--scrolltime>0</scrolltime-->
                     <itemlayout height="60" width="600">
@@ -860,7 +861,7 @@
                     <posy>20</posy>
                     <width>8</width>
                     <height>540</height>
-                    <onleft>Action(zoomin)</onleft>
+                    <!--<onleft>Action(zoomin)</onleft>-->
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>

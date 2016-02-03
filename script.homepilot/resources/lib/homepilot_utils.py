@@ -5,69 +5,22 @@ import os
 import xbmcgui
 import xbmc
 import xbmcaddon
+import statics
 
-SENSOREN = 32007
-SZENEN = 32005
-SZENENTYPEN = 32016
-GRUPPEN = 32015
-#GERAETE = 32021
+__addon__ = xbmcaddon.Addon(id='script.homepilot')
+__addon_path__ = __addon__.getAddonInfo('path').decode("utf-8")
+_automation_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'automations')
+_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media')
+icons_automation = {"generic": "global_sensor_12_", "wind": "wind_12_", "trigger": "trigger_12_",
+                    "closingContact": "schliesskontakt_12_", "dusk": "mond_12_", "dawn": "morgendaemmerung_12_",
+                    "time": "uhr_12_", "smoke": "rauchmelder_12_", "sun": "sonne_12_", "temperature": "temperatur_12_",
+                    "manual": "global_sensor_12_", "dust": "global_sensor_12_", "favored": "favorite_status_12_",
+                    "smartphone": "global_sensor_12_", "motion": "bewegungsmelder_12_",
+                    "temperator": "global_sensor_12_", "warning": "warning_12_", "rain": "regen_12_"}
 
-ROLLADEN = 32010
-SCHALTER = 32011
-DIMMER = 32012
-THERMOSTATE = 32013
-TORE = 32014
-ALLE = 32020
-
-SZENEN_MANUELL = 32017
-SZENEN_NICHT_MANUELL = 32018
-SZENEN_ALLE = 32019
-
-SZENEN_DETAILS = 100
-FAVORITEN = 101
-FAVORITEN_LOKAL = 102
-
-
-icons = {}
-icons["iconset1"] = "aquarium_72_"
-icons["iconset2"] = "bargraph_vertikal_72_"
-icons["iconset4"] = "deckenlampe_72_"
-icons["iconset5"] = "ein_aus_schalter1_72_"
-icons["iconset6"] = "jalousie_72_"
-icons["iconset7"] = "markise_72_"
-icons["iconset8"] = "rollladen1_72_"
-icons["iconset9"] = "schiebetuer_72_"
-icons["iconset10"] = "steckdose_72_"
-icons["iconset11"] = "tischlampe_72_"
-icons["iconset12"] = "tuer_72_"
-icons["iconset13"] = "stehlampe_72_"
-icons["iconset14"] = "schiebeladen_72_"
-icons["iconset15"] = "rollladen2_72_"
-icons["iconset16"] = "pumpe_72_"
-icons["iconset17"] = "kaffeemaschine_72_"
-icons["iconset18"] = "gartensprenkler_72_"
-#icons["iconset19"]      -> Standard
-icons["iconset20"] = "sunscreen_72_"
-icons["iconset21"] = "birne1_72_"
-icons["iconset22"] = "bargraph_horizontal_72_"
-icons["iconset23"] = "bewegungsmelder_72_"
-icons["iconset24"] = "fenster_72_"
-icons["iconset25"] = "genericsensor_72_"
-icons["iconset26"] = "rauchmelder_72_"
-icons["iconset27"] = "schliesskontakt_72_"
-icons["iconset28"] = "thermostat_72_"
-icons["iconset30"] = "garage_72_"
-icons["iconset31"] = "sektionaltor_72_"
-icons["iconset32"] = "lichterkette_72_"
-icons["iconset33"] = "weihnachtsbaum_72_"
-icons["iconset34"] = "dachfenster_72_"
-icons["iconset35"] = "handsender_72_"
-icons["iconset36"] = "leinwand_72_"
-icons["iconset37"] = "radio_72_"
-icons["iconset38"] = "smartphone_72_"
-icons["iconset39"] = "ventilator_72_"
 
 def get_display_value(position, group):
+    xbmc.log("homepilot_utils: get_display_value: ", level=xbmc.LOGDEBUG)
     if group == 1:
         if position < 50:
             return "Aus"
@@ -78,25 +31,27 @@ def get_display_value(position, group):
     elif group == 4 or group == 8 or group == 2:
         return str(position) + " %"
     elif group == 5:
-        return str(float(position)/10) + " °C"
+        return str(float(position) / 10) + " °C"
     else:
         return str(position)
 
+
 def get_iconset_inverted(_icon_set_inverted):
+    xbmc.log("homepilot_utils: get_iconset_inverted: ", level=xbmc.LOGDEBUG)
     return _icon_set_inverted is not None and _icon_set_inverted != 0
 
 
 def get_icon(_icon_set, _icon_set_inverted, _position, _deviceGroup):
-    if _icon_set in icons:
-        base_icon = icons[_icon_set]
-        #An-/Aus-Icons
+    xbmc.log("homepilot_utils: get_icon: ", level=xbmc.LOGDEBUG)
+    if _icon_set in statics.icons:
+        base_icon = statics.icons[_icon_set]
+        # An-/Aus-Icons
         position = _position
         if _deviceGroup == 5:
-            position = (float(position)/10 - 3) * 4
-        an_aus = set(
-            ["iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
-             "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33", "iconset34",
-             "iconset37", "iconset38", "iconset39"])
+            position = (float(position) / 10 - 3) * 4
+        an_aus = {"iconset1", "iconset23", "iconset5", "iconset24", "iconset18", "iconset17", "iconset16", "iconset26",
+                  "iconset27", "iconset25", "iconset10", "iconset12", "iconset32", "iconset33", "iconset34",
+                  "iconset37", "iconset38", "iconset39"}
         if _icon_set in an_aus:
             if get_iconset_inverted(_icon_set_inverted):
                 return __get_icon_switch_inverted(position, base_icon)
@@ -115,6 +70,7 @@ def get_icon(_icon_set, _icon_set_inverted, _position, _deviceGroup):
 
 
 def __get_icon_switch(position, base_icon):
+    xbmc.log("homepilot_utils: __get_icon_switch: ", level=xbmc.LOGDEBUG)
     if position == 0:
         return base_icon + "0.png"
     else:
@@ -122,6 +78,7 @@ def __get_icon_switch(position, base_icon):
 
 
 def __get_icon_switch_inverted(position, base_icon):
+    xbmc.log("homepilot_utils: __get_icon_switch_inverted: ", level=xbmc.LOGDEBUG)
     if position == 0:
         return base_icon + "1.png"
     else:
@@ -129,6 +86,7 @@ def __get_icon_switch_inverted(position, base_icon):
 
 
 def __get_icon_percent(position, base_icon):
+    xbmc.log("homepilot_utils: __get_icon_percent: ", level=xbmc.LOGDEBUG)
     if position < 12:
         return base_icon + "0.png"
     elif position < 37:
@@ -142,6 +100,7 @@ def __get_icon_percent(position, base_icon):
 
 
 def __get_icon_percent_inverted(position, base_icon):
+    xbmc.log("homepilot_utils: __get_icon_percent_inverted: ", level=xbmc.LOGDEBUG)
     if position < 12:
         return base_icon + "100.png"
     elif position < 37:
@@ -153,95 +112,22 @@ def __get_icon_percent_inverted(position, base_icon):
     else:
         return base_icon + "0.png"
 
-__addon__ = xbmcaddon.Addon(id='script.homepilot')
-__addon_path__        = __addon__.getAddonInfo('path').decode("utf-8")
-_automation_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media', 'automations')
-_images = os.path.join(__addon_path__, 'resources', 'skins', 'Default', 'media')
-icons_automation = {}
-icons_automation["generic"] = "global_sensor_12_"
-icons_automation["wind"] = "wind_12_"
-icons_automation["trigger"] = "trigger_12_"
-icons_automation["closingContact"] = "schliesskontakt_12_"
-icons_automation["dusk"] = "mond_12_"
-icons_automation["dawn"] = "morgendaemmerung_12_"
-icons_automation["time"] = "uhr_12_"
-icons_automation["smoke"] = "rauchmelder_12_"
-icons_automation["sun"] = "sonne_12_"
-icons_automation["temperature"] = "temperatur_12_"
-# TODO
-icons_automation["manual"] = "global_sensor_12_"
-# TODO
-icons_automation["dust"] = "global_sensor_12_"
-icons_automation["favored"] = "favorite_status_12_"
-# TODO
-icons_automation["smartphone"] = "global_sensor_12_"
-icons_automation["motion"] = "bewegungsmelder_12_"
-# TODO
-icons_automation["temperator"] = "global_sensor_12_"
-icons_automation["warning"] = "warning_12_"
-icons_automation["rain"] = "regen_12_"
 
 def add_scene_to_automation_list(automation_list, automations, addon):
-    dusk = automations.get_dusk()
-    _add_scene_item("dusk", dusk, automation_list, addon)
-
-    dawn = automations.get_dawn()
-    _add_scene_item("dawn", dawn, automation_list, addon)
-
-    time = automations.get_time()
-    _add_scene_item("time", time, automation_list, addon)
-
-    generic = automations.get_generic()
-    _add_scene_item("generic", generic, automation_list, addon)
-
-    wind = automations.get_wind()
-    _add_scene_item("wind", wind, automation_list, addon)
-
-    trigger = automations.get_trigger()
-    _add_scene_item("trigger", trigger, automation_list, addon)
-
-    closingContact = automations.get_closing_contact()
-    _add_scene_item("closingContact", closingContact, automation_list, addon)
-
-    dust = automations.get_dust()
-    _add_scene_item("dust", dust, automation_list, addon)
-
-    smoke = automations.get_smoke()
-    _add_scene_item("smoke", smoke, automation_list, addon)
-
-    sun = automations.get_sun()
-    _add_scene_item("sun", sun, automation_list, addon)
-
-    temperature = automations.get_temperature()
-    _add_scene_item("temperature", temperature, automation_list, addon)
-
-    manual = automations.get_manual()
-    _add_scene_item("manual", manual, automation_list, addon)
-
-    favored = automations.get_favored()
-    _add_scene_item("favored", favored, automation_list, addon)
-
-    smartphone = automations.get_smartphone()
-    _add_scene_item("smartphone", smartphone, automation_list, addon)
-
-    motion = automations.get_motion()
-    _add_scene_item("motion", motion, automation_list, addon)
-
-    temperator = automations.get_temperator()
-    _add_scene_item("temperator", temperator, automation_list, addon)
-
-    warning = automations.get_warning()
-    _add_scene_item("warning", warning, automation_list, addon)
-
-    rain = automations.get_rain()
-    _add_scene_item("rain", rain, automation_list, addon)
-
+    xbmc.log("homepilot_utils: add_scene_to_automation_list: automation_list: " + repr(automation_list),
+             level=xbmc.LOGDEBUG)
+    for prop in automations.get_props():
+        _add_scene_item(str(prop), automations.get_props()[prop], automation_list, addon)
     automation_list.setVisible(True)
 
+
 def get_action_sensor_icon():
+    xbmc.log("homepilot_utils: get_action_sensor_icon: ", level=xbmc.LOGDEBUG)
     return os.path.join(_images, "action_sensor.png")
 
+
 def _add_scene_item(automation_type, value, automation_list, addon):
+    xbmc.log("homepilot_utils: _add_scene_item: ", level=xbmc.LOGDEBUG)
     if value == 1 or value == 2 or value == 0 or value == 4:
         label = _get_label_scene(automation_type, value, addon)
         item = xbmcgui.ListItem(label=label)
@@ -251,122 +137,45 @@ def _add_scene_item(automation_type, value, automation_list, addon):
     else:
         return None
 
+
 def _get_label_scene(type, val, addon):
+    xbmc.log("homepilot_utils: _get_label_scene: ", level=xbmc.LOGDEBUG)
     if val != 1 and val != 2 and val != 4 and val != 0:
         return "-"
     value = str(val)
-    if type == "dusk":
-        id = int(str(3222) + value)
-        return addon.getLocalizedString(id)
-    elif type == "dawn":
-        id = int(str(3221) + value)
-        return addon.getLocalizedString(id)
-    elif type == "time":
-        id = int(str(3220) + value)
-        return addon.getLocalizedString(id)
-    elif type == "dust":
-        id = int(str(3223) + value)
-        return addon.getLocalizedString(id)
-    elif type == "sun":
-        id = int(str(3224) + value)
-        return addon.getLocalizedString(id)
-    elif type == "favored":
-        id = int(str(3225) + value)
-        return addon.getLocalizedString(id)
-    elif type == "wind":
-        id = int(str(3227) + value)
-        return addon.getLocalizedString(id)
-    elif type == "manual":
-        id = int(str(3226) + value)
-        return addon.getLocalizedString(id)
-    elif type == "rain":
-        id = int(str(3228) + value)
-        return addon.getLocalizedString(id)
-    elif type == "trigger":
-        id = int(str(3229) + value)
-        return addon.getLocalizedString(id)
-    elif type == "generic":
-        id = int(str(3230) + value)
-        return addon.getLocalizedString(id)
-    elif type == "temperator":
-        id = int(str(3231) + value)
-        return addon.getLocalizedString(id)
-    elif type == "temperature":
-        id = int(str(3232) + value)
-        return addon.getLocalizedString(id)
-    elif type == "motion":
-        id = int(str(3233) + value)
-        return addon.getLocalizedString(id)
-    elif type == "smoke":
-        id = int(str(3234) + value)
-        return addon.getLocalizedString(id)
-    elif type == "closingContact":
-        id = int(str(3235) + value)
-        return addon.getLocalizedString(id)
-    elif type == "warning":
-        id = int(str(3236) + value)
-        return addon.getLocalizedString(id)
+    labels = {statics.DUSK: int(str(3222) + value),
+              statics.DAWN: int(str(3221) + value),
+              statics.TIME: int(str(3220) + value),
+              statics.DUST: int(str(3223) + value),
+              statics.SUN: int(str(3224) + value),
+              statics.FAVORED: int(str(3225) + value),
+              statics.WIND: int(str(3227) + value),
+              statics.MANUAL: int(str(3226) + value),
+              statics.RAIN: int(str(3228) + value),
+              statics.TRIGGER: int(str(3229) + value),
+              statics.GENERIC: int(str(3230) + value),
+              statics.TEMPERATOR: int(str(3231) + value),
+              statics.TEMPERATUR: int(str(3232) + value),
+              statics.MOTION: int(str(3233) + value),
+              statics.SMOKE: int(str(3234) + value),
+              statics.CLOSINGCONTACT: int(str(3235) + value),
+              statics.WARNING: int(str(3236) + value)}
+    if type in labels:
+        return addon.getLocalizedString(labels[type])
     else:
+        xbmc.log("homepilot_utils: _get_label_scene: Label nicht gefunden!", level=xbmc.LOGERROR)
         return "-"
 
+
 def add_device_to_automation_list(automation_list, automations, addon):
-    dusk = automations.get_dusk()
-    _add_device_item("dusk", dusk, automation_list, addon)
-
-    dawn = automations.get_dawn()
-    _add_device_item("dawn", dawn, automation_list, addon)
-
-    time = automations.get_time()
-    _add_device_item("time", time, automation_list, addon)
-
-    generic = automations.get_generic()
-    _add_device_item("generic", generic, automation_list, addon)
-
-    wind = automations.get_wind()
-    _add_device_item("wind", wind, automation_list, addon)
-
-    trigger = automations.get_trigger()
-    _add_device_item("trigger", trigger, automation_list, addon)
-
-    closingContact = automations.get_closing_contact()
-    _add_device_item("closingContact", closingContact, automation_list, addon)
-
-    dust = automations.get_dust()
-    _add_device_item("dust", dust, automation_list, addon)
-
-    smoke = automations.get_smoke()
-    _add_device_item("smoke", smoke, automation_list, addon)
-
-    sun = automations.get_sun()
-    _add_device_item("sun", sun, automation_list, addon)
-
-    temperature = automations.get_temperature()
-    _add_device_item("temperature", temperature, automation_list, addon)
-
-    manual = automations.get_manual()
-    _add_device_item("manual", manual, automation_list, addon)
-
-    favored = automations.get_favored()
-    _add_device_item("favored", favored, automation_list, addon)
-
-    smartphone = automations.get_smartphone()
-    _add_device_item("smartphone", smartphone, automation_list, addon)
-
-    motion = automations.get_motion()
-    _add_device_item("motion", motion, automation_list, addon)
-
-    temperator = automations.get_temperator()
-    _add_device_item("temperator", temperator, automation_list, addon)
-
-    warning = automations.get_warning()
-    _add_device_item("warning", warning, automation_list, addon)
-
-    rain = automations.get_rain()
-    _add_device_item("rain", rain, automation_list, addon)
-
+    xbmc.log("homepilot_utils: add_device_to_automation_list: ", level=xbmc.LOGDEBUG)
+    for prop in automations.get_props():
+        _add_device_item(str(prop), automations.get_props()[prop], automation_list, addon)
     automation_list.setVisible(True)
 
+
 def _add_device_item(automation_type, value, automation_list, addon):
+    xbmc.log("homepilot_utils: _add_device_item: ", level=xbmc.LOGDEBUG)
     if value == 1 or value == 2 or value == 0 or value == 4:
         label = _get_label_device(automation_type, value, addon)
         item = xbmcgui.ListItem(label=label)
@@ -376,74 +185,41 @@ def _add_device_item(automation_type, value, automation_list, addon):
     else:
         return None
 
+
 def _get_label_device(type, val, addon):
+    xbmc.log("homepilot_utils: _get_label_device: ", level=xbmc.LOGDEBUG)
     if val != 1 and val != 2 and val != 4 and val != 0:
         return "-"
     value = str(val)
-    if type == "dusk":
-        id = int(str(3205) + value)
-        return addon.getLocalizedString(id)
-    elif type == "dawn":
-        id = int(str(3204) + value)
-        return addon.getLocalizedString(id)
-    elif type == "time":
-        id = int(str(3203) + value)
-        return addon.getLocalizedString(id)
-    elif type == "dust":
-        id = int(str(3206) + value)
-        return addon.getLocalizedString(id)
-    elif type == "sun":
-        id = int(str(3207) + value)
-        return addon.getLocalizedString(id)
-    elif type == "favored":
-        id = int(str(3208) + value)
-        return addon.getLocalizedString(id)
-    elif type == "wind":
-        id = int(str(3210) + value)
-        return addon.getLocalizedString(id)
-    elif type == "manual":
-        id = int(str(3209) + value)
-        return addon.getLocalizedString(id)
-    elif type == "rain":
-        id = int(str(3211) + value)
-        return addon.getLocalizedString(id)
-    elif type == "trigger":
-        id = int(str(3212) + value)
-        return addon.getLocalizedString(id)
-    elif type == "generic":
-        id = int(str(3213) + value)
-        return addon.getLocalizedString(id)
-    elif type == "temperator":
-        id = int(str(3214) + value)
-        return addon.getLocalizedString(id)
-    elif type == "temperature":
-        id = int(str(3215) + value)
-        return addon.getLocalizedString(id)
-    elif type == "motion":
-        id = int(str(3216) + value)
-        return addon.getLocalizedString(id)
-    elif type == "smoke":
-        id = int(str(3217) + value)
-        return addon.getLocalizedString(id)
-    elif type == "closingContact":
-        id = int(str(3218) + value)
-        return addon.getLocalizedString(id)
-    elif type == "warning":
-        id = int(str(3219) + value)
-        return addon.getLocalizedString(id)
+    labels = {statics.DUSK: int(str(3205) + value),
+              statics.DAWN: int(str(3204) + value),
+              statics.TIME: int(str(3203) + value),
+              statics.DUST: int(str(3206) + value),
+              statics.SUN: int(str(3207) + value),
+              statics.FAVORED: int(str(3208) + value),
+              statics.WIND: int(str(3210) + value),
+              statics.MANUAL: int(str(3209) + value),
+              statics.RAIN: int(str(3211) + value),
+              statics.TRIGGER: int(str(3212) + value),
+              statics.GENERIC: int(str(3213) + value),
+              statics.TEMPERATOR: int(str(3214) + value),
+              statics.TEMPERATUR: int(str(3215) + value),
+              statics.MOTION: int(str(3216) + value),
+              statics.SMOKE: int(str(3217) + value),
+              statics.CLOSINGCONTACT: int(str(3218) + value),
+              statics.WARNING: int(str(3219) + value)}
+    if type in labels:
+        return addon.getLocalizedString(labels[type])
     else:
+        xbmc.log("homepilot_utils: _get_label_device: Label nicht gefunden!", level=xbmc.LOGERROR)
         return "-"
-
-
-#icons_automation["smartphone"] = "global_sensor_12_"
-
 
 
 def get_title_control(text_or_id, addon):
     '''
     use this method to make sure view titles are everywhere on the same position
     '''
-    #xbmc.log("label: " + str(text_or_id), level=xbmc.LOGNOTICE)
+    xbmc.log("homepilot_utils: get_title_control: text_or_id:" + repr(text_or_id), level=xbmc.LOGDEBUG)
     if isinstance(text_or_id, int):
         label = addon.getLocalizedString(text_or_id)
     else:

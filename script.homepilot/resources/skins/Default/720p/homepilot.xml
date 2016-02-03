@@ -165,6 +165,7 @@
                     <texturefocus border="5">MenuItemFO.png</texturefocus>
                     <texturenofocus border="5">MenuItemNF.png</texturenofocus>
                     <label>$ADDON[script.homepilot 32006]</label>
+                    <onright>257</onright>
                 </control>
                 <control type="button" id="94">
                     <description>Button Szenen</description>
@@ -179,6 +180,7 @@
                     <texturefocus border="5">MenuItemFO.png</texturefocus>
                     <texturenofocus border="5">MenuItemNF.png</texturenofocus>
                     <label>$ADDON[script.homepilot 32005]</label>
+                    <onright>260</onright>
                 </control>
                 <control type="button" id="97">
                     <description>Button Sensoren</description>
@@ -219,8 +221,7 @@
                 <height>320</height>
                 <onup>251</onup>
                 <ondown>4</ondown>
-                <onright>Action(enter)</onright>
-                <onleft>96</onleft>
+
                 <pagecontrol>61</pagecontrol>
                 <!--scrolltime>0</scrolltime-->
                 <itemlayout height="42" width="600">
@@ -394,7 +395,7 @@
                     <posy>20</posy>
                     <width>12</width>
                     <height>200</height>
-                    <onleft>SetFocus(4)</onleft>
+                    <onleft>4</onleft>
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -577,8 +578,8 @@
                     <posx>750</posx>
                     <posy>20</posy>
                     <width>12</width>
-                    <!--height>$INFO[Window.Property(GeraeteScrollHeight)]</height-->
-                    <onleft>Action(zoomin)</onleft>
+                    <!--height>$INFO[Window.Property(GeraeteScrollHeight)]</height
+                    <onleft>5</onleft>-->
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
@@ -794,7 +795,7 @@
                     <onup>258</onup>
                     <ondown>258</ondown>
                     <onright>259</onright>
-                    <onleft>94</onleft>
+                    <onleft>257</onleft>
                     <pagecontrol>259</pagecontrol>
                     <itemlayout height="60" width="600">
                         <control type="image">
@@ -912,7 +913,7 @@
                     <posy>20</posy>
                     <width>12</width>
                     <height>500</height>
-                    <onleft>258</onleft>
+                    <!--<onleft>258</onleft>-->
                     <onright>noop</onright>
                     <orientation>vertical</orientation>
                     <visible>true</visible>
